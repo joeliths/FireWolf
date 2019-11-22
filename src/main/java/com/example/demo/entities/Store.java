@@ -14,7 +14,9 @@ public class Store {
     //PendingOrder-koppling
     //InventoryOrder-koppling
 
+    @Column(name="addr", nullable=false, length=100)
     private String address;
+    @Column(name="desc", nullable=true, length=256)
     private String description;
 
     public Store() {
