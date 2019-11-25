@@ -3,6 +3,9 @@ package com.example.demo.models;
 import java.io.Serializable;
 
 public class InventoryProductModel implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private int stock;
     private int price;
 
