@@ -2,6 +2,8 @@ package com.example.demo.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class InventoryProduct implements Serializable{
@@ -16,6 +18,13 @@ public class InventoryProduct implements Serializable{
     private int stock;
     @Column(name="inventory_product_price", length=100, nullable=false)
     private  int price;
+
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinTable(name = "inventoryproduct_pendingorderproduct",
+            joinColumns=@JoinColumn(name="inventory_product_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "pending_order_product_id", referencedColumnName = "id"))
+    private Set<PendingOrderProduct> pendingOrderProducts = new HashSet<>();
+
 
     public Long getId() {
         return id;
