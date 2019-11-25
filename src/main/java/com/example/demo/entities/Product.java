@@ -2,6 +2,8 @@ package com.example.demo.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Product implements Serializable{
@@ -20,6 +22,9 @@ public class Product implements Serializable{
     public Long getId() {
         return id;
     }
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    private Set<InventoryProduct> inventoryProducts = new HashSet<>();
 
     public void setId(Long id) {
         this.id = id;
