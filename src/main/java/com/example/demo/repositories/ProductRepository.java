@@ -1,4 +1,4 @@
-package com.example.demo.databaseaccess;
+package com.example.demo.repositories;
 
 import com.example.demo.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
