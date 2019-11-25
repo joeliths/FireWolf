@@ -4,12 +4,14 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table
 public class Product implements Serializable{
+
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long inventoryProductId;
+
     @Column(name="product_name", length=100, nullable=false)
     private String name;
     @Column(name="product_description", length=100, nullable=false)
@@ -21,14 +23,6 @@ public class Product implements Serializable{
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getInventoryProductId() {
-        return inventoryProductId;
-    }
-
-    public void setInventoryProductId(Long inventoryProductId) {
-        this.inventoryProductId = inventoryProductId;
     }
 
     public String getName() {

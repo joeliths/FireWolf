@@ -11,4 +11,20 @@ public class PendingOrderModel implements Serializable {
     // private StoreModel store;
     private Date placemenDateTime;
     private Date expirationDateTime;
+
+    public Date getPlacemenDateTime() {
+        return placemenDateTime;
+    }
+
+    public void setPlacemenDateTime(Date placemenDateTime) {
+        this.placemenDateTime = placemenDateTime;
+    }
+
+    public Date getExpirationDateTime() {
+        return expirationDateTime;
+    }
+
+    public void setExpirationDateTime(Date expirationDateTime) {
+        this.expirationDateTime = expirationDateTime;
+    }
 }
