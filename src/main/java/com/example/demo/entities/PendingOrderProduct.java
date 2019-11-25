@@ -3,18 +3,17 @@ package com.example.demo.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "pending_order_product")
+@Table
 public class PendingOrderProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     //PendingOrder-koppling
     //InventoryOrder-koppling
 
-
-    @Column(name="quantity", nullable=false)
+    @Column(nullable=false)
     private int quantity;
 
     public PendingOrderProduct() {
@@ -24,11 +23,11 @@ public class PendingOrderProduct {
         this.quantity = quantity;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
