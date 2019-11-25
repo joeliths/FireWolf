@@ -3,9 +3,9 @@ package com.example.demo.entities;
 import javax.persistence.*;
 
 @Entity
-@Table
 public class User {
 
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -2,21 +2,20 @@ package com.example.demo.entities;
 
 import javax.persistence.*;
 
-@Entity(name = "store")
-@Table(name = "store")
+@Entity
 public class Store {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     //Vendor-koppling
     //PendingOrder-koppling
     //InventoryOrder-koppling
 
-    @Column(name="addr", nullable=false, length=100)
+    @Column(nullable=false, length=100)
     private String address;
-    @Column(name="desc", nullable=true, length=256)
+    @Column
     private String description;
 
     public Store() {
@@ -27,11 +26,11 @@ public class Store {
         this.description = description;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
