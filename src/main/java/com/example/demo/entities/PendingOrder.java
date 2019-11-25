@@ -1,46 +1,56 @@
 package com.example.demo.entities;
 
-
-
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.io.StringReader;
 import java.util.Date;
 
 @Entity
-public class PendingOrder implements Serializable {
+public class PendingOrder {
 
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
-    private Customer customer;
+    //private Store store;
+    //private Customer customer;
+    //private PendingOrderProduct pendingOrderProduct;
 
-    @Column(name = "placement_date_time")
+    @Column(name = "placement_date_time",nullable = false)
     private Date placemenDateTime;
 
 
-    @Column(name = "expiration_date_time")
+    @Column(name = "expiration_date_time",nullable = false)
     private Date expirationDateTime;
 
-
-    public PendingOrder toEntity(String pendingOrderModel) {
-        JsonReader reader = Json.createReader(new StringReader(pendingOrderModel));
-
-        JsonObject jsonObject = reader.readObject();
-
-        PendingOrder pendingOrder = new PendingOrder();
-
-        //TODO set values to keys
-
-        return pendingOrder;
+    public PendingOrder(Date placemenDateTime, Date expirationDateTime) {
+        this.placemenDateTime = placemenDateTime;
+        this.expirationDateTime = expirationDateTime;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getPlacemenDateTime() {
+        return placemenDateTime;
+    }
+
+    public void setPlacemenDateTime(Date placemenDateTime) {
+        this.placemenDateTime = placemenDateTime;
+    }
+
+    public Date getExpirationDateTime() {
+        return expirationDateTime;
+    }
+
+    public void setExpirationDateTime(Date expirationDateTime) {
+        this.expirationDateTime = expirationDateTime;
+    }
 
 }
