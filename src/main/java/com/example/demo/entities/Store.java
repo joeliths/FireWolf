@@ -8,7 +8,7 @@ public class Store {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     //Vendor-koppling
     //PendingOrder-koppling
@@ -27,7 +27,7 @@ public class Store {
         this.description = description;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
