@@ -16,14 +16,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
     @Modifying
-    @Query("update product p set p.name = :name where u.name = :newName")
-    int setnameFor(@Param("name")String name,
+    @Query("update product p set p.name = :name where p.name = :newName")
+    int setNameFor(@Param("name")String name,
                              @Param("newName")String newName);
 
     @Modifying
-    @Query("update product p set p.name = :name where u.name = :newName")
-    int setFixedFirstnameFor(@Param("name")String name,
-                             @Param("newName")String newName);
+    @Query("update description d set d.name = :name where d.name = :newName")
+    int setDescriptionFor(@Param("name")String name,
+                             @Param("newDescription")String newDescription);
 
 
 
