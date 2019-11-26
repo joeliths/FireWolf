@@ -31,7 +31,7 @@ public class InventoryProduct implements Serializable{
             inverseJoinColumns = @JoinColumn(name = "store_id", referencedColumnName = "id"))
     private Store store = new Store();
 
-    @OneToMany(mappedBy = "pendingorderproduct", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "inventoryProduct", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<PendingOrderProduct> pendingOrderProducts = new HashSet<>();
 
 

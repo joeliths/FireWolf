@@ -15,7 +15,7 @@ public class PendingOrderProduct implements Serializable {
 
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "pOp_fk")
-    Set<PendingOrder> pendingorders;
+    Set<PendingOrder> pendingOrders;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     InventoryProduct inventoryProduct;
