@@ -1,14 +1,27 @@
 package com.example.demo.entities;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 public class Product implements Serializable{
 
     private static final long serialVersionUID = 1L;
+
+
+
+    @GenericGenerator(name = "uuid2", strategy = "uuid2", parameters = {})
+    @Type(type = "uuid-char")
+    @Column(columnDefinition = "BINARY(16)")
+    @GeneratedValue(generator = "uuid2")
+    private UUID uuid;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

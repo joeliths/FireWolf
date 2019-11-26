@@ -19,6 +19,9 @@ public class InventoryProduct implements Serializable{
     @Column(name="inventory_product_price", length=100, nullable=false)
     private  int price;
 
+
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product = new Product();
