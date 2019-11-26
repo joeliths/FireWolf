@@ -3,6 +3,8 @@ package com.example.demo.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class PendingOrder implements Serializable{
@@ -13,10 +15,20 @@ public class PendingOrder implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "pendingorder_store",
+            joinColumns=@JoinColumn(name="pendingorder_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "store_id", referencedColumnName = "id"))
+    private Store store = new Store();
 
-    //private Store store;
-    //private Customer customer;
-    //private PendingOrderProduct pendingOrderProduct;
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "pendingorder_customer",
+            joinColumns=@JoinColumn(name="pendingorder_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id"))
+    private Customer customer = new Customer();
+
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "pendingorders")
+    private Set<PendingOrderProduct> pendingOrderProducts = new HashSet<>();
 
     @Column(name = "placement_date_time",nullable = false)
     private Date placemenDateTime;
