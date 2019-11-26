@@ -3,6 +3,8 @@ package com.example.demo.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -14,8 +16,14 @@ public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //private User user;
-    //private PendingOrder pendingOrder;
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(name = "customer_user",
+            joinColumns=@JoinColumn(name="customer_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    private User user = new User();
+
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "customer")
+    private Set<PendingOrder> pendingOrders = new HashSet<>();
 
     public Long getId() {
         return id;
