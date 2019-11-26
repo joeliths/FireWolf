@@ -23,8 +23,7 @@ public class Product implements Serializable{
         return id;
     }
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private Set<InventoryProduct> inventoryProducts = new HashSet<>();
+
 
     public void setId(Long id) {
         this.id = id;

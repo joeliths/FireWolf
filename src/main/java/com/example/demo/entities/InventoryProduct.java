@@ -19,19 +19,17 @@ public class InventoryProduct implements Serializable{
     @Column(name="inventory_product_price", length=100, nullable=false)
     private  int price;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable(name = "inventoryproduct_product",
-            joinColumns=@JoinColumn(name="inventory_product_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     private Product product = new Product();
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable(name = "inventoryproduct_store",
-            joinColumns=@JoinColumn(name="inventory_product_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "store_id", referencedColumnName = "id"))
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
     private Store store = new Store();
 
-    @OneToMany(mappedBy = "inventoryProduct", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "inventoryProduct",
+            cascade = CascadeType.PERSIST,
+    orphanRemoval = true)
     private Set<PendingOrderProduct> pendingOrderProducts = new HashSet<>();
 
 
