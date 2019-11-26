@@ -14,6 +14,7 @@ public class Vendor implements Serializable {
     private Long id;
 
     @OneToOne(mappedBy = "vendor", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @MapsId
     private User user;
 
     @OneToMany(mappedBy = "vendor", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
