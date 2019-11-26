@@ -10,10 +10,10 @@ public class Vendor implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "vendor", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OneToOne( fetch = FetchType.LAZY)
+    @MapsId
     private User user;
 
     @OneToMany(mappedBy = "vendor", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)

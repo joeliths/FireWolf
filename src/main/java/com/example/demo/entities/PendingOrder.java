@@ -15,19 +15,19 @@ public class PendingOrder implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable(name = "pendingorder_store",
-            joinColumns=@JoinColumn(name="pendingorder_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "store_id", referencedColumnName = "id"))
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
     private Store store = new Store();
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable(name = "pendingorder_customer",
-            joinColumns=@JoinColumn(name="pendingorder_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id"))
-    private Customer customer = new Customer();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "pendingOrders")
+    @OneToMany(
+            mappedBy = "pendingOrder",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private Set<PendingOrderProduct> pendingOrderProducts = new HashSet<>();
 
     @Column(name = "placement_date_time",nullable = false)

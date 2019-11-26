@@ -18,26 +18,15 @@ public class User implements Serializable {
     @Column(nullable = false, length = 50)
     private String password;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable(name = "user_customer",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "customer_id") })
-    private Customer customer;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @MapsId
-    private Vendor vendor;
-
-
+    
     public User() {
     }
 
-    public User(String fullName, String userName, String password, Customer customer, Vendor vendor) {
+    public User(String fullName, String userName, String password) {
         this.fullName = fullName;
         this.userName = userName;
         this.password = password;
-        this.customer = customer;
-        this.vendor = vendor;
     }
 
     public Long getId() {
@@ -70,22 +59,6 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Vendor getVendor() {
-        return vendor;
-    }
-
-    public void setVendor(Vendor vendor) {
-        this.vendor = vendor;
     }
     
 }
