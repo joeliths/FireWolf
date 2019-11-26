@@ -20,8 +20,8 @@ public class ProductController {
             produces = "application/json")
     @ResponseBody
     public ResponseEntity<?> addProductNewerWay(@RequestBody ProductModel productModel){
-        boolean answer = productService.addProduct(productModel);
-        return new ResponseEntity<>(answer, HttpStatus.OK);
+        String uuid = productService.addProduct(productModel);
+        return new ResponseEntity<>(uuid, HttpStatus.OK);
     }
 
 }

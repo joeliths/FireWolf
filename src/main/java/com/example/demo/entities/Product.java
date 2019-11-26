@@ -1,5 +1,6 @@
 package com.example.demo.entities;
 
+import com.example.demo.entities.helperclasses.MyUUID;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -16,11 +17,9 @@ public class Product implements Serializable{
 
 
 
-    @GenericGenerator(name = "uuid2", strategy = "uuid2", parameters = {})
-    @Type(type = "uuid-char")
-    @Column(columnDefinition = "BINARY(16)")
-    @GeneratedValue(generator = "uuid2")
-    private UUID uuid;
+    @Embedded
+    private MyUUID uuid = new MyUUID();
+
 
 
     @Id
@@ -56,5 +55,9 @@ public class Product implements Serializable{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public MyUUID getUuid() {
+        return uuid;
     }
 }

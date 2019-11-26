@@ -18,16 +18,16 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public boolean addProduct(ProductModel productModel){
+    public String addProduct(ProductModel productModel){
 
         Product product = new Product();
         product.setName(productModel.getName());
         product.setDescription(productModel.getDescription());
         try{
             productRepository.save(product);
-            return true;
+            return product.getUuid().toString();
         }catch (Exception e){
-            return false;
+            return "something wrong";
         }
 
     }
