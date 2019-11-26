@@ -16,8 +16,13 @@ public class Store implements Serializable {
     @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
     Set<PendingOrder> pendingOrders;
 
+    /*>ska förmodligen tas bort. vi implementerar egen snabbare hämtning av inventoryProducts.
     @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    Set<InventoryProduct> inventoryProducts;
+    Set<InventoryProduct> inventoryProducts;*/
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vendor_id")
+    private Vendor vendor = new Vendor();
 
     @Column(nullable=false, length=100)
     private String address;
