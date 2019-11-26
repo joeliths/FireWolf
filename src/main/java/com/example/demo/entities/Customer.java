@@ -13,16 +13,17 @@ public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable(name = "customer_user",
-            joinColumns=@JoinColumn(name="customer_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
     private User user = new User();
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "customer")
+    @OneToMany(
+            mappedBy = "customer",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private Set<PendingOrder> pendingOrders = new HashSet<>();
 
     public Long getId() {
