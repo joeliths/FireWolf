@@ -25,9 +25,7 @@ public class User implements Serializable {
     private Customer customer;
 
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinTable(name = "user_vendor",
-            joinColumns = { @JoinColumn(name = "user_id") },
-            inverseJoinColumns = { @JoinColumn(name = "vendor_id") })
+    @MapsId
     private Vendor vendor;
 
 
