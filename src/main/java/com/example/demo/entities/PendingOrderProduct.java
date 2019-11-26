@@ -2,6 +2,7 @@ package com.example.demo.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 public class PendingOrderProduct implements Serializable {
@@ -12,8 +13,12 @@ public class PendingOrderProduct implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //PendingOrder-koppling
-    //InventoryOrder-koppling
+    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pOp_fk")
+    Set<PendingOrder> pendingorders;
+
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    InventoryProduct inventoryProduct;
 
     @Column(nullable=false)
     private int quantity;

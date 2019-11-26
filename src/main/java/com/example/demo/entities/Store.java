@@ -2,6 +2,7 @@ package com.example.demo.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 public class Store implements Serializable {
@@ -12,9 +13,13 @@ public class Store implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //Vendor-koppling
-    //PendingOrder-koppling
-    //InventoryOrder-koppling
+    Vendor vendor;
+
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    Set<PendingOrder> pendingOrders;
+
+    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    Set<InventoryProduct> inventoryProducts;
 
     @Column(nullable=false, length=100)
     private String address;
