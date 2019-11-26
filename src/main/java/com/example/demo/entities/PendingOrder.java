@@ -27,7 +27,7 @@ public class PendingOrder implements Serializable{
             inverseJoinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "id"))
     private Customer customer = new Customer();
 
-    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "pendingorders")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "pendingOrders")
     private Set<PendingOrderProduct> pendingOrderProducts = new HashSet<>();
 
     @Column(name = "placement_date_time",nullable = false)
