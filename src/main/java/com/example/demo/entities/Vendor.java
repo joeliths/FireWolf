@@ -2,6 +2,7 @@ package com.example.demo.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 public class Vendor implements Serializable {
@@ -15,16 +16,16 @@ public class Vendor implements Serializable {
     @OneToOne(mappedBy = "vendor", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private User user;
 
-    //@ManyToOne(mappedBy = "vendor", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private Store store;
+    @OneToMany(mappedBy = "vendor", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    private Set<Store> stores;
 
 
     public Vendor() {
     }
 
-    public Vendor(User user, Store store) {
+    public Vendor(User user, Set<Store> stores) {
         this.user = user;
-        this.store = store;
+        this.stores = stores;
     }
 
     public Long getId() {
@@ -43,12 +44,11 @@ public class Vendor implements Serializable {
         this.user = user;
     }
 
-    public Store getStore() {
-        return store;
+    public Set<Store> getStores() {
+        return stores;
     }
 
-    public void setStore(Store store) {
-        this.store = store;
+    public void setStores(Set<Store> stores) {
+        this.stores = stores;
     }
-
 }
