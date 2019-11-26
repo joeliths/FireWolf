@@ -13,11 +13,11 @@ public class PendingOrderProduct implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    @JoinColumn(name = "pOp_fk")
+    @OneToMany(cascade = CascadeType.PERSIST, mappedBy = "pendingOrderProduct")
     Set<PendingOrder> pendingOrders;
 
     @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "pOp_fk")
     InventoryProduct inventoryProduct;
 
     @Column(nullable=false)

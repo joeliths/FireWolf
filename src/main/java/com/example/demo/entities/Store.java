@@ -13,15 +13,10 @@ public class Store implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "store_fk")
-    Vendor vendor;
-
-    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
     Set<PendingOrder> pendingOrders;
 
-    @OneToMany(mappedBy = "store", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
     Set<InventoryProduct> inventoryProducts;
 
     @Column(nullable=false, length=100)
