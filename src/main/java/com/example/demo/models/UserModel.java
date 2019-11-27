@@ -3,6 +3,7 @@ package com.example.demo.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class UserModel implements Serializable {
 
@@ -10,16 +11,13 @@ public class UserModel implements Serializable {
 
     private String fullName;
     private String userName;
-    @JsonIgnore
-    private String password;
 
     public UserModel() {
     }
 
-    public UserModel(String fullName, String userName, String password) {
+    public UserModel(String fullName, String userName) {
         this.fullName = fullName;
         this.userName = userName;
-        this.password = password;
     }
 
     public String getFullName() {
@@ -38,11 +36,4 @@ public class UserModel implements Serializable {
         this.userName = userName;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

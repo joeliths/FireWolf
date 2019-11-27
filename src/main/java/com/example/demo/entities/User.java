@@ -4,6 +4,7 @@ import com.example.demo.entities.helperclasses.MyUUID;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 public class User implements Serializable {
@@ -26,7 +27,12 @@ public class User implements Serializable {
     private String userName;
     @Column(nullable = false, length = 50)
     private String password;
-
+    @Column(name = "USER_ROLE")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "USER_ROLE_ROLES",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<UserRole> roles;
 
     
     public User() {
@@ -69,5 +75,12 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
+    public Set<UserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<UserRole> roles) {
+        this.roles = roles;
+    }
 }
