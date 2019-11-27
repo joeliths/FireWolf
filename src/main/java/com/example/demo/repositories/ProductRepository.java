@@ -16,7 +16,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
     @Modifying
-    @Query("update Product p set p.name = :newName where p.name = :name")
+    @Query("update Product p set p.name = :newName where p.name = :name"
+
+    )
     int updateName(@Param("name")String name,
                              @Param("newName")String newName);
 
@@ -24,7 +26,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("update Product p set p.description = :newDescription where p.name = :name")
     int updateDescription(@Param("name")String name,
                              @Param("newDescription")String newDescription);
-
 
 
 

@@ -1,5 +1,7 @@
 package com.example.demo.entities;
 
+import com.example.demo.entities.helperclasses.MyUUID;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -10,6 +12,13 @@ import java.util.Set;
 public class PendingOrder implements Serializable{
 
     private static final long serialVersionUID = 1L;
+
+    @Embedded
+    private MyUUID uuid = new MyUUID();
+
+    public MyUUID getUuid() {
+        return uuid;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
