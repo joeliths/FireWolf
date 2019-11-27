@@ -32,5 +32,8 @@ public class ProductService {
 
     }
 
-
+    //TODO:write method.
+    public boolean deleteProduct(ProductModel productModel) {
+        return false;
+    }
 }

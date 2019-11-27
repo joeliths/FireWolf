@@ -29,7 +29,7 @@ public class PendingOrder implements Serializable{
     private Store store = new Store();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "user_id")
     private Customer customer;
 
     @OneToMany(

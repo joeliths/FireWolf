@@ -51,4 +51,8 @@ public class UserService {
         Optional<UserRole> role = userRoleRepository.getUserRoleByRole(roleType);
         return role.orElseThrow(() -> new UserRoleTypeNotFoundException("Role with type "+roleType+" not found"));
     }
+    //TODO:Write this method
+    public boolean deleteUser(UserModel userModel) {
+        return false;
+    }
 }
