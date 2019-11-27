@@ -1,24 +1,32 @@
 package com.example.demo.services;
 
 import com.example.demo.entities.User;
+import com.example.demo.entities.UserRole;
 import com.example.demo.models.UserModel;
+import com.example.demo.models.UserRegisterModel;
 import com.example.demo.repositories.UserRepository;
+import com.example.demo.repositories.UserRoleRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.RoleNotFoundException;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
     private final ModelMapper modelMapper;
 
-    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
+        this.userRoleRepository = userRoleRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -29,8 +37,15 @@ public class UserService {
         return userModels;
     }
 
-    public UserModel addUser(UserModel userModel) {
+    public UserModel addUser(UserRegisterModel userModel) {
         User userToAdd = modelMapper.map(userModel, User.class);
-        return modelMapper.map(userRepository.save(userToAdd), UserModel.class);
+        Set<UserRole> roles = userModel.getRoles().stream()
+                                .map(r -> {
+                                    UserRole role = userRoleRepository.getUserRoleByRole(r).get();
+                                    return role;
+                            }).collect(Collectors.toSet());
+        userToAdd.setRoles(roles);
+        UserModel userToReturn = modelMapper.map(userRepository.save(userToAdd), UserModel.class);
+        return userToReturn;
     }
 }
