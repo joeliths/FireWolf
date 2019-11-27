@@ -23,9 +23,9 @@ public class InventoryProduct implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="inventory_product_stock", length=100, nullable=false)
+    @Column(name="stock", length=100, nullable=false)
     private int stock;
-    @Column(name="inventory_product_price", length=100, nullable=false)
+    @Column(name="price", length=100, nullable=false)
     private  int price;
 
 
