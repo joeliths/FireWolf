@@ -18,11 +18,11 @@ public class AuthenticationController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @PostMapping("/register/{pass}/")
-    public ResponseEntity<UserModel> register(@RequestBody UserModel userModel, @PathVariable String pass){
+    @PostMapping("/register/")
+    public ResponseEntity<UserModel> register(@RequestBody UserModel userModel){
         User user = new User();
         user.setUserName(userModel.getUserName());
-        String encryptedPass = passwordEncoder.encode(pass);
+        String encryptedPass = passwordEncoder.encode(userModel.getPassword());
         user.setPassword(encryptedPass);
         user.setFullName(userModel.getFullName());
         userRepository.save(user);
@@ -30,7 +30,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<?> login(String userName, String pass){
+    public ResponseEntity<?> login(){
         return ResponseEntity.ok("Logged in");
     }
 

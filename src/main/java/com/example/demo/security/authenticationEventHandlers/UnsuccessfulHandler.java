@@ -15,6 +15,6 @@ class UnsuccessfulHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-        httpServletResponse.sendRedirect("/auth/test");
+        httpServletResponse.sendRedirect("/auth/test/");
     }
 }
