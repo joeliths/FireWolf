@@ -11,11 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping("/products")
 public class ProductController {
     @Autowired
     ProductService productService;
 
-    @PostMapping(path = "/products/add",
+    @PostMapping(path = "/add",
             consumes = "application/json",
             produces = "application/json")
     @ResponseBody

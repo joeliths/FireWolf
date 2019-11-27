@@ -28,4 +28,14 @@ public class PendingOrderService {
         pendingOrderRepository.saveAndFlush(pendingOrder);
 
     }
+
+    //Todo:write this method
+    public void checkoutPendingOrder(PendingOrderModel pendingOrderModel) {
+    }
+    //Todo:write this method
+    public void updatePendingOrder(PendingOrderModel pendingOrderModel) {
+    }
+    //TODO:write this method
+    public void deletePendingOrder(PendingOrderModel pendingOrderModel) {
+    }
 }
