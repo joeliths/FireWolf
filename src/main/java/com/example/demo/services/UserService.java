@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 @Service
-public class UserService implements IUserService {
+public class UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
@@ -22,7 +22,6 @@ public class UserService implements IUserService {
         this.modelMapper = modelMapper;
     }
 
-    @Override
     public List<UserModel> getAllUsers() {
         List<User> users = userRepository.findAll();
         Type listType = new TypeToken<List<UserModel>>(){}.getType();
@@ -30,7 +29,6 @@ public class UserService implements IUserService {
         return userModels;
     }
 
-    @Override
     public UserModel addUser(UserModel userModel) {
         User userToAdd = modelMapper.map(userModel, User.class);
         return modelMapper.map(userRepository.save(userToAdd), UserModel.class);
