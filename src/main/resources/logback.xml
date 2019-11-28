@@ -5,6 +5,20 @@
             <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n</pattern>
         </encoder>
     </appender>
+
+
+    <logger name="JMS_LOGGER" level="INFO" additivity="false">
+        <appender-ref ref="queue" />
+    </logger>
+    <appender name="queue" class="ch.qos.logback.classic.net.JMSQueueAppender">
+        <InitialContextFactoryName>
+            org.apache.activemq.jndi.ActiveMQInitialContextFactory
+        </InitialContextFactoryName>
+        <ProviderURL>tcp://localhost:61616</ProviderURL>
+        <QueueConnectionFactoryBindingName>queueConnectionFactory</QueueConnectionFactoryBindingName>
+        <QueueBindingName>my-logback-queue</QueueBindingName>
+    </appender>
+
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
