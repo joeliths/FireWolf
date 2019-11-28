@@ -18,25 +18,32 @@ public class AuthenticationController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @PostMapping("/register/")
-    public ResponseEntity<UserModel> register(@RequestBody UserModel userModel){
-        User user = new User();
-        user.setUserName(userModel.getUserName());
-        String encryptedPass = passwordEncoder.encode(userModel.getPassword());
-        user.setPassword(encryptedPass);
-        user.setFullName(userModel.getFullName());
-        userRepository.save(user);
-        return ResponseEntity.ok(userModel);
-    }
+//    @PostMapping("/register/")
+//    public ResponseEntity<UserModel> register(@RequestBody UserModel userModel){
+//        User user = new User();
+//        user.setUserName(userModel.getUserName());
+//        String encryptedPass = passwordEncoder.encode(userModel.getPassword());
+//        user.setPassword(encryptedPass);
+//        user.setFullName(userModel.getFullName());
+//        userRepository.save(user);
+//        return ResponseEntity.ok(userModel);
+//    }
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> login(){
         return ResponseEntity.ok("Logged in");
     }
 
+    //TODO: Remove these later. Remove entire class?
     @GetMapping("/test")
     public String success(){
         return "Tried authentication";
     }
+
+    @GetMapping("/vendor")
+    public String vendor(){ return "Only for vendors ";}
+
+    @GetMapping("/customers")
+    public String customer(){ return "Only for customers";}
 
 }

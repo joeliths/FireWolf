@@ -6,6 +6,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
+@NamedEntityGraph(name = "user_with_roles",
+        attributeNodes = {@NamedAttributeNode("roles"),
+                           @NamedAttributeNode("userName"),
+                            @NamedAttributeNode("password")})
 @Entity
 public class User implements Serializable {
 

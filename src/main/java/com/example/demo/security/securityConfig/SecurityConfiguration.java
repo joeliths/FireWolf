@@ -32,15 +32,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(userNamePasswordProvider);
 
+
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter.class);
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/auth/s").hasRole("USER")
-                .antMatchers("/auth/**").permitAll()
-                .anyRequest().hasRole("USER");
+                .antMatchers("/auth/vendor").hasRole("VENDOR")
+                .antMatchers("/auth/customers").hasRole("CUSTOMER")
+                .antMatchers("/login").permitAll()
+                .antMatchers("/users/register").permitAll()
+                .anyRequest().hasAnyRole("CUSTOMER", "VENDOR");
 
     }
 
@@ -51,7 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public LoginFilter loginFilter() throws Exception {
-        LoginFilter loginFilter = new LoginFilter(new AntPathRequestMatcher("/auth/authenticate"), authenticationManagerBean(), handler, unsuccessfulHandler);
+        LoginFilter loginFilter = new LoginFilter(new AntPathRequestMatcher("/login"), authenticationManagerBean(), handler, unsuccessfulHandler);
 
         return loginFilter;
     }
