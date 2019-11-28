@@ -12,7 +12,8 @@ spring.activemq.user=admin
 spring.activemq.password=admin
 spring.activemq.broker-url=tcp://localhost:61616
 ```
-
+FireWolf jms receiver project:
+https://github.com/joeliths/Jms
 
 Add application.resources with the following text:
 (WRITE THIS SEGMENT)
