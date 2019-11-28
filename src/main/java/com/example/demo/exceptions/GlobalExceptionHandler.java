@@ -1,32 +1,34 @@
 package com.example.demo.exceptions;
 
+import com.example.demo.jms.ActiveMQSender;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jms.annotation.EnableJms;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    //Exempel metod för att visa hur det fungerar. Ta bort
-    @ExceptionHandler(EntityNotFoundException.class)
-    public final ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException e) {
-        return responseBuilder(NOT_FOUND, "Some error message for this type of error");
+    private final ActiveMQSender jms;
+
+    public GlobalExceptionHandler(ActiveMQSender jms) {
+        this.jms = jms;
     }
 
-    //Exempel metod för att visa hur det fungerar. Ta bort
-    @ExceptionHandler({ValidationException.class, NullPointerException.class})
-    public final ResponseEntity<?> anotherExample(Exception e) {
-        return responseBuilder(BAD_REQUEST, e.getMessage());
-    }
-
-    public ResponseEntity<?> responseBuilder(HttpStatus status, String body) {
-        return ResponseEntity.status(status).body(body); //returnera error objekt i body istället?
+    //Example method
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntimeException(RuntimeException e) {
+        jms.sendMessageToExceptionQueue(e);
+        return ResponseEntity.status(BAD_REQUEST).body("Something went wrong");
     }
 
 }
