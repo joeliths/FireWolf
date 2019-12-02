@@ -33,6 +33,9 @@ public class PendingOrderProduct implements Serializable {
     @Column(nullable=false)
     private int quantity;
 
+    @Column(nullable = false)
+    private int priceAtOrderPlacementTime;
+
     public PendingOrderProduct() {
     }
 
