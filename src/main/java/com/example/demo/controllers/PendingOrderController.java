@@ -33,7 +33,8 @@ public class PendingOrderController {
     @PostMapping("/pendingorder")
     public void addPendingOrder(@RequestBody PendingOrderModel pendingOrderModel) {
         LOGGER.info("Someone just called me!");
-        pendingOrderService.addPendingOrder(pendingOrderModel);
+        throw new RuntimeException();
+        //pendingOrderService.addPendingOrder(pendingOrderModel);
         //PendingOrder pendingOrder = modelMapper.map(pendingOrderModel,PendingOrder.class);
 
 
