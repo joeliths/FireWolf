@@ -7,11 +7,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Convert {
-    String[] lowAccessforbiddenFields = new String[]{"id, userId, productId","serialVersionUID"};
+public  class Convert {
+    private static String[] lowAccessforbiddenFields = new String[]{ "id, userId, productId","serialVersionUID"};
 
 
-    public <T> T lowAccessConverter(Object originObject, Class<T> targetClass)
+    public static<T> T lowAccessConverter(Object originObject, Class<T> targetClass)
             throws IllegalAccessException,
             NoSuchMethodException,
             InstantiationException,
@@ -21,13 +21,12 @@ public class Convert {
     }
 
 
-    private <T> T convert(Object originObject, Class<T> targetClass, String[] forbiddenFields)
+    private static <T> T convert(Object originObject, Class<T> targetClass, String[] forbiddenFields)
             throws IllegalAccessException,
             NoSuchMethodException,
             InstantiationException,
             InvocationTargetException {
 
-        forbiddenFields = new String[]{"id, userId, productId","serialVersionUID"};
 
 
         Class<?> originClass = originObject.getClass();
@@ -40,6 +39,7 @@ public class Convert {
             originField.setAccessible(true);
 
             if (isForbiddenField(originField, forbiddenFields)){
+                System.out.println("found forbidden field: " + originField.getName());
                 originField.setAccessible(false);
                 continue;
             }
@@ -50,9 +50,19 @@ public class Convert {
                 continue;
             }
 
+
+
             Field targetField = targetFields[matchedFieldsIndex];
+
+            System.out.println("Found field: " + targetField.getName());
             targetField.setAccessible(true);
-            targetField.set(    targetObject,   originField.get(originObject)   );
+
+            if(targetField.getName().equals("uuid")){
+                targetField.set(    targetObject,   originField.get(originObject).toString()   );
+            }else{
+                targetField.set(    targetObject,   originField.get(originObject)   );
+            }
+
             targetField.setAccessible(false);
             originField.setAccessible(false);
         }
@@ -60,7 +70,7 @@ public class Convert {
     }
 
 
-    private int indexOfMatchedField(Field field, Field[] fields){
+    private static int indexOfMatchedField(Field field, Field[] fields){
         for(int i=0; i < fields.length; i++){
             if(fields[i].getName().equals(field.getName())){
                 return i;
@@ -69,7 +79,7 @@ public class Convert {
         return -1;
     }
 
-    private boolean isForbiddenField(Field field, String[] forbiddenFields){
+    private static boolean isForbiddenField(Field field, String[] forbiddenFields){
         for(String forbidden:forbiddenFields) {
             if (field.getName().equals(forbidden)) {
                 return true;

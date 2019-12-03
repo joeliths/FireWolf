@@ -5,28 +5,31 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+import javax.mail.search.SearchTerm;
 import java.util.List;
+import java.util.Set;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
 
-    Product findByNameLike(@Param("name")String name);
+    List<Product> findByNameIgnoreCaseContaining(@Param("name")String name);
 
 
     @Modifying
-    @Query("update Product p set p.name = :newName where p.name = :name"
+    @Query("update Product p set p.name = :newName where p.uuid = :uuid"
 
     )
-    int updateName(@Param("name")String name,
+    int updateName(@Param("uuid")String uuid,
                              @Param("newName")String newName);
 
     @Modifying
-    @Query("update Product p set p.description = :newDescription where p.name = :name")
-    int updateDescription(@Param("name")String name,
+    @Query("update Product p set p.description = :newDescription where p.uuid = :uuid")
+    int updateDescription(@Param("uuid")String uuid,
                              @Param("newDescription")String newDescription);
 
 
-
+    Set<Product> deleteByUuid(String uuid);
 }

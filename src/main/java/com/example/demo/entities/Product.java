@@ -22,13 +22,17 @@ public class Product implements Serializable{
 
 
 
+    public Product(){
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="product_name", length=100, nullable=false)
+    @Column(name="name", length=100, nullable=false)
     private String name;
-    @Column(name="product_description", length=100, nullable=false)
+    @Column(name="description", length=100, nullable=false)
     private  String description;
 
     public Long getId() {
@@ -57,7 +61,7 @@ public class Product implements Serializable{
         this.description = description;
     }
 
-    public MyUUID getUuid() {
-        return uuid;
+    public String getUuid() {
+        return uuid.getUuid();
     }
 }
