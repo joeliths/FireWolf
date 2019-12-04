@@ -7,22 +7,22 @@ import java.util.List;
 
 public class PendingOrderRequestModel {
 
-    private MyUUID storeUUID;
+    private String storeUUID;
     private String customerUserName;
     private List<PendingOrderProductRequestModel> orderedProducts;
 
-    public PendingOrderRequestModel(MyUUID storeUUID, String customerUserName,
+    public PendingOrderRequestModel(String storeUUID, String customerUserName,
                                     List<PendingOrderProductRequestModel> orderedProducts) {
         this.storeUUID = storeUUID;
         this.customerUserName = customerUserName;
         this.orderedProducts = orderedProducts;
     }
 
-    public MyUUID getStoreUUID() {
+    public String getStoreUUID() {
         return storeUUID;
     }
 
-    public void setStoreUUID(MyUUID storeUUID) {
+    public void setStoreUUID(String storeUUID) {
         this.storeUUID = storeUUID;
     }
 

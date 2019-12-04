@@ -13,7 +13,7 @@ public class PendingOrderResponseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private MyUUID orderUUID;
+    private String orderUUID;
     private String placemenDateTime;
     private String expirationDateTime;
     private StoreModel store;
@@ -23,7 +23,7 @@ public class PendingOrderResponseModel implements Serializable {
     public PendingOrderResponseModel() {
     }
 
-    public PendingOrderResponseModel(MyUUID orderUUID, String placemenDateTime, String expirationDateTime,
+    public PendingOrderResponseModel(String orderUUID, String placemenDateTime, String expirationDateTime,
                                      StoreModel store, CustomerModel customer,
                                      List<PendingOrderProductResponseModel> orderedProducts) {
         this.orderUUID = orderUUID;
@@ -34,11 +34,11 @@ public class PendingOrderResponseModel implements Serializable {
         this.orderedProducts = orderedProducts;
     }
 
-    public MyUUID getOrderUUID() {
+    public String getOrderUUID() {
         return orderUUID;
     }
 
-    public void setOrderUUID(MyUUID orderUUID) {
+    public void setOrderUUID(String orderUUID) {
         this.orderUUID = orderUUID;
     }
 

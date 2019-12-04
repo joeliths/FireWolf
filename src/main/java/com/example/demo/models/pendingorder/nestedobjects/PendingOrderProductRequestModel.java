@@ -4,22 +4,22 @@ import com.example.demo.entities.helperclasses.MyUUID;
 
 public class PendingOrderProductRequestModel {
     
-    private MyUUID inventoryProductUUID;
+    private String inventoryProductUUID;
     private int quantity;
 
     public PendingOrderProductRequestModel() {
     }
 
-    public PendingOrderProductRequestModel(MyUUID inventoryProductUUID, int quantity) {
+    public PendingOrderProductRequestModel(String inventoryProductUUID, int quantity) {
         this.inventoryProductUUID = inventoryProductUUID;
         this.quantity = quantity;
     }
 
-    public MyUUID getInventoryProductUUID() {
+    public String getInventoryProductUUID() {
         return inventoryProductUUID;
     }
 
-    public void setInventoryProductUUID(MyUUID inventoryProductUUID) {
+    public void setInventoryProductUUID(String inventoryProductUUID) {
         this.inventoryProductUUID = inventoryProductUUID;
     }
 
