@@ -28,6 +28,7 @@ public class ProductService {
             productRepository.save(product);
             return product.getUuid().toString();
         }catch (Exception e){
+            e.printStackTrace();
             return "something wrong";
         }
 

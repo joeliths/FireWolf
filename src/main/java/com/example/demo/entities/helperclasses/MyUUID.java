@@ -19,6 +19,9 @@ public class MyUUID {
     public String getUuid() {
          return uuid.toString();
     }
+    public void setUuid(String uuid){
+        this.uuid = UUID.fromString(uuid);
+    }
     public String toString() {
         return uuid.toString();
     }
