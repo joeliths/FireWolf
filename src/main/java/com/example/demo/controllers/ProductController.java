@@ -10,6 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.QueryParam;
+import java.util.List;
+import java.util.Set;
+
 @Controller
 @RequestMapping("/products")
 public class ProductController {
@@ -23,6 +27,14 @@ public class ProductController {
     public ResponseEntity<?> addProductNewerWay(@RequestBody ProductModel productModel){
         String uuid = productService.addProduct(productModel);
         return new ResponseEntity<>(uuid, HttpStatus.OK);
+    }
+
+    @GetMapping(path ="/getByName",
+            produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<?> GetProductsByName(@RequestParam(value = "name", required = true) String name){
+        List<ProductModel> results = productService.getProductsLike(name);
+        return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
 }

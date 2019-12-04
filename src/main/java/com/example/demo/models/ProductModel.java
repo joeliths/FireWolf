@@ -9,6 +9,19 @@ public class ProductModel implements Serializable {
 
     private String name;
     private String description;
+    private String uuid;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
     public String getName() {
         return name;
