@@ -42,20 +42,6 @@ public class PendingOrderService {
 
     public void getPendingOrders() {
 
-        PendingOrder order = pendingOrderRepository.findAll().get(0);
-        PendingOrderResponseModel p = new PendingOrderResponseModel();
-        //p.setNonNestedField(order.theNonNestedField)
-        //p.setStore(new NestedStoreModel(fields here));
-
-        /*
-        private String placemenDateTime;
-        private String expirationDateTime;
-        private StoreModel store;
-        private CustomerModel customer;
-        private List<PendingOrderProductResponseModel> orderedProducts;
-        */
-
-
     }
 
     public void addPendingOrder(PendingOrderRequestModel pendingOrder){
@@ -70,34 +56,19 @@ public class PendingOrderService {
 
     private boolean isOrderValid(PendingOrderRequestModel pendingOrder) {
 
-        boolean noFieldsAreMissing = Arrays
-                .stream(pendingOrder.getClass().getDeclaredFields()).allMatch(Objects::nonNull);
-
-        boolean customerExists = true;
-        boolean storeExists = true;
-        boolean productsBelongToSelectedStore = true;
-        boolean productsAreInStock = true;
-
-        return true;
-    }
-
-
-
-//    private boolean isOrderValid(PendingOrderRequestModel pendingOrder) {
-//        Optional<User> customer = userRepository.findByUserName(pendingOrder.getCustomerUserName());
-//        Optional<Store> store = storeRepository.findByUuid(pendingOrder.getStoreUUID());
-//
 //        boolean noFieldsAreMissing = Arrays
 //                .stream(pendingOrder.getClass().getDeclaredFields()).allMatch(Objects::nonNull);
 //
-//        boolean customerExists = customer.isPresent();
-//        boolean storeExists = store.isPresent();
+//        boolean customerExists = true;
+//        boolean storeExists = true;
 //        boolean productsBelongToSelectedStore = true;
 //        boolean productsAreInStock = true;
 //
-//        return noFieldsAreMissing;
-//    }
+//        return true;
+        return true;
+    }
 
+    
 
     public List<PendingOrderResponseModel> getPendingOrdersForCustomer(String userName) {
         return Collections.emptyList();

@@ -16,7 +16,6 @@ import java.util.Set;
 public interface StoreRepository extends JpaRepository<Store, Long> {
 
     Store findFirstByAddress(String address);
-    boolean existsByUuid(MyUUID uuid);
     Optional<Store> findByUuid(MyUUID uuid);
 
 }

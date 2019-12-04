@@ -31,22 +31,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<?> handleValidationException(ValidationException e) {
         //jms.sendExceptionDetailsToExceptionQueue(e);
-        return ResponseEntity.status(BAD_REQUEST).body(e.getMessage());
+        return ResponseEntity.status(BAD_REQUEST).body(e.getMessage()); //todo: return error object in body?
     }
 
-//    @ExceptionHandler(HttpMessageNotReadableException.class)
-//    public ResponseEntity<?> handleValidationException(HttpMessageNotReadableException e) {
-//        //jms.sendExceptionDetailsToExceptionQueue(e);
-//        return ResponseEntity.status(BAD_REQUEST).body(e); missing request body
-//    }
-
-
-//    //TODO: Remove when we think we have handled all exceptions that can occur. :) Replace with some "last resort" exception handler
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<?> handleUnanticipatedException(Exception e) {
-//        return ResponseEntity.status(I_AM_A_TEAPOT)
-//                .body("'" + e.getClass() + "' is not added in our exception handler yet.\n Stacktrace: " +
-//                        Arrays.toString(e.getStackTrace()));
-//    }
 
 }
