@@ -11,9 +11,6 @@ public class PendingOrderRequestModel {
     private String customerUserName;
     private List<PendingOrderProductRequestModel> orderedProducts;
 
-    public PendingOrderRequestModel() {
-    }
-
     public PendingOrderRequestModel(MyUUID storeUUID, String customerUserName,
                                     List<PendingOrderProductRequestModel> orderedProducts) {
         this.storeUUID = storeUUID;

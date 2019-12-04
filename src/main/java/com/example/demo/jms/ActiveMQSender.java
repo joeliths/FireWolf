@@ -14,8 +14,9 @@ public class ActiveMQSender {
         this.jmsTemplate = jmsTemplate;
     }
 
-    public void sendMessageToExceptionQueue(Object message) {
-        jmsTemplate.convertAndSend("ExceptionQueue", message);
+    public void sendExceptionDetailsToExceptionQueue(Throwable exception) {
+        //todo: What should be sent? date occurred/stacktrace etc...
+        //jmsTemplate.convertAndSend("ExceptionQueue", exceptionDetails);
     }
 
 }
