@@ -16,10 +16,10 @@ public class MyUUID {
             uuid = UUID.randomUUID();
     }
 
-    public UUID getUuid() {
-         return uuid;
+    public String getUuid() {
+         return uuid.toString();
     }
-    public String toString(){
+    public String toString() {
         return uuid.toString();
     }
 }

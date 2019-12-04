@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.Mapper.Convert;
 import com.example.demo.entities.Product;
 import com.example.demo.models.ProductModel;
 import com.example.demo.repositories.ProductRepository;
@@ -7,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.resource.spi.EISSystemException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 //TODO:Alot in this class
 @Service
@@ -19,11 +23,8 @@ public class ProductService {
     }
 
     public String addProduct(ProductModel productModel){
-
-        Product product = new Product();
-        product.setName(productModel.getName());
-        product.setDescription(productModel.getDescription());
         try{
+            Product product = Convert.lowAccessConverter(productModel, Product.class);
             productRepository.save(product);
             return product.getUuid().toString();
         }catch (Exception e){
@@ -32,8 +33,30 @@ public class ProductService {
 
     }
 
-    //TODO:write method.
+    //TODO:test method.
     public boolean deleteProduct(ProductModel productModel) {
-        return false;
+        //TODO:change to using coneverted to entity.
+        productRepository.deleteByUuid(productModel.getUuid());
+        return true;
+    }
+
+    //TODO:Check what should be Set and what should be List
+    public List<ProductModel> getProductsLike(String searchTerm){
+        try {
+
+            List<Product> productEntities = productRepository.findByNameIgnoreCaseContaining(searchTerm);
+
+            List<ProductModel> productModelList = new ArrayList<>();
+            for (Product product : productEntities) {
+                ProductModel productModel = Convert.lowAccessConverter(product, ProductModel.class);
+                productModelList.add(productModel);
+            }
+
+            return productModelList;
+        }catch (Exception e){
+            System.out.println("Houston we got a problem in ProductService");
+            e.printStackTrace();
+            return null;
+        }
     }
 }

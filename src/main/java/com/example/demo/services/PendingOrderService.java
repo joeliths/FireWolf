@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.entities.InventoryProduct;
+import com.example.demo.entities.PendingOrder;
 import com.example.demo.entities.Store;
 import com.example.demo.entities.User;
 import com.example.demo.entities.helperclasses.MyUUID;
@@ -11,7 +12,6 @@ import com.example.demo.models.pendingorder.PendingOrderResponseModel;
 import com.example.demo.repositories.PendingOrderRepository;
 import com.example.demo.repositories.StoreRepository;
 import com.example.demo.repositories.UserRepository;
-import com.example.demo.services.validation.ValidationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,32 +40,64 @@ public class PendingOrderService {
         this.storeRepository = storeRepository;
     }
 
+    public void getPendingOrders() {
+
+        PendingOrder order = pendingOrderRepository.findAll().get(0);
+        PendingOrderResponseModel p = new PendingOrderResponseModel();
+        //p.setNonNestedField(order.theNonNestedField)
+        //p.setStore(new NestedStoreModel(fields here));
+
+        /*
+        private String placemenDateTime;
+        private String expirationDateTime;
+        private StoreModel store;
+        private CustomerModel customer;
+        private List<PendingOrderProductResponseModel> orderedProducts;
+        */
+
+
+    }
+
     public void addPendingOrder(PendingOrderRequestModel pendingOrder){
 
-        boolean areFieldsAreMissing = Arrays
-                .stream(pendingOrder.getClass().getDeclaredFields()).anyMatch(Objects::isNull);
-        if(areFieldsAreMissing) {
-            throw new ValidationException("Fields are missing");
-        }
 
-        User customer = userRepository
-                .findByUserName(pendingOrder.getCustomerUserName())
-                .orElseThrow(() -> new ValidationException("Fields are missing"));
 
-        Store store = storeRepository
-                .findByUuid(pendingOrder.getStoreUUID())
-                .orElseThrow(() -> new ValidationException("Fields are missing"));
-        //nothing is null
-        //available stock
-        //existing user, store, products
-        //store actually own these products
-
+//        if(!isOrderValid(pendingOrder)) {
+//            throw new ValidationException("Some error here...");
+//        }
 
     }
 
-    private List<String> validatePendingOrder(PendingOrderRequestModel pendingOrder) {
-        List<String>
+    private boolean isOrderValid(PendingOrderRequestModel pendingOrder) {
+
+        boolean noFieldsAreMissing = Arrays
+                .stream(pendingOrder.getClass().getDeclaredFields()).allMatch(Objects::nonNull);
+
+        boolean customerExists = true;
+        boolean storeExists = true;
+        boolean productsBelongToSelectedStore = true;
+        boolean productsAreInStock = true;
+
+        return true;
     }
+
+
+
+//    private boolean isOrderValid(PendingOrderRequestModel pendingOrder) {
+//        Optional<User> customer = userRepository.findByUserName(pendingOrder.getCustomerUserName());
+//        Optional<Store> store = storeRepository.findByUuid(pendingOrder.getStoreUUID());
+//
+//        boolean noFieldsAreMissing = Arrays
+//                .stream(pendingOrder.getClass().getDeclaredFields()).allMatch(Objects::nonNull);
+//
+//        boolean customerExists = customer.isPresent();
+//        boolean storeExists = store.isPresent();
+//        boolean productsBelongToSelectedStore = true;
+//        boolean productsAreInStock = true;
+//
+//        return noFieldsAreMissing;
+//    }
+
 
     public List<PendingOrderResponseModel> getPendingOrdersForCustomer(String userName) {
         return Collections.emptyList();
@@ -75,9 +107,7 @@ public class PendingOrderService {
         return Collections.emptyList();
     }
 
-    public void getPendingOrders() {
 
-    }
 
 
     public void checkoutPendingOrder(MyUUID pendingOrderUUID) {
@@ -90,8 +120,6 @@ public class PendingOrderService {
 
     public void updatePendingOrder(MyUUID pendingOrderUUID, PendingOrderRequestModel newPendingOrder) {
     }
-
-
 
 
 
