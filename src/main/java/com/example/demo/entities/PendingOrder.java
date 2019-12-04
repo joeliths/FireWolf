@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class PendingOrder implements Serializable{
+public class PendingOrder implements Serializable, MyEntity{
 
     private static final long serialVersionUID = 1L;
 
@@ -40,14 +40,14 @@ public class PendingOrder implements Serializable{
     private Set<PendingOrderProduct> pendingOrderProducts = new HashSet<>();
 
     @Column(name = "placement_date_time",nullable = false)
-    private Date placemenDateTime;
+    private Date placementDateTime;
 
 
     @Column(name = "expiration_date_time",nullable = false)
     private Date expirationDateTime;
 
     public PendingOrder(Date placemenDateTime, Date expirationDateTime) {
-        this.placemenDateTime = placemenDateTime;
+        this.placementDateTime = placemenDateTime;
         this.expirationDateTime = expirationDateTime;
     }
 
@@ -60,11 +60,11 @@ public class PendingOrder implements Serializable{
     }
 
     public Date getPlacemenDateTime() {
-        return placemenDateTime;
+        return placementDateTime;
     }
 
     public void setPlacemenDateTime(Date placemenDateTime) {
-        this.placemenDateTime = placemenDateTime;
+        this.placementDateTime = placemenDateTime;
     }
 
     public Date getExpirationDateTime() {

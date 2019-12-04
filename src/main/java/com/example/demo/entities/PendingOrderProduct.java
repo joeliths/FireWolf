@@ -4,10 +4,9 @@ import com.example.demo.entities.helperclasses.MyUUID;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 
 @Entity
-public class PendingOrderProduct implements Serializable {
+public class PendingOrderProduct implements Serializable, MyEntity {
 
     private static final long serialVersionUID = 1L;
 

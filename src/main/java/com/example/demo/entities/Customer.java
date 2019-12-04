@@ -10,7 +10,7 @@ import java.util.Set;
 
 
 @Entity
-public class Customer implements Serializable {
+public class Customer implements Serializable, MyEntity {
 
     private static final long serialVersionUID = 1L;
 

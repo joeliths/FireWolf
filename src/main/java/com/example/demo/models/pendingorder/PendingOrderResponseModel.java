@@ -8,38 +8,39 @@ import com.example.demo.models.pendingorder.nestedobjects.PendingOrderProductRes
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 public class PendingOrderResponseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String orderUUID;
+    private String uuid;
     private String placemenDateTime;
     private String expirationDateTime;
     private StoreModel store;
     private CustomerModel customer;
-    private List<PendingOrderProductResponseModel> orderedProducts;
+    private List<PendingOrderProductResponseModel> pendingOrderProducts;
 
     public PendingOrderResponseModel() {
     }
 
-    public PendingOrderResponseModel(String orderUUID, String placemenDateTime, String expirationDateTime,
+    public PendingOrderResponseModel(String uuid, String placementDateTime, String expirationDateTime,
                                      StoreModel store, CustomerModel customer,
-                                     List<PendingOrderProductResponseModel> orderedProducts) {
-        this.orderUUID = orderUUID;
-        this.placemenDateTime = placemenDateTime;
+                                     List<PendingOrderProductResponseModel> pendingOrderProducts) {
+        this.uuid = uuid;
+        this.placemenDateTime = placementDateTime;
         this.expirationDateTime = expirationDateTime;
         this.store = store;
         this.customer = customer;
-        this.orderedProducts = orderedProducts;
+        this.pendingOrderProducts = pendingOrderProducts;
     }
 
-    public String getOrderUUID() {
-        return orderUUID;
+    public String getuuid() {
+        return uuid;
     }
 
-    public void setOrderUUID(String orderUUID) {
-        this.orderUUID = orderUUID;
+    public void setuuid(String orderUUID) {
+        this.uuid = orderUUID;
     }
 
     public String getPlacemenDateTime() {
@@ -75,10 +76,10 @@ public class PendingOrderResponseModel implements Serializable {
     }
 
     public List<PendingOrderProductResponseModel> getOrderedProducts() {
-        return orderedProducts;
+        return pendingOrderProducts;
     }
 
-    public void setOrderedProducts(List<PendingOrderProductResponseModel> orderedProducts) {
-        this.orderedProducts = orderedProducts;
+    public void setOrderedProducts(List<PendingOrderProductResponseModel> pendingOrderProducts) {
+        this.pendingOrderProducts = pendingOrderProducts;
     }
 }

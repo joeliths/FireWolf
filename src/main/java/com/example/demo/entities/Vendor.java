@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-public class Vendor implements Serializable {
+public class Vendor implements Serializable, MyEntity {
 
     private static final long serialVersionUID = 1L;
 
