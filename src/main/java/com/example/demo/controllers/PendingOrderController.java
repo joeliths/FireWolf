@@ -1,44 +1,66 @@
 package com.example.demo.controllers;
 
-
-
-import com.example.demo.entities.PendingOrder;
-import com.example.demo.models.PendingOrderModel;
-import com.example.demo.repositories.PendingOrderRepository;
-import com.example.demo.services.CustomerService;
+import com.example.demo.entities.helperclasses.MyUUID;
+import com.example.demo.models.pendingorder.PendingOrderRequestModel;
 import com.example.demo.services.PendingOrderService;
-import org.modelmapper.ModelMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
+
 
 @RestController
+@RequestMapping("/pending-orders")
 public class PendingOrderController {
 
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private PendingOrderService pendingOrderService;
+    private final PendingOrderService pendingOrderService;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PendingOrderController.class);
-
-
-
-    @PostMapping("/pendingorder")
-    public void addPendingOrder(@RequestBody PendingOrderModel pendingOrderModel) {
-        LOGGER.info("Someone just called me!");
-        throw new RuntimeException();
-        //pendingOrderService.addPendingOrder(pendingOrderModel);
-        //PendingOrder pendingOrder = modelMapper.map(pendingOrderModel,PendingOrder.class);
-
-
+    public PendingOrderController(PendingOrderService pendingOrderService) {
+        this.pendingOrderService = pendingOrderService;
     }
+
+    @PostMapping
+    public ResponseEntity addPendingOrder(@RequestBody PendingOrderRequestModel pendingOrder) {
+        pendingOrderService.addPendingOrder(pendingOrder);
+        return ResponseEntity.status(CREATED).build();
+    }
+
+//    @GetMapping("/customer")
+//    public ResponseEntity getPendingOrdersForCustomer(@PathVariable String userName) {
+//        return ResponseEntity.ok(pendingOrderService.getPendingOrdersForCustomer(userName));
+//    }
+//
+//    @GetMapping("/store")
+//    public ResponseEntity getPendingOrdersForStore(@PathVariable MyUUID storeUUID) {
+//        return ResponseEntity.ok(pendingOrderService.getPendingOrdersForStore(storeUUID));
+//    }
+//
+//    @PutMapping
+//    public ResponseEntity updatePendingOrder(@PathVariable MyUUID pendingOrderUUID,
+//                                             @RequestBody PendingOrderRequestModel newPendingOrder) {
+//        pendingOrderService.updatePendingOrder(pendingOrderUUID, newPendingOrder);
+//        return ResponseEntity.ok().build();
+//    }
+//
+//    @DeleteMapping
+//    public ResponseEntity deletePendingOrder(@PathVariable MyUUID pendingOrderUUID) {
+//        pendingOrderService.deletePendingOrder(pendingOrderUUID);
+//        return ResponseEntity.ok().build();
+//    }
+//
+//    @DeleteMapping
+//    public ResponseEntity checkoutPendingOrder(@PathVariable MyUUID pendingOrderUUID) {
+//        pendingOrderService.checkoutPendingOrder(pendingOrderUUID);
+//        return ResponseEntity.ok().build();
+//    }
+
+
+
+
+
+
 
 
 

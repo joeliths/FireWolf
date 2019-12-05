@@ -1,23 +1,26 @@
 package com.example.demo.services;
 
+import com.example.demo.entities.Customer;
 import com.example.demo.entities.User;
 import com.example.demo.entities.UserRole;
-import com.example.demo.exceptions.customExceptions.UserNotFoundException;
+import com.example.demo.entities.helperclasses.MyUUID;
+import com.example.demo.exceptions.UserRoleTypeNotFoundException;
 import com.example.demo.exceptions.customExceptions.UserRoleTypeNotFoundException;
-import com.example.demo.models.UserModel;
-import com.example.demo.models.UserRegisterModel;
+import com.example.demo.models.user.UserModel;
+import com.example.demo.models.user.UserRegisterModel;
+import com.example.demo.models.user.UserResponseModel;
+import com.example.demo.repositories.CustomerRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.UserRoleRepository;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.lang.reflect.Type;
+import javax.ws.rs.NotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,33 +28,35 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
-    private final ModelMapper modelMapper;
-    private final PasswordEncoder passwordEncoder;
+    private final CustomerRepository customerRepository;
 
-    public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
+
+    public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository,
+                       CustomerRepository customerRepository) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
-        this.modelMapper = modelMapper;
-        this.passwordEncoder = passwordEncoder;
+        this.customerRepository = customerRepository;
     }
 
     public List<UserModel> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        Type listType = new TypeToken<List<UserModel>>(){}.getType();
-        List<UserModel> userModels = modelMapper.map(users, listType);
-        return userModels;
+        return userRepository.findAll().stream().map(this::toModel).collect(Collectors.toList());
     }
 
-    public UserModel addUser(UserRegisterModel userModel) {
-        User userToAdd = modelMapper.map(userModel, User.class);
-        String encryptedPass = passwordEncoder.encode(userModel.getPassword());
-        Set<UserRole> roles = userModel.getRoles().stream()
-                                .map(r -> getRoleByName(r))
-                                .collect(Collectors.toSet());
-        userToAdd.setRoles(roles);
-        userToAdd.setPassword(encryptedPass);
-        UserModel userToReturn = modelMapper.map(userRepository.save(userToAdd), UserModel.class);
-        return userToReturn;
+    public UserResponseModel findUserByUuid(String uuid) {
+        Optional<User> foundUser = userRepository.findByUuid(uuid);
+        if(foundUser.isEmpty()) {
+            throw new NotFoundException("No user with uuid '" + uuid + "' was found."); //Todo: handle exception
+        }
+        return toModel(foundUser.get());
+    }
+
+    public UserResponseModel registerUser(UserRegisterModel userModel) {
+        User userToAdd = toEntity(userModel);
+        Customer customerToAdd = new Customer();
+        customerToAdd.setUser(userToAdd);
+        customerRepository.save(customerToAdd);
+        return toModel(userToAdd);
+        //Todo: user validation + exceptions
     }
 
     public UserRole getRoleByName(String roleType){
@@ -59,13 +64,29 @@ public class UserService {
         return role.orElseThrow(() -> new UserRoleTypeNotFoundException("Role with type "+roleType+" not found"));
     }
 
-    public User getUserByUserName(String userName){
-        Optional<User> user = userRepository.findByUserName(userName);
-        return user.orElseThrow(() -> new UserNotFoundException("User with username "+userName+" not found"));
+    @Transactional
+    public int deleteUserByUUID(String uuid) {
+        return userRepository.deleteByUuid(uuid);
     }
 
-    //TODO:Write this method
-    public boolean deleteUser(UserModel userModel) {
-        return false;
+
+
+
+
+
+    //TODO: replace with modelmapper!
+    public User toEntity(UserRegisterModel userModel) {
+        User userToAdd = new User(userModel.getFullName(), userModel.getUserName(), userModel.getPassword());
+        Set<UserRole> roles = userModel.getRoles().stream()
+                .map(r -> getRoleByName(r))
+                .collect(Collectors.toSet());
+        userToAdd.setRoles(roles);
+        return userToAdd;
+    }
+    //TODO: replace with modelmapper!
+    public UserResponseModel toModel(User userEntity) {
+        return new UserResponseModel(
+                userEntity.getFullName(), userEntity.getUserName(), userEntity.getUuid().toString()
+        );
     }
 }

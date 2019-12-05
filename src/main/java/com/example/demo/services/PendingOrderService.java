@@ -1,41 +1,74 @@
 package com.example.demo.services;
 
-import com.example.demo.entities.PendingOrder;
-import com.example.demo.models.PendingOrderModel;
+import com.example.demo.entities.*;
+import com.example.demo.entities.helperclasses.MyUUID;
+import com.example.demo.models.pendingorder.PendingOrderRequestModel;
+import com.example.demo.models.pendingorder.PendingOrderResponseModel;
 import com.example.demo.repositories.PendingOrderRepository;
-import org.modelmapper.ModelMapper;
+import com.example.demo.repositories.StoreRepository;
+import com.example.demo.repositories.UserRepository;
+import com.example.demo.repositories.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
+import java.util.*;
 
 @Service
 public class PendingOrderService {
 
-    final private PendingOrderRepository pendingOrderRepository;
+    private final PendingOrderRepository pendingOrderRepository;
+    private final UserRepository userRepository;
+    private final StoreRepository storeRepository;
 
     @Autowired
-    private ModelMapper modelMapper;
+    VendorRepository vendorRepository;
 
 
     @Autowired
-    public PendingOrderService(PendingOrderRepository pendingOrderRepository) {
+    public PendingOrderService(PendingOrderRepository pendingOrderRepository,
+                               UserRepository userRepository, StoreRepository storeRepository) {
         this.pendingOrderRepository = pendingOrderRepository;
+        this.userRepository = userRepository;
+        this.storeRepository = storeRepository;
     }
 
-    public void addPendingOrder(PendingOrderModel pendingOrderModel){
-        PendingOrder pendingOrder = modelMapper.map(pendingOrderModel,PendingOrder.class);
-        pendingOrderRepository.saveAndFlush(pendingOrder);
+    public void getPendingOrders() {
 
     }
 
-    //Todo:write this method
-    public void checkoutPendingOrder(PendingOrderModel pendingOrderModel) {
+    public PendingOrderResponseModel findPendingOrderByUuid(String uuid) {
+        return null;
     }
-    //Todo:write this method
-    public void updatePendingOrder(PendingOrderModel pendingOrderModel) {
+
+    public PendingOrderResponseModel addPendingOrder(PendingOrderRequestModel pendingOrder){
+        return null;
     }
-    //TODO:write this method
-    public void deletePendingOrder(PendingOrderModel pendingOrderModel) {
+
+
+
+//    public List<PendingOrderResponseModel> getPendingOrdersForCustomer(String userName) {
+//        return Collections.emptyList();
+//    }
+//    public List<PendingOrderResponseModel> getPendingOrdersForStore(String storeUUID) {
+//        return Collections.emptyList();
+//    }
+
+
+
+
+
+    public void checkoutPendingOrder(MyUUID pendingOrderUUID) {
     }
+
+
+    public void deletePendingOrder(MyUUID pendingOrderUUID) {
+    }
+
+
+    public void updatePendingOrder(MyUUID pendingOrderUUID, PendingOrderRequestModel newPendingOrder) {
+    }
+
+
+
+
 }

@@ -1,5 +1,6 @@
 package com.example.demo.Mapper;
 
+import com.example.demo.entities.helperclasses.MyUUID;
 import com.sun.xml.fastinfoset.util.StringArray;
 
 import java.lang.reflect.Field;
@@ -39,7 +40,6 @@ public  class Convert {
             originField.setAccessible(true);
 
             if (isForbiddenField(originField, forbiddenFields)){
-                System.out.println("found forbidden field: " + originField.getName());
                 originField.setAccessible(false);
                 continue;
             }
@@ -52,14 +52,23 @@ public  class Convert {
 
 
 
+
             Field targetField = targetFields[matchedFieldsIndex];
 
             System.out.println("Found field: " + targetField.getName());
+            System.out.println("field type: " + targetField.getType());
             targetField.setAccessible(true);
 
-            if(targetField.getName().equals("uuid")){
+            if(targetField.getName().equals("uuid") && targetField.getType().equals(String.class)){
+                System.out.println("in 1st if");
                 targetField.set(    targetObject,   originField.get(originObject).toString()   );
+            }else if(targetField.getName().equals("uuid") && targetField.getType().equals(MyUUID.class)) {
+                System.out.println("in 2nd if");
+                String originString =originField.get(originObject).toString();
+                MyUUID uuidObject = (MyUUID) targetField.get(targetObject);
+                MyUUID.class.getMethod("setUuid", String.class).invoke(uuidObject,originString);
             }else{
+                System.out.println("in ordinary else");
                 targetField.set(    targetObject,   originField.get(originObject)   );
             }
 

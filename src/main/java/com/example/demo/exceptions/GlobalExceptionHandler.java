@@ -1,8 +1,11 @@
 package com.example.demo.exceptions;
 
 import com.example.demo.jms.ActiveMQSender;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
 
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,11 +28,16 @@ public class GlobalExceptionHandler {
         this.jms = jms;
     }
 
-    //Example method
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleRuntimeException(RuntimeException e) {
-        jms.sendMessageToExceptionQueue(e);
-        return ResponseEntity.status(BAD_REQUEST).body("Something went wrong");
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        //maybe send to jms first here
+        return createErrorResponse(BAD_REQUEST, "Request body is missing");
     }
+
+    private ResponseEntity<?> createErrorResponse(HttpStatus httpStatus, String detailedMessage) {
+        return ResponseEntity.status(httpStatus)
+                .body(new Error(httpStatus.value(), httpStatus.getReasonPhrase(), detailedMessage));
+    }
+
 
 }

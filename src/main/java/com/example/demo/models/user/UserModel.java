@@ -1,4 +1,4 @@
-package com.example.demo.models;
+package com.example.demo.models.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
