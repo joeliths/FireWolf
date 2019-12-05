@@ -1,6 +1,8 @@
 package com.example.demo.entities;
 
 import com.example.demo.entities.helperclasses.MyUUID;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,6 +17,7 @@ public class Vendor implements Serializable {
     private Long id;
     @OneToOne( fetch = FetchType.LAZY)
     @MapsId
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
     @Embedded
     private MyUUID uuid = new MyUUID();

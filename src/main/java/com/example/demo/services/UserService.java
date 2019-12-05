@@ -14,6 +14,7 @@ import com.example.demo.repositories.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -62,10 +63,9 @@ public class UserService {
         return role.orElseThrow(() -> new UserRoleTypeNotFoundException("Role with type "+roleType+" not found"));
     }
 
-    //Todo: Create method
-    public boolean deleteUserByUUID(String uuid) {
-        //return userRepository.deleteByUuid(uuid);
-        return false;
+    @Transactional
+    public int deleteUserByUUID(String uuid) {
+        return userRepository.deleteByUuid(uuid);
     }
 
 
