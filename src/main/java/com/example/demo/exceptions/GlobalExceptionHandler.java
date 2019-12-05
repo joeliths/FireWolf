@@ -28,10 +28,15 @@ public class GlobalExceptionHandler {
         this.jms = jms;
     }
 
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<?> handleValidationException(ValidationException e) {
-        //jms.sendExceptionDetailsToExceptionQueue(e);
-        return ResponseEntity.status(BAD_REQUEST).body(e.getMessage()); //todo: return error object in body?
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        //maybe send to jms first here
+        return createErrorResponse(BAD_REQUEST, "Request body is missing");
+    }
+
+    private ResponseEntity<?> createErrorResponse(HttpStatus httpStatus, String detailedMessage) {
+        return ResponseEntity.status(httpStatus)
+                .body(new Error(httpStatus.value(), httpStatus.getReasonPhrase(), detailedMessage));
     }
 
 
