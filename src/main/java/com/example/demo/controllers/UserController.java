@@ -1,7 +1,8 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.UserModel;
-import com.example.demo.models.UserRegisterModel;
+import com.example.demo.models.user.UserModel;
+import com.example.demo.models.user.UserRegisterModel;
+import com.example.demo.models.user.UserResponseModel;
 import com.example.demo.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,9 +28,21 @@ public class UserController {
         return ResponseEntity.status(OK).body(userService.getAllUsers());
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<UserModel> registerUser(@RequestBody UserRegisterModel userModel) {
-        return ResponseEntity.status(CREATED).body(userService.addUser(userModel));
+    @GetMapping("/{uuid}")
+    public ResponseEntity<UserModel> getUserByUuid(@PathVariable String uuid) {
+        return ResponseEntity.status(OK).body(userService.findUserByUuid(uuid));
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserResponseModel> registerUser(@RequestBody UserRegisterModel userModel) {
+        return ResponseEntity.status(CREATED).body(userService.registerUser(userModel));
+    }
+
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity<Boolean> deleteUserByUuid(@PathVariable String uuid) {
+        return ResponseEntity.status(OK).body(userService.deleteUserByUUID(uuid));
+    }
+
+    //TODO. Update/patch user endpoint.
 
 }

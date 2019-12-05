@@ -1,7 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.UserModel;
-import com.example.demo.models.UserRegisterModel;
+import com.example.demo.models.user.UserRegisterModel;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,10 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.POST;
-
-@Controller
+@RestController
 public class LoginController {
     @Autowired
     UserService userService;
@@ -30,7 +28,7 @@ public class LoginController {
             produces = "application/json")
     @ResponseBody
     public ResponseEntity<?> registerUser(@RequestBody UserRegisterModel userRegisterModel){
-        userService.addUser(userRegisterModel);
+        userService.registerUser(userRegisterModel);
         return new ResponseEntity<>( HttpStatus.OK);
     }
 }
