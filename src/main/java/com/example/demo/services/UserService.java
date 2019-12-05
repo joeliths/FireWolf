@@ -64,12 +64,6 @@ public class UserService {
         return user.orElseThrow(() -> new UserNotFoundException("User with username "+userName+" not found"));
     }
 
-//    @Transactional
-//    public User getUserByUserNameWithRoles(String userName){
-//        Optional<User> user = userRepository.findByUserName(userName);
-//        User foundUser = user.orElseThrow(() -> new UserNotFoundException("User with username "+userName+" not found"));
-//        return foundUser;
-//    }
     //TODO:Write this method
     public boolean deleteUser(UserModel userModel) {
         return false;
