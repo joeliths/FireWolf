@@ -2,7 +2,6 @@ package com.example.demo.security.securityConfig;
 
 import com.example.demo.security.JPAUserDetailsService;
 import com.example.demo.security.authenticationEventHandlers.SuccessHandler;
-import com.example.demo.security.authenticationEventHandlers.UnsuccessfulHandler;
 import com.example.demo.security.filters.CheckJwtFilter;
 import com.example.demo.security.filters.LoginFilter;
 import com.example.demo.security.providers.UserNamePasswordProvider;
@@ -17,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -27,8 +27,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     UserNamePasswordProvider userNamePasswordProvider;
     @Autowired
     SuccessHandler successHandler;
-    @Autowired
-    UnsuccessfulHandler unsuccessfulHandler;
     @Autowired
     SuccessHandler handler;
     @Autowired
@@ -41,15 +39,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.addFilterBefore(checkJwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(checkJwtFilter, ExceptionTranslationFilter.class)
                 .addFilterBefore(loginFilter(), checkJwtFilter.getClass());
 
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/").hasRole("VENDOR")
-                .antMatchers("/auth/customers").hasRole("CUSTOMER")
                 .antMatchers("/login").permitAll()
-                .antMatchers("/auth/logout").permitAll()
-                .antMatchers("/users/register").permitAll()
+                .antMatchers("/logout").permitAll()
+                .antMatchers("/registerUser").permitAll()
                 .anyRequest().hasAnyRole("CUSTOMER", "VENDOR");
 //                .and()
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -62,7 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public LoginFilter loginFilter() throws Exception {
-        LoginFilter loginFilter = new LoginFilter(new AntPathRequestMatcher("/login"), authenticationManagerBean(), handler, unsuccessfulHandler);
+        LoginFilter loginFilter = new LoginFilter(new AntPathRequestMatcher("/login", "POST"), authenticationManagerBean(), handler);
 
         return loginFilter;
     }

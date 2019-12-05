@@ -1,5 +1,7 @@
 package com.example.demo.exceptions;
 
+import com.example.demo.exceptions.customExceptions.UserNotFoundException;
+import com.example.demo.exceptions.customExceptions.UserRoleTypeNotFoundException;
 import com.example.demo.jms.ActiveMQSender;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -32,6 +34,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         //maybe send to jms first here
         return createErrorResponse(BAD_REQUEST, "Request body is missing");
+    }
+
+    @ExceptionHandler({UserRoleTypeNotFoundException.class,
+            UserNotFoundException.class})
+    public ResponseEntity<?> handleEntityNotFoundException(Exception e){
+        return createErrorResponse(NOT_FOUND, "Entity not found");
     }
 
     private ResponseEntity<?> createErrorResponse(HttpStatus httpStatus, String detailedMessage) {

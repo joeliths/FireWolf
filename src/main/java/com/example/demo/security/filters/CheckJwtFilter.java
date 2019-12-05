@@ -4,11 +4,13 @@ import com.example.demo.security.JPAUserDetailsService;
 import com.example.demo.security.JWT.JwtService;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -34,11 +36,11 @@ public class CheckJwtFilter extends OncePerRequestFilter {
             String jwtToken = authHeader.substring(7);
             String username = jwtService.getSubject(jwtToken);
             UserDetails userDetails = fetchUserDetails(username);
-
             if (jwtService.isNotExpired(jwtToken) && username.equals(userDetails.getUsername())) {
-                if(SecurityContextHolder.getContext().getAuthentication() == null) {
-                    SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
-                            userDetails.getPassword(), userDetails.getAuthorities()));
+                if(SecurityContextHolder.getContext().getAuthentication().getClass().isAssignableFrom(AnonymousAuthenticationToken.class)) {
+                    UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
+                            userDetails.getPassword(), userDetails.getAuthorities());
+                    SecurityContextHolder.getContext().setAuthentication(token);
                 }
             }else {
                 //TODO: Add JWT to badJwt-table
@@ -55,7 +57,7 @@ public class CheckJwtFilter extends OncePerRequestFilter {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             return userDetails;
         }catch(UsernameNotFoundException e){
-            throw new JwtException("User does not exist");
+            throw e;
         }
     }
 }

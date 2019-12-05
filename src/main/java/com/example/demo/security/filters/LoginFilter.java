@@ -1,6 +1,6 @@
 package com.example.demo.security.filters;
 
-import com.example.demo.models.UserRegisterModel;
+import com.example.demo.models.user.UserRegisterModel;
 import com.google.gson.Gson;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,12 +23,11 @@ import java.util.stream.Collectors;
 public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
 
-    public LoginFilter(RequestMatcher requiresAuthenticationRequestMatcher, AuthenticationManager authenticationManager, AuthenticationSuccessHandler handler,
-                       AuthenticationFailureHandler unsuccessfulHandler) {
+    public LoginFilter(RequestMatcher requiresAuthenticationRequestMatcher, AuthenticationManager authenticationManager,
+                       AuthenticationSuccessHandler handler) {
         super(requiresAuthenticationRequestMatcher);
         this.setAuthenticationManager(authenticationManager);
         this.setAuthenticationSuccessHandler(handler);
-        this.setAuthenticationFailureHandler(unsuccessfulHandler);
     }
 
     @Override
