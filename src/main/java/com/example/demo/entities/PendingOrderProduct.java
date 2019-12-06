@@ -54,4 +54,15 @@ public class PendingOrderProduct implements Serializable, MyEntity {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return "PendingOrderProduct{" +
+                "uuid=" + uuid +
+                ", id=" + id +
+                ", pendingOrder=" + pendingOrder +
+                ", inventoryProduct=" + inventoryProduct +
+                ", quantity=" + quantity +
+                '}';
+    }
 }
