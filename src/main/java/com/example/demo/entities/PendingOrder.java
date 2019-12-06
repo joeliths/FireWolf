@@ -1,6 +1,7 @@
 package com.example.demo.entities;
 
 import com.example.demo.entities.helperclasses.MyUUID;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PendingOrder implements Serializable, MyEntity{
 
     private static final long serialVersionUID = 1L;
@@ -16,19 +18,19 @@ public class PendingOrder implements Serializable, MyEntity{
     @Embedded
     private MyUUID uuid = new MyUUID();
 
-    public MyUUID getUuid() {
-        return uuid;
+    public String getUuid() {
+        return uuid.getUuid();
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "store_id")
     private Store store = new Store();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Customer customer;
 
@@ -49,6 +51,9 @@ public class PendingOrder implements Serializable, MyEntity{
     public PendingOrder(Date placemenDateTime, Date expirationDateTime) {
         this.placementDateTime = placemenDateTime;
         this.expirationDateTime = expirationDateTime;
+    }
+    public PendingOrder() {
+
     }
 
     public Long getId() {

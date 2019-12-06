@@ -7,12 +7,23 @@ import java.util.Set;
 
 public class CustomerModel implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    public static final long serialVersionUID = 1L;
 
-    //private UserModel user;
+    private UserModel user;
     //private Set<PendingOrderModel> pendingOrders;
 
 
+    public UserModel getUser() {
+        return user;
+    }
+
+    public void setUser(UserModel user) {
+        this.user = user;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
 
 

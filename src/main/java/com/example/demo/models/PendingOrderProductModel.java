@@ -8,6 +8,20 @@ public class PendingOrderProductModel implements Serializable {
 
     private int quantity;
 
+    public InventoryProductModel inventoryProduct;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public InventoryProductModel getInventoryProduct() {
+        return inventoryProduct;
+    }
+
+    public void setInventoryProduct(InventoryProductModel inventoryProduct) {
+        this.inventoryProduct = inventoryProduct;
+    }
+
     public PendingOrderProductModel() {
     }
 
@@ -22,4 +36,5 @@ public class PendingOrderProductModel implements Serializable {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
 }

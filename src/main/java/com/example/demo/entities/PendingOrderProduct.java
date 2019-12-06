@@ -1,11 +1,13 @@
 package com.example.demo.entities;
 
 import com.example.demo.entities.helperclasses.MyUUID;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class PendingOrderProduct implements Serializable, MyEntity {
 
     private static final long serialVersionUID = 1L;
@@ -21,11 +23,11 @@ public class PendingOrderProduct implements Serializable, MyEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "pendingOrder_id")
     PendingOrder pendingOrder;
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinColumn(name = "inventoryProduct_id")
     InventoryProduct inventoryProduct;
 
