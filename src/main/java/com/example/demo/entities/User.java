@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -13,22 +14,19 @@ public class User implements Serializable, MyEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @Embedded
-    private MyUUID uuid = new MyUUID();
-
-    public MyUUID getUuid() {
-        return uuid;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, length = 50)
-    private String fullName;
-    @Column(nullable = false, length = 50, unique = true)
+    @Embedded
+    private MyUUID uuid = new MyUUID();
+
+    @Column(nullable = false, unique = true)
     private String userName;
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
+    private String fullName;
+    @Column(nullable = false)
     private String password;
+
     @Column(name = "USER_ROLE")
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USER_ROLE_ROLES",
@@ -84,5 +82,9 @@ public class User implements Serializable, MyEntity {
 
     public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
+    }
+
+    public MyUUID getUuid() {
+        return uuid;
     }
 }

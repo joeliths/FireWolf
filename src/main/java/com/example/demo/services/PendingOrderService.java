@@ -1,41 +1,33 @@
 package com.example.demo.services;
 
-import com.example.demo.entities.InventoryProduct;
-import com.example.demo.entities.PendingOrder;
-import com.example.demo.entities.Store;
-import com.example.demo.entities.User;
+import com.example.demo.entities.*;
 import com.example.demo.entities.helperclasses.MyUUID;
-import com.example.demo.models.StoreModel;
-import com.example.demo.models.UserModel;
 import com.example.demo.models.pendingorder.PendingOrderRequestModel;
 import com.example.demo.models.pendingorder.PendingOrderResponseModel;
 import com.example.demo.repositories.PendingOrderRepository;
 import com.example.demo.repositories.StoreRepository;
 import com.example.demo.repositories.UserRepository;
-import org.modelmapper.ModelMapper;
+import com.example.demo.repositories.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
-import javax.validation.ValidationException;
 import java.util.*;
-import java.util.stream.Stream;
 
 @Service
 public class PendingOrderService {
 
     private final PendingOrderRepository pendingOrderRepository;
-    private final ModelMapper modelMapper;
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
 
+    @Autowired
+    VendorRepository vendorRepository;
 
 
     @Autowired
-    public PendingOrderService(PendingOrderRepository pendingOrderRepository, ModelMapper modelMapper,
+    public PendingOrderService(PendingOrderRepository pendingOrderRepository,
                                UserRepository userRepository, StoreRepository storeRepository) {
         this.pendingOrderRepository = pendingOrderRepository;
-        this.modelMapper = modelMapper;
         this.userRepository = userRepository;
         this.storeRepository = storeRepository;
     }
@@ -44,39 +36,23 @@ public class PendingOrderService {
 
     }
 
-    public void addPendingOrder(PendingOrderRequestModel pendingOrder){
-
-
-
-//        if(!isOrderValid(pendingOrder)) {
-//            throw new ValidationException("Some error here...");
-//        }
-
+    public PendingOrderResponseModel findPendingOrderByUuid(String uuid) {
+        return null;
     }
 
-    private boolean isOrderValid(PendingOrderRequestModel pendingOrder) {
-
-//        boolean noFieldsAreMissing = Arrays
-//                .stream(pendingOrder.getClass().getDeclaredFields()).allMatch(Objects::nonNull);
-//
-//        boolean customerExists = true;
-//        boolean storeExists = true;
-//        boolean productsBelongToSelectedStore = true;
-//        boolean productsAreInStock = true;
-//
-//        return true;
-        return true;
+    public PendingOrderResponseModel addPendingOrder(PendingOrderRequestModel pendingOrder){
+        return null;
     }
 
-    
 
-    public List<PendingOrderResponseModel> getPendingOrdersForCustomer(String userName) {
-        return Collections.emptyList();
-    }
 
-    public List<PendingOrderResponseModel> getPendingOrdersForStore(MyUUID storeUUID) {
-        return Collections.emptyList();
-    }
+//    public List<PendingOrderResponseModel> getPendingOrdersForCustomer(String userName) {
+//        return Collections.emptyList();
+//    }
+//    public List<PendingOrderResponseModel> getPendingOrdersForStore(String storeUUID) {
+//        return Collections.emptyList();
+//    }
+
 
 
 

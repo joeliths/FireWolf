@@ -63,7 +63,7 @@ public class Product implements Serializable, MyEntity{
         this.description = description;
     }
 
-    public String getUuid() {
-        return uuid.getUuid();
+    public MyUUID getUuid() {
+        return uuid;
     }
 }
