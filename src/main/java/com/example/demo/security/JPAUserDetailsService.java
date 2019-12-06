@@ -2,7 +2,6 @@ package com.example.demo.security;
 
 import com.example.demo.entities.User;
 import com.example.demo.entities.UserRole;
-import com.example.demo.exceptions.customExceptions.UserNotFoundException;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,11 +25,7 @@ public class JPAUserDetailsService implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         User user;
-        try {
-            user = userService.getUserByUserName(userName);
-        }catch(UserNotFoundException e){
-            throw new UsernameNotFoundException(e.getMessage());
-        }
+        user = userService.getUserByUserNameReturnEntity(userName);
         List<GrantedAuthority> authorities = userRolesToGrantedAuthorities(user.getRoles());
         JPAUserDetails jpaUserDetails = new JPAUserDetails(user.getUserName(),user.getPassword(), authorities);
 
