@@ -3,6 +3,7 @@ package com.example.demo.exceptions;
 import com.example.demo.exceptions.customExceptions.UserNotFoundException;
 import com.example.demo.exceptions.customExceptions.UserRoleTypeNotFoundException;
 import com.example.demo.jms.ActiveMQSender;
+import com.example.demo.services.validation.ValidationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.http.HttpStatus;
@@ -30,10 +31,15 @@ public class GlobalExceptionHandler {
         this.jms = jms;
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ExceptionHandler({HttpMessageNotReadableException.class})
     public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         //maybe send to jms first here
         return createErrorResponse(BAD_REQUEST, "Request body is missing");
+    }
+
+    @ExceptionHandler({ValidationException.class})
+    public ResponseEntity<?> handleValidationException(Exception e) {
+        return createErrorResponse(BAD_REQUEST, e.getMessage());
     }
 
     @ExceptionHandler({UserRoleTypeNotFoundException.class,

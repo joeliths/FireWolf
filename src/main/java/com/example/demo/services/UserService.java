@@ -11,11 +11,13 @@ import com.example.demo.models.user.UserResponseModel;
 import com.example.demo.repositories.CustomerRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.UserRoleRepository;
+import com.example.demo.services.validation.ValidationService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 import javax.ws.rs.NotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -30,14 +32,16 @@ public class UserService {
     private final UserRoleRepository userRoleRepository;
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
-
+    private final ValidationService validationService;
 
     public UserService(UserRepository userRepository, UserRoleRepository userRoleRepository,
-                       CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {
+                       CustomerRepository customerRepository, PasswordEncoder passwordEncoder,
+                       ValidationService validationService) {
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
+        this.validationService = validationService;
     }
 
     public List<UserModel> getAllUsers() {
@@ -58,13 +62,26 @@ public class UserService {
     }
 
     public UserResponseModel registerUser(UserRegisterModel userModel) {
-        User userToAdd = toEntity(userModel);
-        userToAdd.setPassword(passwordEncoder.encode(userToAdd.getPassword()));
-        Customer customerToAdd = new Customer();
-        customerToAdd.setUser(userToAdd);
-        customerRepository.save(customerToAdd);
-        return toModel(userToAdd);
+        boolean hasNull = validationService.checkIfAnyFieldsAreNull(userModel.getPassword(), userModel.getFullName(), userModel.getRoles(), userModel.getUserName());
+        if(hasNull) {
+            throw new ValidationException("All fields must be included");
+        }
+        if(userRepository.existsByUserName(userModel.getUserName())){
+            throw new ValidationException("Username already exists");
+        }
+            User userToAdd = toEntity(userModel);
+            userToAdd.setPassword(passwordEncoder.encode(userToAdd.getPassword()));
+            Customer customerToAdd = new Customer();
+            customerToAdd.setUser(userToAdd);
+            customerRepository.save(customerToAdd);
+            return toModel(userToAdd);
+
+
         //Todo: user validation + exceptions
+    }
+
+    private boolean usernameExists(String userName){
+        return userRepository.existsByUserName(userName);
     }
 
     public UserRole getRoleByName(String roleType){
