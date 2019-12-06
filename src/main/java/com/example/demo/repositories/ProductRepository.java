@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.mail.search.SearchTerm;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -29,6 +30,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("update Product p set p.description = :newDescription where p.uuid = :uuid")
     int updateDescription(@Param("uuid")String uuid,
                              @Param("newDescription")String newDescription);
+
+    @Query(nativeQuery = true, value = "select * from user where user.uuid = :uuid")
+    Optional<Product> findByUuid(@Param("uuid") String uuid);
 
 
     Set<Product> deleteByUuid(String uuid);

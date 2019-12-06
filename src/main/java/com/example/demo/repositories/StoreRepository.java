@@ -16,6 +16,7 @@ import java.util.Set;
 public interface StoreRepository extends JpaRepository<Store, Long> {
 
     Store findFirstByAddress(String address);
-    Optional<Store> findByUuid(MyUUID uuid);
+    @Query(nativeQuery = true, value = "select * from store where store.uuid = :uuid")
+    Optional<Store> findByUuid(@Param("uuid") String uuid);
 
 }
