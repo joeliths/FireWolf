@@ -5,20 +5,17 @@ import java.util.List;
 public class UserRegisterModel extends UserModel {
 
     private String password;
-    private List<String> roles;
 
     public UserRegisterModel() {
     }
 
-    public UserRegisterModel(String password, List<String> roles) {
+    public UserRegisterModel(String password) {
         this.password = password;
-        this.roles = roles;
     }
 
-    public UserRegisterModel(String fullName, String userName, String password, List<String> roles) {
+    public UserRegisterModel(String fullName, String userName, String password) {
         super(fullName, userName);
         this.password = password;
-        this.roles = roles;
     }
 
     public String getPassword() {
@@ -29,11 +26,4 @@ public class UserRegisterModel extends UserModel {
         this.password = password;
     }
 
-    public List<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
-    }
 }

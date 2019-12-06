@@ -1,6 +1,5 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.user.UserModel;
 import com.example.demo.models.user.UserRegisterModel;
 import com.example.demo.models.user.UserResponseModel;
 import com.example.demo.services.UserService;
@@ -11,7 +10,6 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
-
 
 @RestController
 @RequestMapping("/users")
@@ -24,13 +22,18 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserModel>> getAllUsers() {
+    public ResponseEntity<List<UserResponseModel>> getAllUsers() {
         return ResponseEntity.status(OK).body(userService.getAllUsers());
     }
 
-    @GetMapping("/{uuid}")
-    public ResponseEntity<UserModel> getUserByUuid(@PathVariable String uuid) {
-        return ResponseEntity.status(OK).body(userService.findUserByUuid(uuid));
+    @GetMapping("/uuid/{uuid}")
+    public ResponseEntity<UserResponseModel> getUserByUuid(@PathVariable String uuid) {
+        return ResponseEntity.status(OK).body(userService.getUserByUuid(uuid));
+    }
+
+    @GetMapping("/user-name/{userName}")
+    public ResponseEntity<UserResponseModel> getUserByUserName(@PathVariable String userName) {
+        return ResponseEntity.status(OK).body(userService.getUserByUserName(userName));
     }
 
     @PostMapping("/register")
@@ -38,11 +41,16 @@ public class UserController {
         return ResponseEntity.status(CREATED).body(userService.registerUser(userModel));
     }
 
-    @DeleteMapping("/{uuid}")
-    public ResponseEntity<Integer> deleteUserByUuid(@PathVariable String uuid) {
-        return ResponseEntity.status(OK).body(userService.deleteUserByUUID(uuid));
+    @PatchMapping("/{uuid}")
+    public ResponseEntity<UserResponseModel> patchUser(@PathVariable String uuid,
+                                                       @RequestBody UserRegisterModel updatedUser) {
+        return ResponseEntity.status(OK).body(userService.patchUser(uuid, updatedUser));
     }
 
-    //TODO. Update/patch user endpoint.
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity<Integer> deleteUserByUuid(@PathVariable String uuid) {
+        userService.deleteUserByUUID(uuid);
+        return ResponseEntity.status(OK).build();
+    }
 
 }

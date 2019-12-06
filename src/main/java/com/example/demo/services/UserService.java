@@ -3,26 +3,24 @@ package com.example.demo.services;
 import com.example.demo.entities.Customer;
 import com.example.demo.entities.User;
 import com.example.demo.entities.UserRole;
-import com.example.demo.entities.helperclasses.MyUUID;
 import com.example.demo.exceptions.customExceptions.UserRoleTypeNotFoundException;
-import com.example.demo.models.user.UserModel;
 import com.example.demo.models.user.UserRegisterModel;
 import com.example.demo.models.user.UserResponseModel;
 import com.example.demo.repositories.CustomerRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.UserRoleRepository;
 import com.example.demo.services.validation.ValidationService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import javax.ws.rs.NotFoundException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,57 +42,83 @@ public class UserService {
         this.validationService = validationService;
     }
 
-    public List<UserModel> getAllUsers() {
+    public List<UserResponseModel> getAllUsers() {
         return userRepository.findAll().stream().map(this::toModel).collect(Collectors.toList());
     }
 
-    public UserResponseModel findUserByUuid(String uuid) {
+    public UserResponseModel getUserByUuid(String uuid) {
         Optional<User> foundUser = userRepository.findByUuid(uuid);
         if(foundUser.isEmpty()) {
-            throw new NotFoundException("No user with uuid '" + uuid + "' was found."); //Todo: handle exception
+            throw new EntityNotFoundException("No user with uuid '" + uuid + "' was found.");
         }
         return toModel(foundUser.get());
     }
 
-    public User getUserByUserName(String userName){
+    public UserResponseModel getUserByUserName(String userName){
         Optional<User> foundUser = userRepository.findByUserName(userName);
-        return foundUser.orElseThrow(() -> new UsernameNotFoundException("User with that username not found"));
+        if(foundUser.isEmpty()) {
+            throw new EntityNotFoundException("No user with username '" + userName + "' was found.");
+        }
+        return toModel(foundUser.get());
+    }
+
+    public User getUserByUserNameReturnEntity(String userName) {
+        Optional<User> foundUser = userRepository.findByUserName(userName);
+        if(foundUser.isEmpty()) {
+            throw new EntityNotFoundException("No user with username '" + userName + "' was found.");
+        }
+        return foundUser.get();
     }
 
     public UserResponseModel registerUser(UserRegisterModel userModel) {
-        boolean hasNull = validationService.checkIfAnyFieldsAreNull(userModel.getPassword(), userModel.getFullName(), userModel.getRoles(), userModel.getUserName());
-        if(hasNull) {
-            throw new ValidationException("All fields must be included");
+        boolean modelContainsNullFields = validationService.checkIfAnyFieldsAreNull(
+                userModel.getPassword(), userModel.getFullName(), userModel.getUserName());
+
+        if(modelContainsNullFields) {
+            throw new ValidationException("All fields must be included.");
         }
-        if(userRepository.existsByUserName(userModel.getUserName())){
-            throw new ValidationException("Username already exists");
+        if(userRepository.findByUserName(userModel.getUserName()).isPresent()){
+            throw new ValidationException("Username '" + userModel.getUserName() + "' already exists.");
         }
-            User userToAdd = toEntity(userModel);
-            userToAdd.setPassword(passwordEncoder.encode(userToAdd.getPassword()));
-            Customer customerToAdd = new Customer();
-            customerToAdd.setUser(userToAdd);
-            customerRepository.save(customerToAdd);
-            return toModel(userToAdd);
 
-
-        //Todo: user validation + exceptions
-    }
-
-    private boolean usernameExists(String userName){
-        return userRepository.existsByUserName(userName);
-    }
-
-    public UserRole getRoleByName(String roleType){
-        Optional<UserRole> role = userRoleRepository.getUserRoleByRole(roleType);
-        return role.orElseThrow(() -> new UserRoleTypeNotFoundException("Role with type "+roleType+" not found"));
+        User userToAdd = toEntity(userModel);
+        userToAdd.setPassword(passwordEncoder.encode(userToAdd.getPassword()));
+        Customer customerToAdd = new Customer();
+        customerToAdd.setUser(userToAdd);
+        customerRepository.save(customerToAdd);
+        return toModel(userToAdd);
     }
 
     @Transactional
-    public int deleteUserByUUID(String uuid) {
-        return userRepository.deleteByUuid(uuid);
+    public void deleteUserByUUID(String uuid) {
+        userRepository.deleteByUuid(uuid);
     }
 
+    public UserResponseModel patchUser(String userUuid, UserRegisterModel updatedUser) {
+        if(userRepository.findByUserName(updatedUser.getUserName()).isPresent()) {
+            throw new ValidationException("Username '" + updatedUser.getUserName() + "' already exists.");
+        }
 
+        User foundUser = userRepository.findByUuid(userUuid)
+                .orElseThrow(() -> new EntityNotFoundException("No user with uuid '" + userUuid + "' was found."));
+
+        if(updatedUser.getUserName() != null) {
+            foundUser.setUserName(updatedUser.getUserName());
+        }
+        if(updatedUser.getPassword() != null) {
+            foundUser.setPassword(updatedUser.getPassword());
+        }
+        if(updatedUser.getFullName() != null) {
+            foundUser.setFullName(updatedUser.getFullName());
+        }
+
+        return toModel(userRepository.save(foundUser));
+    }
+
+    private UserRole getRoleByName(String roleType){
+        Optional<UserRole> role = userRoleRepository.getUserRoleByRole(roleType);
+        return role.orElseThrow(() -> new UserRoleTypeNotFoundException("Role with type "+roleType+" not found"));
+    }
 
 
 
@@ -102,9 +126,10 @@ public class UserService {
     //TODO: replace with modelmapper!
     public User toEntity(UserRegisterModel userModel) {
         User userToAdd = new User(userModel.getFullName(), userModel.getUserName(), userModel.getPassword());
-        Set<UserRole> roles = userModel.getRoles().stream()
-                .map(r -> getRoleByName(r))
-                .collect(Collectors.toSet());
+        Set<UserRole> roles = new HashSet<>();
+//                userModel.getRoles().stream()
+//                .map(r -> getRoleByName(r))
+//                .collect(Collectors.toSet());
         userToAdd.setRoles(roles);
         return userToAdd;
     }

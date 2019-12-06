@@ -1,24 +1,16 @@
 package com.example.demo.exceptions;
 
-import com.example.demo.exceptions.customExceptions.UserNotFoundException;
 import com.example.demo.exceptions.customExceptions.UserRoleTypeNotFoundException;
 import com.example.demo.jms.ActiveMQSender;
-import com.example.demo.services.validation.ValidationService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.jms.annotation.EnableJms;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
-
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.ws.rs.NotFoundException;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -42,10 +34,9 @@ public class GlobalExceptionHandler {
         return createErrorResponse(BAD_REQUEST, e.getMessage());
     }
 
-    @ExceptionHandler({UserRoleTypeNotFoundException.class,
-            UserNotFoundException.class})
+    @ExceptionHandler({UserRoleTypeNotFoundException.class, EntityNotFoundException.class})
     public ResponseEntity<?> handleEntityNotFoundException(Exception e){
-        return createErrorResponse(NOT_FOUND, "Entity not found");
+        return createErrorResponse(NOT_FOUND, e.getMessage());
     }
 
     private ResponseEntity<?> createErrorResponse(HttpStatus httpStatus, String detailedMessage) {

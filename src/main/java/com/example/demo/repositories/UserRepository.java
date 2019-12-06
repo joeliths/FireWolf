@@ -19,8 +19,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Modifying
     @Query(nativeQuery = true, value = "delete from user where user.uuid = :uuid")
-    int deleteByUuid(@Param("uuid") String uuid);
-
-    boolean existsByUserName(String username);
+    void deleteByUuid(@Param("uuid") String uuid);
 
 }
