@@ -41,20 +41,6 @@ public class Customer implements Serializable, MyEntity {
         return uuid;
     }
 
-    @Id
-    private Long id;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    private User user = new User();
-
-    @OneToMany(
-            mappedBy = "customer",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private Set<PendingOrder> pendingOrders = new HashSet<>();
-
     public Long getId() {
         return id;
     }

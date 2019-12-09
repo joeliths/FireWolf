@@ -1,6 +1,7 @@
 package com.example.demo.models;
 
 import com.example.demo.entities.Customer;
+import com.example.demo.models.user.UserModel;
 
 import java.io.Serializable;
 import java.util.Set;

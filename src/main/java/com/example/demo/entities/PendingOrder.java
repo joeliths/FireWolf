@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -18,7 +19,7 @@ public class PendingOrder implements Serializable, MyEntity{
     @Embedded
     private MyUUID uuid = new MyUUID();
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid.getUuid();
     }
 

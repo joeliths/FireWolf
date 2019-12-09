@@ -31,7 +31,7 @@ public class Store implements Serializable, MyEntity {
     @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
     Set<InventoryProduct> inventoryProducts;*/
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vendor_id")
     private Vendor vendor = new Vendor();
 

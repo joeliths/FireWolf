@@ -20,15 +20,17 @@ public class User implements Serializable, MyEntity {
     @Embedded
     private MyUUID uuid = new MyUUID();
 
-    @Column(nullable = false, unique = true)
+    @Column(name ="user_name",
+            nullable = false, unique = true)
     private String userName;
-    @Column(nullable = false)
+    @Column(name = "full_name",
+            nullable = false)
     private String fullName;
     @Column(nullable = false)
     private String password;
 
     @Column(name = "USER_ROLE")
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "USER_ROLE_ROLES",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))

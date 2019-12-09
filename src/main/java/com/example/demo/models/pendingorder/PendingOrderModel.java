@@ -17,7 +17,7 @@ public class PendingOrderModel implements Serializable {
     private StoreModel store;
     private CustomerModel customer;
     Set<PendingOrderProductModel> pendingOrderProducts;
-    private Date placemenDateTime;
+    private Date placementDateTime;
     private Date expirationDateTime;
 
     public static long getSerialVersionUID() {
@@ -56,12 +56,12 @@ public class PendingOrderModel implements Serializable {
         this.pendingOrderProducts = pendingOrderProducts;
     }
 
-    public Date getPlacemenDateTime() {
-        return placemenDateTime;
+    public Date getPlacementDateTime() {
+        return placementDateTime;
     }
 
-    public void setPlacemenDateTime(Date placemenDateTime) {
-        this.placemenDateTime = placemenDateTime;
+    public void setPlacementDateTime(Date placemenDateTime) {
+        this.placementDateTime = placemenDateTime;
     }
 
     public Date getExpirationDateTime() {
