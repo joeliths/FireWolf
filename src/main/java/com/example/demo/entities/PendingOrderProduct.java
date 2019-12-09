@@ -55,6 +55,22 @@ public class PendingOrderProduct implements Serializable, MyEntity {
         this.quantity = quantity;
     }
 
+    public PendingOrder getPendingOrder() {
+        return pendingOrder;
+    }
+
+    public void setPendingOrder(PendingOrder pendingOrder) {
+        this.pendingOrder = pendingOrder;
+    }
+
+    public InventoryProduct getInventoryProduct() {
+        return inventoryProduct;
+    }
+
+    public void setInventoryProduct(InventoryProduct inventoryProduct) {
+        this.inventoryProduct = inventoryProduct;
+    }
+
     @Override
     public String toString() {
         return "PendingOrderProduct{" +

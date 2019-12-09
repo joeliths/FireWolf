@@ -23,8 +23,14 @@ public class PendingOrderController {
 
     @PostMapping
     public ResponseEntity addPendingOrder(@RequestBody PendingOrderRequestModel pendingOrder) {
-        pendingOrderService.addPendingOrder(pendingOrder);
-        return ResponseEntity.status(CREATED).build();
+
+        return ResponseEntity.status(CREATED).body(pendingOrderService.addPendingOrder(pendingOrder));
+    }
+
+    @DeleteMapping("{uuid}")
+    public ResponseEntity deletePendingOrder(@PathVariable String uuid){
+        pendingOrderService.deletePendingOrder(uuid);
+        return ResponseEntity.ok().build();
     }
 
 //    @GetMapping("/customer")

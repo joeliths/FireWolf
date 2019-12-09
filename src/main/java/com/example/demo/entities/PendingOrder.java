@@ -46,6 +46,9 @@ public class PendingOrder implements Serializable, MyEntity{
     @Column(name = "expiration_date_time",nullable = false)
     private Date expirationDateTime;
 
+    public PendingOrder(){
+
+    }
     public PendingOrder(Date placemenDateTime, Date expirationDateTime) {
         this.placementDateTime = placemenDateTime;
         this.expirationDateTime = expirationDateTime;
@@ -75,4 +78,27 @@ public class PendingOrder implements Serializable, MyEntity{
         this.expirationDateTime = expirationDateTime;
     }
 
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Set<PendingOrderProduct> getPendingOrderProducts() {
+        return pendingOrderProducts;
+    }
+
+    public void setPendingOrderProducts(Set<PendingOrderProduct> pendingOrderProducts) {
+        this.pendingOrderProducts = pendingOrderProducts;
+    }
 }
