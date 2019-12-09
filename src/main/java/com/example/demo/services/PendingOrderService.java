@@ -6,14 +6,12 @@ import com.example.demo.models.CustomerModel;
 import com.example.demo.models.StoreModel;
 import com.example.demo.models.pendingorder.PendingOrderRequestModel;
 import com.example.demo.models.pendingorder.PendingOrderResponseModel;
-import com.example.demo.models.pendingorder.nestedobjects.PendingOrderProductRequestModel;
 import com.example.demo.models.pendingorder.nestedobjects.PendingOrderProductResponseModel;
 import com.example.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class PendingOrderService {
@@ -24,7 +22,7 @@ public class PendingOrderService {
     private final InventoryProductRepository inventoryProductRepository;
     private final PendingOrderProductRepository pendingOrderProductRepository;
     private final ProductRepository productRepository;
-    private final CustomerRepository customerRepository;
+    private final CustomerService customerService;
 
     @Autowired
     VendorRepository vendorRepository;
@@ -37,14 +35,14 @@ public class PendingOrderService {
                                InventoryProductRepository inventoryProductRepository,
                                PendingOrderProductRepository pendingOrderProductRepository,
                                ProductRepository productRepository,
-                               CustomerRepository customerRepository) {
+                               CustomerService customerService) {
         this.pendingOrderRepository = pendingOrderRepository;
         this.userRepository = userRepository;
         this.storeRepository = storeRepository;
         this.inventoryProductRepository = inventoryProductRepository;
         this.pendingOrderProductRepository = pendingOrderProductRepository;
         this.productRepository = productRepository;
-        this.customerRepository = customerRepository;
+        this.customerService = customerService;
     }
 
     public void getPendingOrders() {
@@ -59,9 +57,9 @@ public class PendingOrderService {
         PendingOrder order = new PendingOrder(new Date(), new Date());
 
         Store store = storeRepository.findByUuid(pendingOrder.getStoreUUID()).get();
-        User user = userRepository.findByUserName(pendingOrder.getCustomerUserName()).get();
         order.setStore(store);
-        Customer customer = customerRepository.getOne(user.getId());
+        System.out.println(pendingOrder.getCustomerUUID());
+        Customer customer = customerService.getCustomerByUuid(pendingOrder.getCustomerUUID());
         order.setCustomer(customer);
         pendingOrderRepository.save(order);
 
@@ -95,7 +93,7 @@ public class PendingOrderService {
 
         CustomerModel customerModel = new CustomerModel();
         PendingOrderResponseModel pendingOrderResponseModel = new PendingOrderResponseModel(order.getUuid().toString(), order.getPlacemenDateTime().toString(), order.getExpirationDateTime().toString(), storeModel, customerModel, pendingOrderProductResponseModels);
-        customerModel.setPendingOrders(new HashSet<>(Arrays.asList(pendingOrderResponseModel.getOrderUUID())));
+        customerModel.setPendingOrders(new HashSet<>(Arrays.asList(pendingOrderResponseModel.getUUID())));
         return pendingOrderResponseModel;
     }
 

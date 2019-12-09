@@ -1,14 +1,12 @@
 package com.example.demo.models.pendingorder;
 
 
-import com.example.demo.entities.helperclasses.MyUUID;
 import com.example.demo.models.CustomerModel;
 import com.example.demo.models.StoreModel;
 import com.example.demo.models.pendingorder.nestedobjects.PendingOrderProductResponseModel;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 public class PendingOrderResponseModel implements Serializable {
 
@@ -19,28 +17,28 @@ public class PendingOrderResponseModel implements Serializable {
     private String expirationDateTime;
     private StoreModel store;
     private CustomerModel customer;
-    private List<PendingOrderProductResponseModel> pendingOrderProducts;
+    private List<PendingOrderProductResponseModel> orderedProducts;
 
     public PendingOrderResponseModel() {
     }
 
-    public PendingOrderResponseModel(String uuid, String placementDateTime, String expirationDateTime,
+    public PendingOrderResponseModel(String orderUUID, String placemenDateTime, String expirationDateTime,
                                      StoreModel store, CustomerModel customer,
-                                     List<PendingOrderProductResponseModel> pendingOrderProducts) {
-        this.uuid = uuid;
-        this.placemenDateTime = placementDateTime;
+                                     List<PendingOrderProductResponseModel> orderedProducts) {
+        this.uuid = orderUUID;
+        this.placemenDateTime = placemenDateTime;
         this.expirationDateTime = expirationDateTime;
         this.store = store;
         this.customer = customer;
-        this.pendingOrderProducts = pendingOrderProducts;
+        this.orderedProducts = orderedProducts;
     }
 
-    public String getuuid() {
+    public String getUUID() {
         return uuid;
     }
 
-    public void setuuid(String orderUUID) {
-        this.uuid = orderUUID;
+    public void setUUID(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getPlacemenDateTime() {
@@ -76,10 +74,10 @@ public class PendingOrderResponseModel implements Serializable {
     }
 
     public List<PendingOrderProductResponseModel> getOrderedProducts() {
-        return pendingOrderProducts;
+        return orderedProducts;
     }
 
-    public void setOrderedProducts(List<PendingOrderProductResponseModel> pendingOrderProducts) {
-        this.pendingOrderProducts = pendingOrderProducts;
+    public void setOrderedProducts(List<PendingOrderProductResponseModel> orderedProducts) {
+        this.orderedProducts = orderedProducts;
     }
 }
