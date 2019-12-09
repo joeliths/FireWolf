@@ -1,7 +1,6 @@
 package com.example.demo.models.pendingorder;
 
 
-import com.example.demo.entities.helperclasses.MyUUID;
 import com.example.demo.models.CustomerModel;
 import com.example.demo.models.StoreModel;
 import com.example.demo.models.pendingorder.nestedobjects.PendingOrderProductResponseModel;
@@ -13,7 +12,7 @@ public class PendingOrderResponseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String orderUUID;
+    private String uuid;
     private String placemenDateTime;
     private String expirationDateTime;
     private StoreModel store;
@@ -26,7 +25,7 @@ public class PendingOrderResponseModel implements Serializable {
     public PendingOrderResponseModel(String orderUUID, String placemenDateTime, String expirationDateTime,
                                      StoreModel store, CustomerModel customer,
                                      List<PendingOrderProductResponseModel> orderedProducts) {
-        this.orderUUID = orderUUID;
+        this.uuid = orderUUID;
         this.placemenDateTime = placemenDateTime;
         this.expirationDateTime = expirationDateTime;
         this.store = store;
@@ -34,12 +33,12 @@ public class PendingOrderResponseModel implements Serializable {
         this.orderedProducts = orderedProducts;
     }
 
-    public String getOrderUUID() {
-        return orderUUID;
+    public String getUUID() {
+        return uuid;
     }
 
-    public void setOrderUUID(String orderUUID) {
-        this.orderUUID = orderUUID;
+    public void setUUID(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getPlacemenDateTime() {

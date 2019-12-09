@@ -26,4 +26,9 @@ public class CustomerService {
 
 
     }
+
+    public Customer getCustomerByUuid(String UUID){
+        System.out.println(UUID);
+        return customerRepository.findByUuid(UUID).orElseThrow(() -> new RuntimeException("WHAAT"));
+    }
 }
