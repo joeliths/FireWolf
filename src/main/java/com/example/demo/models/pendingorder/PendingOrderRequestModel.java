@@ -1,6 +1,5 @@
 package com.example.demo.models.pendingorder;
 
-import com.example.demo.entities.helperclasses.MyUUID;
 import com.example.demo.models.pendingorder.nestedobjects.PendingOrderProductRequestModel;
 
 import java.util.List;
@@ -8,13 +7,13 @@ import java.util.List;
 public class PendingOrderRequestModel {
 
     private String storeUUID;
-    private String customerUserName;
+    private String customerUUID;
     private List<PendingOrderProductRequestModel> orderedProducts;
 
-    public PendingOrderRequestModel(String storeUUID, String customerUserName,
+    public PendingOrderRequestModel(String storeUUID, String customerUUID,
                                     List<PendingOrderProductRequestModel> orderedProducts) {
         this.storeUUID = storeUUID;
-        this.customerUserName = customerUserName;
+        this.customerUUID = customerUUID;
         this.orderedProducts = orderedProducts;
     }
 
@@ -26,12 +25,12 @@ public class PendingOrderRequestModel {
         this.storeUUID = storeUUID;
     }
 
-    public String getCustomerUserName() {
-        return customerUserName;
+    public String getCustomerUUID() {
+        return customerUUID;
     }
 
-    public void setCustomerUserName(String customerUserName) {
-        this.customerUserName = customerUserName;
+    public void setCustomerUUID(String customerUUID) {
+        this.customerUUID = customerUUID;
     }
 
     public List<PendingOrderProductRequestModel> getOrderedProducts() {
