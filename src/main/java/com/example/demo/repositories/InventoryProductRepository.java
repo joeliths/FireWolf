@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface InventoryProductRepository extends JpaRepository<InventoryProduct,Long> {
@@ -22,6 +24,9 @@ public interface InventoryProductRepository extends JpaRepository<InventoryProdu
             nativeQuery = true
     )
     Set<InventoryProduct> getStoreProductsBasedOn(@Param("storeId")String storeId);
+
+    @Query(nativeQuery = true, value = "select * from inventory_product p where p.uuid = :uuid")
+    Optional<InventoryProduct> findByUuid(@Param("uuid") String uuid);
 
    /* List<PostComment> comments = entityManager.createQuery(
             "select pc " +

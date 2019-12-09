@@ -1,8 +1,11 @@
 package com.example.demo.repositories;
 
 import com.example.demo.entities.PendingOrder;
-import com.example.demo.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.Optional;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,5 +19,9 @@ public interface PendingOrderRepository extends JpaRepository<PendingOrder,Long>
     PendingOrder getTesting();
 
     PendingOrder findFirstByUuid(@Param("uuid")String uuid);
+
+
+    @Query(nativeQuery = true, value = "select * from pending_order p where p.uuid = :uuid")
+    Optional<PendingOrder> findByUuid(@Param("uuid") String uuid);
 
 }

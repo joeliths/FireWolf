@@ -71,4 +71,27 @@ public class InventoryProduct implements Serializable, MyEntity{
         this.price = price;
     }
 
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+    public Set<PendingOrderProduct> getPendingOrderProducts() {
+        return pendingOrderProducts;
+    }
+
+    public void setPendingOrderProducts(Set<PendingOrderProduct> pendingOrderProducts) {
+        this.pendingOrderProducts = pendingOrderProducts;
+    }
 }
