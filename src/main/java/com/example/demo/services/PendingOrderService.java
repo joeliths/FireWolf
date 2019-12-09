@@ -93,7 +93,7 @@ public class PendingOrderService {
 
         CustomerModel customerModel = new CustomerModel();
         PendingOrderResponseModel pendingOrderResponseModel = new PendingOrderResponseModel(order.getUuid().toString(), order.getPlacemenDateTime().toString(), order.getExpirationDateTime().toString(), storeModel, customerModel, pendingOrderProductResponseModels);
-        customerModel.setPendingOrders(new HashSet<>(Arrays.asList(pendingOrderResponseModel.getOrderUUID())));
+        customerModel.setPendingOrders(new HashSet<>(Arrays.asList(pendingOrderResponseModel.getUUID())));
         return pendingOrderResponseModel;
     }
 
