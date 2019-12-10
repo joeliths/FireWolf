@@ -21,6 +21,7 @@ public class UserController {
         this.userService = userService;
     }
 
+
     @GetMapping
     public ResponseEntity<List<UserResponseModel>> getAllUsers() {
         return ResponseEntity.status(OK).body(userService.getAllUsers());
