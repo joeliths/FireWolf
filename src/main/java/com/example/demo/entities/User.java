@@ -1,6 +1,7 @@
 package com.example.demo.entities;
 
 import com.example.demo.entities.helperclasses.MyUUID;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,7 +9,8 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-public class User implements Serializable {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class User implements Serializable, MyEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -18,9 +20,11 @@ public class User implements Serializable {
     @Embedded
     private MyUUID uuid = new MyUUID();
 
-    @Column(nullable = false, unique = true)
+    @Column(name ="user_name",
+            nullable = false, unique = true)
     private String userName;
-    @Column(nullable = false)
+    @Column(name = "full_name",
+            nullable = false)
     private String fullName;
     @Column(nullable = false)
     private String password;

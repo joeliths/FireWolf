@@ -13,6 +13,14 @@ import java.util.Optional;
 
 public interface PendingOrderRepository extends JpaRepository<PendingOrder,Long> {
 
+
+    @Query(value = "Select * from pending_order limit 1",nativeQuery = true)
+    PendingOrder getTesting();
+
+    @Query(nativeQuery = true, value = "select * from pending_order p where p.uuid = :uuid")
+    PendingOrder findFirstByUuid(@Param("uuid") String uuid);
+
+
     @Query(nativeQuery = true, value = "select * from pending_order p where p.uuid = :uuid")
     Optional<PendingOrder> findByUuid(@Param("uuid") String uuid);
 
@@ -29,5 +37,6 @@ public interface PendingOrderRepository extends JpaRepository<PendingOrder,Long>
     @Query(nativeQuery = true, value = "SELECT uuid FROM pending_order WHERE id = LAST_INSERT_ID();")
     String getLatestPendingOrderUuid();
 
-    
+
+
 }

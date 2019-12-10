@@ -1,6 +1,7 @@
 package com.example.demo.entities;
 
 import com.example.demo.entities.helperclasses.MyUUID;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -11,7 +12,8 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-public class Product implements Serializable{
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Product implements Serializable, MyEntity{
 
     private static final long serialVersionUID = 1L;
 

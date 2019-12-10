@@ -8,6 +8,15 @@ public class InventoryProductModel implements Serializable {
 
     private int stock;
     private int price;
+    private ProductModel product;
+
+    public ProductModel getProduct() {
+        return product;
+    }
+
+    public void setProduct(ProductModel product) {
+        this.product = product;
+    }
 
     public int getStock() {
         return stock;

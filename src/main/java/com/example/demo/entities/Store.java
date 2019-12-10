@@ -1,13 +1,15 @@
 package com.example.demo.entities;
 
 import com.example.demo.entities.helperclasses.MyUUID;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-public class Store implements Serializable {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Store implements Serializable, MyEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -22,7 +24,7 @@ public class Store implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "store"/*, cascade = CascadeType.PERSIST, orphanRemoval = true*/)
     Set<PendingOrder> pendingOrders;
 
     /*>ska förmodligen tas bort. vi implementerar egen snabbare hämtning av inventoryProducts.
@@ -31,7 +33,7 @@ public class Store implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vendor_id")
-    private Vendor vendor = new Vendor();
+    private Vendor vendor;
 
     @Column(nullable=false, length=100)
     private String address;

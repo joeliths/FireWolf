@@ -1,7 +1,6 @@
 package com.example.demo.models;
 
-import com.example.demo.entities.Customer;
-import com.example.demo.models.pendingorder.PendingOrderResponseModel;
+import com.example.demo.models.pendingorder.PendingOrderModel;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -11,18 +10,18 @@ public class CustomerModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //private UserModel user;
-    private Set<String> pendingOrders;
+    private Set<PendingOrderModel> pendingOrders;
 
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
 
-    public Set<String> getPendingOrders() {
+    public Set<PendingOrderModel> getPendingOrders() {
         return pendingOrders;
     }
 
-    public void setPendingOrders(Set<String> pendingOrders) {
+    public void setPendingOrders(Set<PendingOrderModel> pendingOrders) {
         this.pendingOrders = pendingOrders;
     }
 }

@@ -1,7 +1,6 @@
 package com.example.demo.controllers;
 
 import com.example.demo.models.StoreModel;
-import com.example.demo.models.VendorModel;
 import com.example.demo.services.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,8 +23,9 @@ public class VendorController {
     }
 
     @PostMapping("/register/{userUuid}")
-    public ResponseEntity<Boolean> registerUserAsVendor(@PathVariable String userUuid){
-        return ResponseEntity.status(CREATED).body(vendorService.registerUserAsVendor(userUuid));
+    public ResponseEntity<String> registerUserAsVendor(@PathVariable String userUuid){
+        vendorService.registerUserAsVendor(userUuid);
+        return ResponseEntity.status(CREATED).build();
     }
 
 
@@ -34,8 +34,9 @@ public class VendorController {
             produces = "application/json")
     @ResponseBody
     public ResponseEntity<?> registerStore(@RequestBody StoreModel storeModel){
-        String uuid = vendorService.registerStore(storeModel);
-        return new ResponseEntity<>(uuid, HttpStatus.OK);
+//        String uuid = vendorService.registerStore(storeModel);
+//        return new ResponseEntity<>(uuid, HttpStatus.OK);
+        return null;
     }
 
 
