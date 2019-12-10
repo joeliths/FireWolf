@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-public class Vendor implements Serializable {
+public class Vendor implements Serializable, MyEntity {
 
     private static final long serialVersionUID = 1L;
 

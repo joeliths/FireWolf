@@ -1,13 +1,14 @@
 package com.example.demo.entities;
 
 import com.example.demo.entities.helperclasses.MyUUID;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 
 @Entity
-public class PendingOrderProduct implements Serializable {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class PendingOrderProduct implements Serializable, MyEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -77,7 +78,7 @@ public class PendingOrderProduct implements Serializable {
         return "PendingOrderProduct{" +
                 "uuid=" + uuid +
                 ", id=" + id +
-                ", pendingOrder=" + pendingOrder +
+                ", pendingOrder=" + pendingOrder.getUuid() +
                 ", inventoryProduct=" + inventoryProduct +
                 ", quantity=" + quantity +
                 '}';

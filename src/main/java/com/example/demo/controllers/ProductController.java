@@ -33,7 +33,7 @@ public class ProductController {
             produces = "application/json")
     @ResponseBody
     public ResponseEntity<?> GetProductsByName(@RequestParam(value = "name", required = true) String name){
-        List<ProductModel> results = productService.getProductsLike(name);
+        Set<ProductModel> results = productService.getProductsLike(name);
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
 

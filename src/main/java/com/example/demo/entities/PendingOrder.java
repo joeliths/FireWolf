@@ -1,23 +1,26 @@
 package com.example.demo.entities;
 
 import com.example.demo.entities.helperclasses.MyUUID;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
-public class PendingOrder implements Serializable{
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class PendingOrder implements Serializable, MyEntity{
 
     private static final long serialVersionUID = 1L;
 
     @Embedded
     private MyUUID uuid = new MyUUID();
 
-    public MyUUID getUuid() {
-        return uuid;
+    public UUID getUuid() {
+        return uuid.getUuid();
     }
 
     @Id
@@ -40,7 +43,7 @@ public class PendingOrder implements Serializable{
     private Set<PendingOrderProduct> pendingOrderProducts = new HashSet<>();
 
     @Column(name = "placement_date_time",nullable = false)
-    private Date placemenDateTime;
+    private Date placementDateTime;
 
 
     @Column(name = "expiration_date_time",nullable = false)
@@ -50,9 +53,10 @@ public class PendingOrder implements Serializable{
 
     }
     public PendingOrder(Date placemenDateTime, Date expirationDateTime) {
-        this.placemenDateTime = placemenDateTime;
+        this.placementDateTime = placemenDateTime;
         this.expirationDateTime = expirationDateTime;
     }
+
 
     public Long getId() {
         return id;
@@ -63,11 +67,11 @@ public class PendingOrder implements Serializable{
     }
 
     public Date getPlacemenDateTime() {
-        return placemenDateTime;
+        return placementDateTime;
     }
 
     public void setPlacemenDateTime(Date placemenDateTime) {
-        this.placemenDateTime = placemenDateTime;
+        this.placementDateTime = placemenDateTime;
     }
 
     public Date getExpirationDateTime() {
@@ -100,5 +104,18 @@ public class PendingOrder implements Serializable{
 
     public void setPendingOrderProducts(Set<PendingOrderProduct> pendingOrderProducts) {
         this.pendingOrderProducts = pendingOrderProducts;
+    }
+
+    @Override
+    public String toString() {
+        return "PendingOrder{" +
+                "uuid=" + uuid +
+                ", id=" + id +
+                ", store=" + store +
+                ", customer=" + customer.getUser().getUserName() +
+                ", pendingOrderProducts=" + pendingOrderProducts +
+                ", placemenDateTime=" + placementDateTime +
+                ", expirationDateTime=" + expirationDateTime +
+                '}';
     }
 }
