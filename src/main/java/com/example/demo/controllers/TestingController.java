@@ -2,10 +2,14 @@ package com.example.demo.controllers;
 
 import com.example.demo.Mapper.Convert;
 import com.example.demo.entities.PendingOrder;
+import com.example.demo.entities.Vendor;
+import com.example.demo.models.VendorModel;
 import com.example.demo.models.pendingorder.PendingOrderModel;
 import com.example.demo.models.pendingorder.PendingOrderRequestModel;
+import com.example.demo.repositories.InventoryProductRepository;
 import com.example.demo.repositories.PendingOrderRepository;
 import com.example.demo.repositories.ProductRepository;
+import com.example.demo.repositories.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +22,16 @@ import sun.reflect.annotation.ExceptionProxy;
 import java.lang.reflect.InvocationTargetException;
 @Controller
 public class TestingController {
+    Convert convert = new Convert();
+
     @Autowired
     PendingOrderRepository pendingOrderRepository;
 
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    VendorRepository vendorRepository;
 
     @GetMapping(path = "/pontustest",
             consumes = "application/json",
@@ -31,9 +40,13 @@ public class TestingController {
     public ResponseEntity getPendingOrder(@RequestBody PendingOrderModel pendingOrderModel) {
         try {
             System.out.println("yeah bruh first step done");
-            PendingOrder in = Convert.lowAccessConverter(pendingOrderModel, PendingOrder.class);
-            PendingOrder pendingOrder = pendingOrderRepository.findFirstByUuid(pendingOrderModel.getUuid());
-            return new ResponseEntity<>(pendingOrder, HttpStatus.OK);
+
+            PendingOrder in = convert.lowAccessConverter(pendingOrderModel, PendingOrder.class);
+            System.out.println(in.getUuid().toString());
+            PendingOrder dbResponse = pendingOrderRepository.findFirstByUuid(in.getUuid().toString());
+            PendingOrderModel outModel = convert.lowAccessConverter(dbResponse, PendingOrderModel.class);
+            System.out.println("got here test 3");
+            return new ResponseEntity<>(outModel, HttpStatus.OK);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (NoSuchMethodException e) {
@@ -44,10 +57,9 @@ public class TestingController {
             e.printStackTrace();
         }catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
             return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return null;
     }
 
     @GetMapping(path = "/pontustest2",
@@ -59,8 +71,9 @@ public class TestingController {
             PendingOrder pendingOrder = pendingOrderRepository.getTesting();
             System.out.println(pendingOrder.getUuid());
             System.out.println(pendingOrder.toString());
-            PendingOrderModel answerModel = Convert.lowAccessConverter(pendingOrder, PendingOrderModel.class);
+            PendingOrderModel answerModel = convert.lowAccessConverter(pendingOrder, PendingOrderModel.class);
             System.out.println("third reached");
+            answerModel.getCustomer().setPendingOrders(null);
             return new ResponseEntity<>(answerModel, HttpStatus.OK);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -75,4 +88,31 @@ public class TestingController {
         }
       return new ResponseEntity(HttpStatus.I_AM_A_TEAPOT);
     }
+
+    @GetMapping(path = "/pontustestvendor",
+            consumes = "application/json",
+            produces = "application/json")
+    @ResponseBody
+    public ResponseEntity getinventoryProductsByVendor(@RequestBody VendorModel vendorModel) {
+        try {
+            Vendor vendor= vendorRepository.getInventoryproductsByVendor(vendorModel.getUuid());
+            System.out.println(vendor.getUuid());
+            System.out.println(vendor.toString());
+            VendorModel responseVendor = convert.lowAccessConverter(vendor, VendorModel.class);
+            System.out.println("third reached");
+            return new ResponseEntity<>(responseVendor, HttpStatus.OK);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity(HttpStatus.I_AM_A_TEAPOT);
+    }
+
 }

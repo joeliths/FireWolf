@@ -56,9 +56,7 @@ public class PendingOrder implements Serializable, MyEntity{
         this.placementDateTime = placemenDateTime;
         this.expirationDateTime = expirationDateTime;
     }
-    public PendingOrder() {
 
-    }
 
     public Long getId() {
         return id;

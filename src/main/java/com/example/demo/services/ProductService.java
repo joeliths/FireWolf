@@ -15,6 +15,7 @@ import java.util.Set;
 //TODO:Alot in this class
 @Service
 public class ProductService {
+    Convert convert = new Convert();
     final private ProductRepository productRepository;
 
     @Autowired
@@ -24,7 +25,7 @@ public class ProductService {
 
     public String addProduct(ProductModel productModel){
         try{
-            Product product = Convert.lowAccessConverter(productModel, Product.class);
+            Product product = convert.lowAccessConverter(productModel, Product.class);
             productRepository.save(product);
             return product.getUuid().toString();
         }catch (Exception e){
@@ -49,7 +50,7 @@ public class ProductService {
 
             List<ProductModel> productModelList = new ArrayList<>();
             for (Product product : productEntities) {
-                ProductModel productModel = Convert.lowAccessConverter(product, ProductModel.class);
+                ProductModel productModel = convert.lowAccessConverter(product, ProductModel.class);
                 productModelList.add(productModel);
             }
 

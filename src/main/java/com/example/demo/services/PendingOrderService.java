@@ -4,10 +4,12 @@ import com.example.demo.entities.*;
 import com.example.demo.entities.helperclasses.MyUUID;
 import com.example.demo.models.CustomerModel;
 import com.example.demo.models.StoreModel;
+import com.example.demo.models.pendingorder.PendingOrderModel;
 import com.example.demo.models.pendingorder.PendingOrderRequestModel;
 import com.example.demo.models.pendingorder.PendingOrderResponseModel;
 import com.example.demo.models.pendingorder.nestedobjects.PendingOrderProductResponseModel;
 import com.example.demo.repositories.*;
+import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -93,7 +95,8 @@ public class PendingOrderService {
 
         CustomerModel customerModel = new CustomerModel();
         PendingOrderResponseModel pendingOrderResponseModel = new PendingOrderResponseModel(order.getUuid().toString(), order.getPlacemenDateTime().toString(), order.getExpirationDateTime().toString(), storeModel, customerModel, pendingOrderProductResponseModels);
-        customerModel.setPendingOrders(new HashSet<>(Arrays.asList(pendingOrderResponseModel.getUUID())));
+
+        customerModel.setPendingOrders(new HashSet(Arrays.asList(pendingOrderResponseModel.getUUID())));
         return pendingOrderResponseModel;
     }
 
