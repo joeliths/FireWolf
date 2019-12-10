@@ -27,7 +27,7 @@ public interface VendorRepository extends JpaRepository<Vendor, Long> {
 
     @Query(nativeQuery = true, value = "select * from inventory_product i where i.store_id = \n" +
             "(select id from store where vendor_id = (select user_id from vendor where vendor_uuid = :vendorUuid))")
-    void getPendingOrdersForVendor(@Param("vendorUuid") String vendorUuid);
+    void getInventoryProductsOfAStoreOfAVendor(@Param("vendorUuid") String vendorUuid);
 
 
 
