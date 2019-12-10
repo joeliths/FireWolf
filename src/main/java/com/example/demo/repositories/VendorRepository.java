@@ -1,5 +1,6 @@
 package com.example.demo.repositories;
 
+import com.example.demo.entities.InventoryProduct;
 import com.example.demo.entities.Vendor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -7,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Set;
 
 @Transactional
 public interface VendorRepository extends JpaRepository<Vendor, Long> {
@@ -14,7 +17,7 @@ public interface VendorRepository extends JpaRepository<Vendor, Long> {
     @Modifying
     @Query(nativeQuery = true, value = "INSERT INTO vendor(uuid, user_id) " +
             "VALUES(uuid(), (SELECT id FROM user WHERE user.uuid = :userUuid))")
-    void registerVendor(@Param("userUuid") String userUuid);
+    void registerVendor(@Param("userUuid") String userUuid) throws SQLIntegrityConstraintViolationException;
 
     @Modifying
     @Query(nativeQuery = true, value = "INSERT INTO store(uuid, vendor_id, address, description)" +
@@ -24,7 +27,7 @@ public interface VendorRepository extends JpaRepository<Vendor, Long> {
 
     @Query(nativeQuery = true, value = "select * from inventory_product i where i.store_id = \n" +
             "(select id from store where vendor_id = (select user_id from vendor where vendor_uuid = :vendorUuid))")
-    void getInventoryProductsOfAStoreOfAVendor(@Param("vendorUuid") String vendorUuid);
+    Set<InventoryProduct> getInventoryProductsOfAStoreOfAVendor(@Param("vendorUuid") String vendorUuid);
 
 
 

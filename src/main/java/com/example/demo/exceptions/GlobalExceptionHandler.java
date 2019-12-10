@@ -1,5 +1,6 @@
 package com.example.demo.exceptions;
 
+import com.example.demo.exceptions.customExceptions.ModelMapperException;
 import com.example.demo.exceptions.customExceptions.UserRoleTypeNotFoundException;
 import com.example.demo.jms.ActiveMQSender;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({UserRoleTypeNotFoundException.class, EntityNotFoundException.class})
     public ResponseEntity<?> handleEntityNotFoundException(Exception e){
         return createErrorResponse(NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(ModelMapperException.class)
+    public ResponseEntity<?> handleModelMapperException(Exception e) {
+        return createErrorResponse(INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
     private ResponseEntity<?> createErrorResponse(HttpStatus httpStatus, String detailedMessage) {

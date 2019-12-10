@@ -2,6 +2,7 @@ package com.example.demo.Mapper;
 
 import com.example.demo.entities.*;
 import com.example.demo.entities.helperclasses.MyUUID;
+import com.example.demo.exceptions.customExceptions.ModelMapperException;
 import com.example.demo.models.*;
 import com.example.demo.models.pendingorder.PendingOrderModel;
 import com.example.demo.models.user.UserModel;
@@ -28,14 +29,13 @@ public  class Convert {
         }
     };
 
-    public <T> T lowAccessConverter(Object originObject, Class<T> targetClass)
-            throws IllegalAccessException,
-            NoSuchMethodException,
-            InstantiationException,
-            InvocationTargetException
-    {
+    public <T> T lowAccessConverter(Object originObject, Class<T> targetClass) {
         backReferences = new HashMap<Object, Object>() {    };
-        return convert(originObject,targetClass,lowAccessforbiddenFields);
+        try {
+            return convert(originObject,targetClass,lowAccessforbiddenFields);
+        } catch (Exception e) {
+            throw new ModelMapperException("Could not convert between model and entity");
+        }
     }
 
 
