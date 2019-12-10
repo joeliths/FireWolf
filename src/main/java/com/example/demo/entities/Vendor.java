@@ -1,28 +1,29 @@
 package com.example.demo.entities;
 
 import com.example.demo.entities.helperclasses.MyUUID;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Vendor implements Serializable, MyEntity {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     private Long id;
-    @OneToOne( fetch = FetchType.LAZY)
+    @OneToOne( fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @MapsId
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
     @Embedded
     private MyUUID uuid = new MyUUID();
+
 
     @OneToMany(mappedBy = "vendor", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private Set<Store> stores;

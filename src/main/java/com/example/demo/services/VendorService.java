@@ -1,38 +1,45 @@
 package com.example.demo.services;
 
-import com.example.demo.entities.User;
-import com.example.demo.entities.Vendor;
+import com.example.demo.entities.Store;
 import com.example.demo.models.StoreModel;
-import com.example.demo.models.VendorModel;
-import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.VendorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.services.validation.ValidationService;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.NotFoundException;
-import java.util.Optional;
-import java.util.UUID;
+import javax.transaction.Transactional;
+import javax.validation.ValidationException;
+import java.sql.SQLException;
+
 
 @Service
 public class VendorService {
 
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    VendorRepository vendorRepository;
+    private final VendorRepository vendorRepository;
+    private final ValidationService validationService;
 
-    public boolean registerUserAsVendor(String userUuid) {
-        Optional<User> foundUser = userRepository.findByUuid(userUuid);
-        if(foundUser.isEmpty()) {
-            //Todo
-        }
-        Vendor vendor = new Vendor();
-        vendor.setUser(foundUser.get());
-        vendorRepository.save(vendor);
-        return true;
+    public VendorService(VendorRepository vendorRepository, ValidationService validationService) {
+        this.vendorRepository = vendorRepository;
+        this.validationService = validationService;
     }
 
-    public String registerStore(StoreModel storeModel){
-        return "not yet implemented";
+    public void registerUserAsVendor(String userUuid) {
+        try {
+           vendorRepository.registerVendor(userUuid);
+        } catch (Exception e) {
+            throw new ValidationException("No user with uuid '" + userUuid + "' was found.");
+        }
+    }
+
+    public void registerStore(String vendorUUID, StoreModel storeModel){
+//        boolean fieldsAreMissing = validationService
+//                .checkIfAnyFieldsAreNull(storeModel.getAddress(), storeModel.getDescription());
+//        if(fieldsAreMissing) {
+//            throw new ValidationException("All fields must be included");
+//        }
+//        vendorRepository.registerStore(vendorUUID, storeModel);
+    }
+
+    public void deleteStore(String storeUuid) {
+
     }
 }

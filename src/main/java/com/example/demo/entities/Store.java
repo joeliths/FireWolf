@@ -24,7 +24,7 @@ public class Store implements Serializable, MyEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "store"/*, cascade = CascadeType.PERSIST, orphanRemoval = true*/)
     Set<PendingOrder> pendingOrders;
 
     /*>ska förmodligen tas bort. vi implementerar egen snabbare hämtning av inventoryProducts.
@@ -33,7 +33,7 @@ public class Store implements Serializable, MyEntity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vendor_id")
-    private Vendor vendor = new Vendor();
+    private Vendor vendor;
 
     @Column(nullable=false, length=100)
     private String address;
