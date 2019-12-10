@@ -114,7 +114,7 @@ public class PendingOrder implements Serializable, MyEntity{
                 ", store=" + store +
                 ", customer=" + customer.getUser().getUserName() +
                 ", pendingOrderProducts=" + pendingOrderProducts +
-                ", placemenDateTime=" + placemenDateTime +
+                ", placemenDateTime=" + placementDateTime +
                 ", expirationDateTime=" + expirationDateTime +
                 '}';
     }
