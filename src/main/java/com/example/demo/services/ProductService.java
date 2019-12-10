@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.resource.spi.EISSystemException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 //TODO:Alot in this class
 @Service
@@ -43,7 +41,7 @@ public class ProductService {
         return true;
     }
 
-    //TODO:Check what should be Set and what should be List
+
     public Set<ProductModel> getProductsLike(String searchTerm){
         try {
 
@@ -61,5 +59,16 @@ public class ProductService {
             e.printStackTrace();
             return null;
         }
+    }
+    public ProductModel getProductByUuid(String uuid){
+        Optional<Product> dbResponse = productRepository.findByUuid(uuid);
+        if(dbResponse.isEmpty()){
+            System.out.println("something");
+        }else{
+
+                convert.lowAccessConverter( dbResponse.get(),ProductModel.class);
+
+        }
+            return null;
     }
 }

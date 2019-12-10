@@ -35,5 +35,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findByUuid(@Param("uuid") String uuid);
 
 
-    Set<Product> deleteByUuid(String uuid);
+    int deleteByUuid(String uuid);
 }

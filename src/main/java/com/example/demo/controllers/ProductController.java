@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +21,8 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+
+    //TODO: Check if working
     @PostMapping(path = "/add",
             consumes = "application/json",
             produces = "application/json")
@@ -28,13 +31,24 @@ public class ProductController {
         String uuid = productService.addProduct(productModel);
         return new ResponseEntity<>(uuid, HttpStatus.OK);
     }
-
+    //TODO: Check if working
     @GetMapping(path ="/getByName",
             produces = "application/json")
     @ResponseBody
-    public ResponseEntity<?> GetProductsByName(@RequestParam(value = "name", required = true) String name){
+    public ResponseEntity<?> GetProductsByName(@PathParam(value = "name") String name){
         Set<ProductModel> results = productService.getProductsLike(name);
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
+    //TODO: Check if working
+    @GetMapping(path ="/getByUuid",
+            produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<?> GetProductsByUuid(@RequestParam(value = "name", required = true) String name){
+        Set<ProductModel> results = productService.getProductsLike(name);
+        return new ResponseEntity<>(results, HttpStatus.OK);
+    }
+
+
+
 
 }
