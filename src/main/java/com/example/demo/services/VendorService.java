@@ -1,14 +1,12 @@
 package com.example.demo.services;
 
-import com.example.demo.entities.Store;
 import com.example.demo.models.StoreModel;
 import com.example.demo.repositories.VendorRepository;
 import com.example.demo.services.validation.ValidationService;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import javax.validation.ValidationException;
-import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 
 @Service
@@ -24,8 +22,8 @@ public class VendorService {
 
     public void registerUserAsVendor(String userUuid) {
         try {
-           vendorRepository.registerVendor(userUuid);
-        } catch (Exception e) {
+            vendorRepository.registerVendor(userUuid);
+        } catch (SQLIntegrityConstraintViolationException e) {
             throw new ValidationException("No user with uuid '" + userUuid + "' was found.");
         }
     }
@@ -36,7 +34,8 @@ public class VendorService {
 //        if(fieldsAreMissing) {
 //            throw new ValidationException("All fields must be included");
 //        }
-//        vendorRepository.registerStore(vendorUUID, storeModel);
+
+        vendorRepository.registerStore(vendorUUID, storeModel.getAddress(), storeModel.getDescription());
     }
 
     public void deleteStore(String storeUuid) {

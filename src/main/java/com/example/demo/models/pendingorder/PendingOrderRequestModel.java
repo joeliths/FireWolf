@@ -2,7 +2,9 @@ package com.example.demo.models.pendingorder;
 
 import com.example.demo.models.pendingorder.nestedobjects.PendingOrderProductRequestModel;
 
+import javax.persistence.PrePersist;
 import java.util.List;
+import java.util.UUID;
 
 public class PendingOrderRequestModel {
 
@@ -40,4 +42,6 @@ public class PendingOrderRequestModel {
     public void setOrderedProducts(List<PendingOrderProductRequestModel> orderedProducts) {
         this.orderedProducts = orderedProducts;
     }
+
+
 }

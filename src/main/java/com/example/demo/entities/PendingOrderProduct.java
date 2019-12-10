@@ -78,7 +78,7 @@ public class PendingOrderProduct implements Serializable, MyEntity {
         return "PendingOrderProduct{" +
                 "uuid=" + uuid +
                 ", id=" + id +
-                ", pendingOrder=" + pendingOrder +
+                ", pendingOrder=" + pendingOrder.getUuid() +
                 ", inventoryProduct=" + inventoryProduct +
                 ", quantity=" + quantity +
                 '}';
