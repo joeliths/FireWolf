@@ -77,7 +77,7 @@ public class PendingOrderProduct implements Serializable {
         return "PendingOrderProduct{" +
                 "uuid=" + uuid +
                 ", id=" + id +
-                ", pendingOrder=" + pendingOrder +
+                ", pendingOrder=" + pendingOrder.getUuid() +
                 ", inventoryProduct=" + inventoryProduct +
                 ", quantity=" + quantity +
                 '}';

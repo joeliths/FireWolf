@@ -51,8 +51,24 @@ public class PendingOrderService {
         return null;
     }
 
-    public PendingOrderResponseModel addPendingOrder(PendingOrderRequestModel pendingOrder){
-     pendingOrderRepository.insertPendingOrder(new Date(), new Date(), pendingOrder.getCustomerUUID(), pendingOrder.getStoreUUID());
+    public String addPendingOrder(PendingOrderRequestModel pendingOrder){
+     int insertedRows = pendingOrderRepository.insertPendingOrder(new Date(), new Date(), pendingOrder.getCustomerUUID(), pendingOrder.getStoreUUID());
+     String pendingOrderUuid;
+     if(insertedRows > 0){
+         pendingOrderUuid = pendingOrderRepository.getLatestPendingOrderUuid();
+     }else
+         throw new RuntimeException();
+
+     pendingOrder.getOrderedProducts().forEach(p -> {
+         pendingOrderProductRepository.insertPendingOrderProduct(p.getQuantity(), p.getInventoryProductUUID(), pendingOrderUuid);
+     });
+
+     List<PendingOrderProduct> products = pendingOrderProductRepository.getPendingOrderProductByPendingOrderUuid(pendingOrderUuid);
+
+     products.forEach(System.out::println);
+
+     return pendingOrderUuid;
+
 
 //        Set<PendingOrderProduct> products = pendingOrder.getOrderedProducts().stream()
 //                .map(p -> {
@@ -98,7 +114,7 @@ public class PendingOrderService {
 //        CustomerModel customerModel = new CustomerModel();
 //        PendingOrderResponseModel pendingOrderResponseModel = new PendingOrderResponseModel(order.getUuid().toString(), order.getPlacemenDateTime().toString(), order.getExpirationDateTime().toString(), storeModel, customerModel, pendingOrderProductResponseModels);
 //        customerModel.setPendingOrders(new HashSet<>(Arrays.asList(pendingOrderResponseModel.getUUID())));
-        return new PendingOrderResponseModel();
+//        return new PendingOrderResponseModel();
     }
 
     public void deletePendingOrder(String uuid){
