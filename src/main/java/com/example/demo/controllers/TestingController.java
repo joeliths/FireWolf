@@ -1,8 +1,10 @@
 package com.example.demo.controllers;
 
 import com.example.demo.Mapper.Convert;
+import com.example.demo.entities.InventoryProduct;
 import com.example.demo.entities.PendingOrder;
 import com.example.demo.entities.Vendor;
+import com.example.demo.models.InventoryProductModel;
 import com.example.demo.models.VendorModel;
 import com.example.demo.models.pendingorder.PendingOrderModel;
 import com.example.demo.models.pendingorder.PendingOrderRequestModel;
@@ -20,6 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import sun.reflect.annotation.ExceptionProxy;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
+import java.util.Set;
+
 @Controller
 public class TestingController {
     Convert convert = new Convert();
@@ -95,12 +100,15 @@ public class TestingController {
     @ResponseBody
     public ResponseEntity getinventoryProductsByVendor(@RequestBody VendorModel vendorModel) {
         try {
-            Vendor vendor= vendorRepository.getInventoryproductsByVendor(vendorModel.getUuid());
-            System.out.println(vendor.getUuid());
-            System.out.println(vendor.toString());
-            VendorModel responseVendor = convert.lowAccessConverter(vendor, VendorModel.class);
+            Set<InventoryProduct> responseEntities = vendorRepository.getInventoryProductsOfAStoreOfAVendor(vendorModel.getUuid());
+            Set<InventoryProductModel> responseModels = new HashSet<>();
+            for(InventoryProduct product:responseEntities){
+                InventoryProductModel thisIteration = convert.lowAccessConverter(product, InventoryProductModel.class);
+                responseModels.add(thisIteration);
+            }
+
             System.out.println("third reached");
-            return new ResponseEntity<>(responseVendor, HttpStatus.OK);
+            return new ResponseEntity<>(responseModels, HttpStatus.OK);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (NoSuchMethodException e) {

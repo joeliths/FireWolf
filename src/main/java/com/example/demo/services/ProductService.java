@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.resource.spi.EISSystemException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -43,12 +44,12 @@ public class ProductService {
     }
 
     //TODO:Check what should be Set and what should be List
-    public List<ProductModel> getProductsLike(String searchTerm){
+    public Set<ProductModel> getProductsLike(String searchTerm){
         try {
 
-            List<Product> productEntities = productRepository.findByNameIgnoreCaseContaining(searchTerm);
+            Set<Product> productEntities = productRepository.findByNameIgnoreCaseContaining(searchTerm);
 
-            List<ProductModel> productModelList = new ArrayList<>();
+            Set<ProductModel> productModelList = new HashSet<>();
             for (Product product : productEntities) {
                 ProductModel productModel = convert.lowAccessConverter(product, ProductModel.class);
                 productModelList.add(productModel);

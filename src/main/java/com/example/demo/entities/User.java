@@ -30,7 +30,7 @@ public class User implements Serializable, MyEntity {
     private String password;
 
     @Column(name = "USER_ROLE")
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USER_ROLE_ROLES",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
