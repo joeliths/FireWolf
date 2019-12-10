@@ -20,12 +20,8 @@ public class VendorService {
         this.validationService = validationService;
     }
 
-    public void registerUserAsVendor(String userUuid) {
-        try {
-            vendorRepository.registerVendor(userUuid);
-        } catch (SQLIntegrityConstraintViolationException e) {
-            throw new ValidationException("No user with uuid '" + userUuid + "' was found.");
-        }
+    public void registerUserAsVendor(String userUuid){
+        vendorRepository.registerVendor(userUuid);
     }
 
     public void registerStore(String vendorUUID, StoreModel storeModel){
