@@ -101,4 +101,17 @@ public class PendingOrder implements Serializable{
     public void setPendingOrderProducts(Set<PendingOrderProduct> pendingOrderProducts) {
         this.pendingOrderProducts = pendingOrderProducts;
     }
+
+    @Override
+    public String toString() {
+        return "PendingOrder{" +
+                "uuid=" + uuid +
+                ", id=" + id +
+                ", store=" + store +
+                ", customer=" + customer.getUser().getUserName() +
+                ", pendingOrderProducts=" + pendingOrderProducts +
+                ", placemenDateTime=" + placemenDateTime +
+                ", expirationDateTime=" + expirationDateTime +
+                '}';
+    }
 }

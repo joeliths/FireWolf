@@ -27,8 +27,6 @@ public class PendingOrderService {
     @Autowired
     VendorRepository vendorRepository;
 
-
-
     @Autowired
     public PendingOrderService(PendingOrderRepository pendingOrderRepository,
                                UserRepository userRepository, StoreRepository storeRepository,
@@ -54,47 +52,53 @@ public class PendingOrderService {
     }
 
     public PendingOrderResponseModel addPendingOrder(PendingOrderRequestModel pendingOrder){
-        PendingOrder order = new PendingOrder(new Date(), new Date());
+     pendingOrderRepository.insertPendingOrder(new Date(), new Date(), pendingOrder.getCustomerUUID(), pendingOrder.getStoreUUID());
 
-        Store store = storeRepository.findByUuid(pendingOrder.getStoreUUID()).get();
-        order.setStore(store);
-        System.out.println(pendingOrder.getCustomerUUID());
-        Customer customer = customerService.getCustomerByUuid(pendingOrder.getCustomerUUID());
-        order.setCustomer(customer);
-        pendingOrderRepository.save(order);
-
-        List<PendingOrderProductResponseModel> pendingOrderProductResponseModels = new ArrayList<>();
-        Set<PendingOrderProduct> products = new HashSet<>();
-        pendingOrder.getOrderedProducts().forEach(p -> {
-            InventoryProduct inventoryProduct = inventoryProductRepository.findByUuid(p.getInventoryProductUUID().toString()).get();
-
-            inventoryProduct.getProduct().getName();
-            inventoryProduct.getProduct().getDescription();
-
-            PendingOrderProduct product = new PendingOrderProduct(p.getQuantity());
-            product.setInventoryProduct(inventoryProduct);
-            product.setPendingOrder(order);
-
-            inventoryProduct.setStock(inventoryProduct.getStock() - 1);
-
-            pendingOrderProductRepository.save(product);
-            inventoryProductRepository.save(inventoryProduct);
-
-            products.add(product);
-            PendingOrderProductResponseModel pendingOrderProductResponseModel = new PendingOrderProductResponseModel();
-            pendingOrderProductResponseModel.setName(inventoryProduct.getProduct().getName());
-            pendingOrderProductResponseModel.setQuantity(product.getQuantity());
-            pendingOrderProductResponseModels.add(pendingOrderProductResponseModel);
-        });
-
-        StoreModel storeModel = new StoreModel();
-        storeModel.setAddress(store.getAddress());
-        storeModel.setDescription(store.getDescription());
-
-        CustomerModel customerModel = new CustomerModel();
-        PendingOrderResponseModel pendingOrderResponseModel = new PendingOrderResponseModel(order.getUuid().toString(), order.getPlacemenDateTime().toString(), order.getExpirationDateTime().toString(), storeModel, customerModel, pendingOrderProductResponseModels);
-        customerModel.setPendingOrders(new HashSet<>(Arrays.asList(pendingOrderResponseModel.getUUID())));
-        return pendingOrderResponseModel;
+//        Set<PendingOrderProduct> products = pendingOrder.getOrderedProducts().stream()
+//                .map(p -> {
+//                    PendingOrderProduct product = new PendingOrderProduct();
+//                    product.setPendingOrder();
+//                })
+//        System.out.println(order2.getId());
+//        Store store = storeRepository.findByUuid(pendingOrder.getStoreUUID()).get();
+//        order.setStore(store);
+//        System.out.println(pendingOrder.getCustomerUUID());
+//        Customer customer = customerService.getCustomerByUuid(pendingOrder.getCustomerUUID());
+//        order.setCustomer(customer);
+//        pendingOrderRepository.save(order);
+//
+//        List<PendingOrderProductResponseModel> pendingOrderProductResponseModels = new ArrayList<>();
+//        Set<PendingOrderProduct> products = new HashSet<>();
+//        pendingOrder.getOrderedProducts().forEach(p -> {
+//            InventoryProduct inventoryProduct = inventoryProductRepository.findByUuid(p.getInventoryProductUUID().toString()).get();
+//
+//            inventoryProduct.getProduct().getName();
+//            inventoryProduct.getProduct().getDescription();
+//
+//            PendingOrderProduct product = new PendingOrderProduct(p.getQuantity());
+//            product.setInventoryProduct(inventoryProduct);
+//            product.setPendingOrder(order);
+//
+//            inventoryProduct.setStock(inventoryProduct.getStock() - 1);
+//
+//            pendingOrderProductRepository.save(product);
+//            inventoryProductRepository.save(inventoryProduct);
+//
+//            products.add(product);
+//            PendingOrderProductResponseModel pendingOrderProductResponseModel = new PendingOrderProductResponseModel();
+//            pendingOrderProductResponseModel.setName(inventoryProduct.getProduct().getName());
+//            pendingOrderProductResponseModel.setQuantity(product.getQuantity());
+//            pendingOrderProductResponseModels.add(pendingOrderProductResponseModel);
+//        });
+//
+//        StoreModel storeModel = new StoreModel();
+//        storeModel.setAddress(store.getAddress());
+//        storeModel.setDescription(store.getDescription());
+//
+//        CustomerModel customerModel = new CustomerModel();
+//        PendingOrderResponseModel pendingOrderResponseModel = new PendingOrderResponseModel(order.getUuid().toString(), order.getPlacemenDateTime().toString(), order.getExpirationDateTime().toString(), storeModel, customerModel, pendingOrderProductResponseModels);
+//        customerModel.setPendingOrders(new HashSet<>(Arrays.asList(pendingOrderResponseModel.getUUID())));
+        return new PendingOrderResponseModel();
     }
 
     public void deletePendingOrder(String uuid){
