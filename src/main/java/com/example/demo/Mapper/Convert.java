@@ -9,6 +9,7 @@ import com.example.demo.models.user.UserModel;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 public  class Convert {
@@ -34,7 +35,7 @@ public  class Convert {
         try {
             return convert(originObject,targetClass,lowAccessforbiddenFields);
         } catch (Exception e) {
-            throw new ModelMapperException("Could not convert between model and entity");
+            throw new ModelMapperException("Could not convert between model and entity" + e);
         }
     }
 
@@ -47,70 +48,72 @@ public  class Convert {
 
 
         Class<?> originClass = originObject.getClass();
-        Field[] originFields = originClass.getDeclaredFields();
-
+        Method[] originMethods = originClass.getDeclaredMethods();
+        System.out.println("originMethod 2:" + originMethods[2]);
         T targetObject = targetClass.getConstructor().newInstance();
         Field[] targetFields = targetObject.getClass().getDeclaredFields();
 
         addBackReference(originObject, targetObject);
 
-        for (Field originField : originFields) {
-            originField.setAccessible(true);
-
-            if (isForbiddenField(originField, forbiddenFields)){
-                originField.setAccessible(false);
-                continue;
-            }
-            if( originIsNull(originField, originObject)){
-                originField.setAccessible(false);
-                continue;
-            }
-
-            int matchedFieldsIndex = indexOfMatchedField(originField,targetFields);
-            if (matchedFieldsIndex==-1){
-                originField.setAccessible(false);
-                continue;
-            }
-
-
-
-
-            Field targetField = targetFields[matchedFieldsIndex];
+        for (Field targetField : targetFields) {
             targetField.setAccessible(true);
 
+            if (isForbiddenField(targetField, forbiddenFields)){
+                targetField.setAccessible(false);
+                continue;
+            }
+            /*if( originIsNull(targetField, originObject)){
+                targetField.setAccessible(false);
+                continue;
+            }*/
 
-
-            if(isEntityToModelUUID(targetField)){
-                targetField.set(    targetObject,   originField.get(originObject).toString()   );
+            int originMethodIndex = indexOfOriginMethod(targetField,originMethods);
+            if (originMethodIndex==-1){
+                targetField.setAccessible(false);
                 continue;
             }
 
+
+
+
+            Method originMethod = originMethods[originMethodIndex];
+            originMethod.setAccessible(true);
+
+
+            //Probably done
+            if(isEntityToModelUUID(targetField)){
+                targetField.set(    targetObject,   originMethod.invoke(originObject).toString()   );
+                continue;
+            }
+            //TODO: pass model - entity
             else if(isModelToEntityUUID(targetField)) {
-                String originString = originField.get(originObject).toString();
+                String originString = targetField.get(originObject).toString();
                 MyUUID uuidObject = (MyUUID) targetField.get(targetObject);
                 uuidObject.setUuid(originString);
                 targetField.set(targetObject, uuidObject);
                 //MyUUID.class.getMethod("setUuid", String.class).invoke(uuidObject,originString);
                 targetField.setAccessible(false);
-                originField.setAccessible(false);
+                targetField.setAccessible(false);
                 continue;
 
             }
             else if(targetReferenceTypeNotNull(targetField, targetObject)){
                 targetField.setAccessible(false);
-                originField.setAccessible(false);
+                targetField.setAccessible(false);
                 continue;
             }
 
                 //TODO: Here there be dragons
-            else if(isNestedObject(originField)){
-                Object nestedOriginObject = originField.get(originObject);
-                Class nestedTargetClass = EntityModelHashMap.get(originField.getType());
+            else if(isNestedObject(originMethod)){
+                System.out.println("In usual dragons");
+                Object nestedOriginObject = originMethod.invoke(originObject);
+                System.out.println("targetfield type: " + targetField.getType());
+                Class nestedTargetClass = targetField.getType();    //EntityModelHashMap.get(targetField.getType());
 
                 if(isBackReference(nestedOriginObject)){
                     targetField.set(targetObject, gettargetBackReference(nestedOriginObject));
                     targetField.setAccessible(false);
-                    originField.setAccessible(false);
+                    targetField.setAccessible(false);
                     continue;
                 }
                 //recursion
@@ -118,21 +121,18 @@ public  class Convert {
                 nestedTarget = nestedTargetClass.cast(nestedTarget);
                 targetField.set(targetObject, nestedTarget);
                 targetField.setAccessible(false);
-                originField.setAccessible(false);
+                targetField.setAccessible(false);
 
-            } else if (isSet(originField)){
-                Set nestedSet = (Set) originField.get(originObject);
+            } else if (isSet(targetField)){
+                Set nestedSet = (Set) originMethod.invoke(originObject);
                 Set<Object> targetSet = new HashSet<>();
                 for (Object nestedEntry: nestedSet) {
-
-                    Object nestedOriginObject = originField.get(originObject);
+                    Object nestedOriginObject = originMethod.invoke(originObject);
                     Class nestedTargetClass = EntityModelHashMap.get(nestedEntry.getClass());
-
                     if(isBackReference(nestedOriginObject)){
                         targetField.set(targetObject, gettargetBackReference(nestedOriginObject));
                         continue;
                     }
-
                     Object nestedTarget = convert(nestedEntry, nestedTargetClass, forbiddenFields);
                     nestedTarget = nestedTargetClass.cast(nestedTarget);
                     targetSet.add(nestedTarget);
@@ -142,18 +142,27 @@ public  class Convert {
             }
 
             else {
-                targetField.set(    targetObject,   originField.get(originObject)   );
+                System.out.println("normal happy field :)");
+                targetField.set(    targetObject,     originMethod.invoke(originObject)   );
             }
             targetField.setAccessible(false);
-            originField.setAccessible(false);
+            targetField.setAccessible(false);
         }
         return targetObject;
     }
 
 
-    private  int indexOfMatchedField(Field field, Field[] fields){
-        for(int i=0; i < fields.length; i++){
-            if(fields[i].getName().equals(field.getName())){
+    private  int indexOfOriginMethod(Field field, Method[] methods){
+        for(int i=0; i < methods.length; i++){
+            String triedMethodName = methods[i].getName();
+            System.out.println(triedMethodName);
+
+            String triedPrefix = triedMethodName.substring(0, 3);
+
+            String triedRemaining = triedMethodName.substring(3).toLowerCase();
+
+            if(     triedPrefix.equals("get")   &&  triedRemaining.equals(field.getName().toLowerCase()) ){
+                System.out.println("winner winner chicken dinner!");
                 return i;
             }
         }
@@ -180,8 +189,9 @@ public  class Convert {
         }
         return false;
     }
-    private  boolean isNestedObject(Field originField){
-        return MyEntity.class.isAssignableFrom(originField.getType());
+    private  boolean isNestedObject(Method originMethod){
+        System.out.println("Här ska du kolla nu pontus: " + originMethod.getReturnType());
+        return MyEntity.class.isAssignableFrom(originMethod.getReturnType());
     }
     private  boolean originIsNull(Field field, Object originObject){
         try {
@@ -200,7 +210,6 @@ public  class Convert {
             return false;
         }
         try {
-            System.out.println("pontus testar field.get(targetObject): " + field.get(targetObject));
             if(field.get(targetObject) != null){
                 return true;
             }

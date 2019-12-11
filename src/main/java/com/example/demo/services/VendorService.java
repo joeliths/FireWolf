@@ -23,7 +23,7 @@ public class VendorService {
     public void registerUserAsVendor(String userUuid) {
         try {
             vendorRepository.registerVendor(userUuid);
-        } catch (SQLIntegrityConstraintViolationException e) {
+        } catch (Exception e) {
             throw new ValidationException("No user with uuid '" + userUuid + "' was found.");
         }
     }
