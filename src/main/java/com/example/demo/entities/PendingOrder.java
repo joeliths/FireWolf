@@ -42,7 +42,7 @@ public class PendingOrder implements Serializable, MyEntity{
     )
     private Set<PendingOrderProduct> pendingOrderProducts = new HashSet<>();
 
-    @Column(name = "placement_date_time",nullable = false)
+    @Column(name = "placement_date_time", nullable = false)
     private Date placementDateTime;
 
 
@@ -66,7 +66,7 @@ public class PendingOrder implements Serializable, MyEntity{
         this.id = id;
     }
 
-    public Date getPlacemenDateTime() {
+    public Date getPlacementDateTime() {
         return placementDateTime;
     }
 

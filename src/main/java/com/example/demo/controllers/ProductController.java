@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 
+import com.example.demo.entities.Product;
 import com.example.demo.models.ProductModel;
 import com.example.demo.repositories.ProductRepository;
 import com.example.demo.services.ProductService;
