@@ -6,6 +6,7 @@ import com.example.demo.entities.UserRole;
 import com.example.demo.exceptions.customExceptions.UserRoleTypeNotFoundException;
 import com.example.demo.models.user.UserRegisterModel;
 import com.example.demo.models.user.UserResponseModel;
+import com.example.demo.models.view.ViewTest;
 import com.example.demo.repositories.CustomerRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.UserRoleRepository;
@@ -139,4 +140,11 @@ public class UserService {
                 userEntity.getFullName(), userEntity.getUserName(), userEntity.getUuid().toString()
         );
     }
+
+
+    public ViewTest findById(int i) {
+        return userRepository.getById(1);
+    }
+
+
 }

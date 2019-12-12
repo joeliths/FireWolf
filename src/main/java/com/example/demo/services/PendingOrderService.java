@@ -1,11 +1,13 @@
 package com.example.demo.services;
 
+import com.example.demo.Mapper.Convert;
 import com.example.demo.entities.*;
 import com.example.demo.entities.helperclasses.MyUUID;
 import com.example.demo.models.CustomerModel;
 import com.example.demo.models.StoreModel;
 import com.example.demo.models.pendingorder.PendingOrderRequestModel;
 import com.example.demo.models.pendingorder.PendingOrderResponseModel;
+import com.example.demo.models.pendingorder.PendingOrderWithView;
 import com.example.demo.models.pendingorder.nestedobjects.PendingOrderProductResponseModel;
 import com.example.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class PendingOrderService {
     VendorRepository vendorRepository;
 
     @Autowired
+    Convert convert;
+
+    @Autowired
     public PendingOrderService(PendingOrderRepository pendingOrderRepository,
                                UserRepository userRepository, StoreRepository storeRepository,
                                InventoryProductRepository inventoryProductRepository,
@@ -47,27 +52,35 @@ public class PendingOrderService {
 
     }
 
+    public PendingOrderWithView getPendingOrderByUuid(String uuid){
+        PendingOrder pendingOrder = pendingOrderRepository.findByUuid(uuid).get();
+        PendingOrderWithView pendingOrderModel = convert.lowAccessConverter(pendingOrder, PendingOrderWithView.class);
+        pendingOrderModel.setPendingOrderProducts(pendingOrderProductRepository.getPendingOrderProductsByPendingOrderUuid(uuid));
+        return pendingOrderModel;
+    }
+
     public PendingOrderResponseModel findPendingOrderByUuid(String uuid) {
         return null;
     }
 
-    public String addPendingOrder(PendingOrderRequestModel pendingOrder){
-     int insertedRows = pendingOrderRepository.insertPendingOrder(new Date(), new Date(), pendingOrder.getCustomerUUID(), pendingOrder.getStoreUUID());
-     String pendingOrderUuid;
+    public String addPendingOrder(PendingOrderRequestModel pendingOrderModel){
+     int insertedRows = pendingOrderRepository.insertPendingOrder(new Date(), new Date(), pendingOrderModel.getCustomerUUID(), pendingOrderModel.getStoreUUID());
+     PendingOrder pendingOrder;
      if(insertedRows > 0){
-         pendingOrderUuid = pendingOrderRepository.getLatestPendingOrderUuid();
+         pendingOrder = pendingOrderRepository.getLatestPendingOrderUuid();
      }else
          throw new RuntimeException();
 
-     pendingOrder.getOrderedProducts().forEach(p -> {
-         pendingOrderProductRepository.insertPendingOrderProduct(p.getQuantity(), p.getInventoryProductUUID(), pendingOrderUuid);
+     pendingOrderModel.getOrderedProducts().forEach(p -> {
+         pendingOrderProductRepository.insertPendingOrderProduct(p.getQuantity(), p.getInventoryProductUUID(), pendingOrder.getUuid().toString());
      });
 
-     List<PendingOrderProduct> products = pendingOrderProductRepository.getPendingOrderProductByPendingOrderUuid(pendingOrderUuid);
+     List<PendingOrderProduct> products = pendingOrderProductRepository.getPendingOrderProductByPendingOrderUuid(pendingOrder.getUuid().toString());
+
 
      products.forEach(System.out::println);
 
-     return pendingOrderUuid;
+     return "";
 
 
 //        Set<PendingOrderProduct> products = pendingOrder.getOrderedProducts().stream()

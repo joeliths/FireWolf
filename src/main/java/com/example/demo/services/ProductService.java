@@ -3,12 +3,11 @@ package com.example.demo.services;
 import com.example.demo.Mapper.Convert;
 import com.example.demo.entities.Product;
 import com.example.demo.models.ProductModel;
+import com.example.demo.models.view.PendingOrderProductView;
 import com.example.demo.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.resource.spi.EISSystemException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 //TODO:Alot in this class
@@ -71,4 +70,6 @@ public class ProductService {
         }
             return null;
     }
+
+
 }
