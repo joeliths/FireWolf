@@ -1,15 +1,12 @@
 package com.example.demo.security.filters;
 
-import com.example.demo.models.user.UserRegisterModel;
+import com.example.demo.models.user.UserRequestModel;
 import com.google.gson.Gson;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
@@ -34,7 +31,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
         String requestData = getRequestBody(request.getReader());
-        UserRegisterModel user = getPOJOFromJson(requestData, UserRegisterModel.class);
+        UserRequestModel user = getPOJOFromJson(requestData, UserRequestModel.class);
         UsernamePasswordAuthenticationToken token;
         if(checkNull(user)){
             token = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
@@ -54,8 +51,8 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
         return (T) obj;
     }
 
-    public boolean checkNull(UserRegisterModel userRegisterModel){
-        return null != userRegisterModel.getUserName() && null != userRegisterModel.getPassword();
+    public boolean checkNull(UserRequestModel userRequestModel){
+        return null != userRequestModel.getUserName() && null != userRequestModel.getPassword();
     }
 
 }

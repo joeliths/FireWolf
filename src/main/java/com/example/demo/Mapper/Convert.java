@@ -3,9 +3,6 @@ package com.example.demo.Mapper;
 import com.example.demo.entities.*;
 import com.example.demo.entities.helperclasses.MyUUID;
 import com.example.demo.exceptions.customExceptions.ModelMapperException;
-import com.example.demo.models.*;
-import com.example.demo.models.pendingorder.PendingOrderModel;
-import com.example.demo.models.user.UserModel;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

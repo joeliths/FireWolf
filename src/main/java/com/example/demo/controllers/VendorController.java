@@ -22,21 +22,17 @@ public class VendorController {
         this.vendorService = vendorService;
     }
 
-    @PostMapping("/register/{userUuid}")
-    public ResponseEntity<String> registerUserAsVendor(@PathVariable String userUuid){
+    @PostMapping("/register-vendor/{userUuid}")
+    public ResponseEntity<?> registerUserAsVendor(@PathVariable String userUuid){
         vendorService.registerUserAsVendor(userUuid);
         return ResponseEntity.status(CREATED).build();
     }
 
 
-    @PostMapping(path = "/registerStore",
-            consumes = "application/json",
-            produces = "application/json")
-    @ResponseBody
-    public ResponseEntity<?> registerStore(@RequestBody StoreModel storeModel){
-//        String uuid = vendorService.registerStore(storeModel);
-//        return new ResponseEntity<>(uuid, HttpStatus.OK);
-        return null;
+    @PostMapping("/register-store/{vendorUuid}")
+    public ResponseEntity<?> registerStore(@PathVariable String vendorUuid, @RequestBody StoreModel storeModel){
+        vendorService.registerStore(vendorUuid, storeModel);
+        return ResponseEntity.status(CREATED).build();
     }
 
 
