@@ -43,12 +43,9 @@ public class ProductController {
     @GetMapping(path ="/getByUuid",
             produces = "application/json")
     @ResponseBody
-    public ResponseEntity<?> GetProductsByUuid(@RequestParam(value = "name", required = true) String name){
-        Set<ProductModel> results = productService.getProductsLike(name);
+    public ResponseEntity<?> GetProductsByUuid(@RequestParam(value = "uuid", required = true) String uuid){
+        Set<ProductModel> results = productService.getProductsLike(uuid);
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
-
-
-
 
 }
