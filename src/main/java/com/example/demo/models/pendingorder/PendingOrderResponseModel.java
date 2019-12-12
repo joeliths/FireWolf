@@ -1,60 +1,30 @@
 package com.example.demo.models.pendingorder;
 
-
-import com.example.demo.models.CustomerModel;
+import com.example.demo.models.user.Customer.CustomerModel;
 import com.example.demo.models.StoreModel;
-import com.example.demo.models.pendingorder.nestedobjects.PendingOrderProductResponseModel;
+import com.example.demo.models.view.PendingOrderProductView;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
+import java.util.Set;
 
 public class PendingOrderResponseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private String uuid;
-    private String placemenDateTime;
-    private String expirationDateTime;
     private StoreModel store;
     private CustomerModel customer;
-    private List<PendingOrderProductResponseModel> orderedProducts;
+    Set<PendingOrderProductView> pendingOrderProductsViews;
+    private Date placementDateTime;
+    private Date expirationDateTime;
 
-    public PendingOrderResponseModel() {
-    }
-
-    public PendingOrderResponseModel(String orderUUID, String placemenDateTime, String expirationDateTime,
-                                     StoreModel store, CustomerModel customer,
-                                     List<PendingOrderProductResponseModel> orderedProducts) {
-        this.uuid = orderUUID;
-        this.placemenDateTime = placemenDateTime;
-        this.expirationDateTime = expirationDateTime;
-        this.store = store;
-        this.customer = customer;
-        this.orderedProducts = orderedProducts;
-    }
-
-    public String getUUID() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUUID(String uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
-    }
-
-    public String getPlacemenDateTime() {
-        return placemenDateTime;
-    }
-
-    public void setPlacemenDateTime(String placemenDateTime) {
-        this.placemenDateTime = placemenDateTime;
-    }
-
-    public String getExpirationDateTime() {
-        return expirationDateTime;
-    }
-
-    public void setExpirationDateTime(String expirationDateTime) {
-        this.expirationDateTime = expirationDateTime;
     }
 
     public StoreModel getStore() {
@@ -65,19 +35,37 @@ public class PendingOrderResponseModel implements Serializable {
         this.store = store;
     }
 
+
+
+    public Set<PendingOrderProductView> getPendingOrderProductsViews() {
+        return pendingOrderProductsViews;
+    }
+
+    public void setPendingOrderProductsViews(Set<PendingOrderProductView> pendingOrderProducts) {
+        this.pendingOrderProductsViews = pendingOrderProducts;
+    }
+
+    public Date getPlacementDateTime() {
+        return placementDateTime;
+    }
+
+    public void setPlacementDateTime(Date placementDateTime) {
+        this.placementDateTime = placementDateTime;
+    }
+
+    public Date getExpirationDateTime() {
+        return expirationDateTime;
+    }
+
+    public void setExpirationDateTime(Date expirationDateTime) {
+        this.expirationDateTime = expirationDateTime;
+    }
+
     public CustomerModel getCustomer() {
         return customer;
     }
 
-    public void setCustomer(CustomerModel customer) {
-        this.customer = customer;
-    }
-
-    public List<PendingOrderProductResponseModel> getOrderedProducts() {
-        return orderedProducts;
-    }
-
-    public void setOrderedProducts(List<PendingOrderProductResponseModel> orderedProducts) {
-        this.orderedProducts = orderedProducts;
+    public void setCustomer(CustomerModel customerModel) {
+        this.customer = customerModel;
     }
 }

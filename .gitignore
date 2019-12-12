@@ -34,3 +34,4 @@ build/
 ### Other ###
 application.properties
 /src/main/java/com/example/demo/repositories/TestRepository.java
+!/src/test/java/com/example/demo/services/UserServiceTest.java

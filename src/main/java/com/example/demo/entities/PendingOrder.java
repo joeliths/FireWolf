@@ -32,7 +32,7 @@ public class PendingOrder implements Serializable, MyEntity{
     private Store store = new Store();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     @OneToMany(
@@ -106,16 +106,16 @@ public class PendingOrder implements Serializable, MyEntity{
         this.pendingOrderProducts = pendingOrderProducts;
     }
 
-    @Override
-    public String toString() {
-        return "PendingOrder{" +
-                "uuid=" + uuid +
-                ", id=" + id +
-                ", store=" + store +
-                ", customer=" + customer.getUser().getUserName() +
-                ", pendingOrderProducts=" + pendingOrderProducts +
-                ", placemenDateTime=" + placementDateTime +
-                ", expirationDateTime=" + expirationDateTime +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "PendingOrder{" +
+//                "uuid=" + uuid +
+//                ", id=" + id +
+//                ", store=" + store +
+//                ", customer=" + customer.getUser().getUserName() +
+//                ", pendingOrderProducts=" + pendingOrderProducts +
+//                ", placemenDateTime=" + placementDateTime +
+//                ", expirationDateTime=" + expirationDateTime +
+//                '}';
+//    }
 }

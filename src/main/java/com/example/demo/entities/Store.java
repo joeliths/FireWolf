@@ -40,6 +40,8 @@ public class Store implements Serializable, MyEntity {
     @Column
     private String description;
 
+
+
     public Store() {
     }
 

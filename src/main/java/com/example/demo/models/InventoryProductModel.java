@@ -33,4 +33,6 @@ public class InventoryProductModel implements Serializable {
     public void setPrice(int price) {
         this.price = price;
     }
+
+
 }
