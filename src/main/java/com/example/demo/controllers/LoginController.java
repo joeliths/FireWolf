@@ -1,8 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.user.UserRegisterModel;
-import com.example.demo.services.PendingOrderService;
-import com.example.demo.services.ProductService;
+import com.example.demo.models.user.UserRequestModel;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,9 +13,6 @@ public class LoginController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    PendingOrderService pendingOrderService;
-
     @PostMapping(path = "/login",
             consumes = "application/json",
             produces = "application/json")
@@ -29,25 +24,16 @@ public class LoginController {
             consumes = "application/json",
             produces = "application/json")
     @ResponseBody
-    public ResponseEntity<?> registerUser(@RequestBody UserRegisterModel userRegisterModel){
-        userService.registerUser(userRegisterModel);
-        return new ResponseEntity<>( HttpStatus.OK);
+    public ResponseEntity<?> registerUser(@RequestBody UserRequestModel userRequestModel){
+        //userService.registerUser(userRegisterModel);
+        //return new ResponseEntity<>( HttpStatus.OK);
+        return null;
     }
 
     @GetMapping("/T/out")
     public String logout(){
         SecurityContextHolder.clearContext();
         return "ok";
-    }
-
-    @GetMapping("/test/{uuid}")
-    public ResponseEntity test(@PathVariable String uuid){
-
-//        //System.out.println( userService.findById(1).getFullName());
-//        productService.findByPendingOrderUuid("c0e9db00-1cc5-11ea-b189-1062e58facf1").forEach(p -> {
-//            System.out.println("desc: "+p.getDescription() + " \nname:" + p.getName() + "\nQ:" + p.getQuantity());
-//        });
-        return ResponseEntity.ok(pendingOrderService.getPendingOrderByUuid(uuid));
     }
 
 }
