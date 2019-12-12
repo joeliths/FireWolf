@@ -77,7 +77,7 @@ public class TestingController {
             System.out.println(pendingOrder.toString());
             PendingOrderModel answerModel = convert.lowAccessConverter(pendingOrder, PendingOrderModel.class);
             System.out.println("third reached");
-            answerModel.getCustomer().setPendingOrders(null);
+//            answerModel.getCustomer().setPendingOrders(null);
             return new ResponseEntity<>(answerModel, HttpStatus.OK);
 
         }catch (Exception e) {

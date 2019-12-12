@@ -1,7 +1,6 @@
 package com.example.demo.models.pendingorder;
 
-import com.example.demo.entities.Store;
-import com.example.demo.models.CustomerModel;
+import com.example.demo.models.user.Customer.CustomerModel;
 import com.example.demo.models.PendingOrderProductModel;
 import com.example.demo.models.StoreModel;
 

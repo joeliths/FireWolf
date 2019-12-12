@@ -6,8 +6,10 @@ public interface PendingOrderProductView {
 
     String getDescription();
 
-    String getQuantity();
+    int getQuantity();
 
-    String getPrice();
+    int getPrice();
+
+    String getUuid();
 
 }

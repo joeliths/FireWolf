@@ -3,12 +3,10 @@ package com.example.demo.services;
 import com.example.demo.Mapper.Convert;
 import com.example.demo.entities.*;
 import com.example.demo.entities.helperclasses.MyUUID;
-import com.example.demo.models.CustomerModel;
-import com.example.demo.models.StoreModel;
 import com.example.demo.models.pendingorder.PendingOrderRequestModel;
 import com.example.demo.models.pendingorder.PendingOrderResponseModel;
 import com.example.demo.models.pendingorder.PendingOrderWithView;
-import com.example.demo.models.pendingorder.nestedobjects.PendingOrderProductResponseModel;
+import com.example.demo.models.view.PendingOrderProductView;
 import com.example.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,8 +52,21 @@ public class PendingOrderService {
 
     public PendingOrderWithView getPendingOrderByUuid(String uuid){
         PendingOrder pendingOrder = pendingOrderRepository.findByUuid(uuid).get();
+        System.out.println(pendingOrder.getCustomer());
+        System.out.println(pendingOrder.getCustomer().getId());
         PendingOrderWithView pendingOrderModel = convert.lowAccessConverter(pendingOrder, PendingOrderWithView.class);
-        pendingOrderModel.setPendingOrderProducts(pendingOrderProductRepository.getPendingOrderProductsByPendingOrderUuid(uuid));
+        pendingOrderModel.getCustomer();
+
+
+//        CustomerModel customerModel;
+//        StoreModel storeModel;
+        Set<PendingOrderProductView> view = pendingOrderProductRepository.getPendingOrderProductsByPendingOrderUuid(uuid);
+        System.out.println("woah");
+        view.forEach(p -> {
+            System.out.println("damn");
+            System.out.println(p.getDescription() + " " + p.getName() + " " + p.getPrice() + " " + p.getQuantity());
+        });
+        pendingOrderModel.setPendingOrderProductsViews(view);
         return pendingOrderModel;
     }
 
