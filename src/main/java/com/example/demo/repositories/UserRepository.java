@@ -12,13 +12,24 @@ import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query(nativeQuery = true, value = "select * from user where user.uuid = :uuid")
-    Optional<User> findByUuid(@Param("uuid") String uuid);
-
-    Optional<User> findByUserName(String userName);
+    @Modifying
+    @Query(nativeQuery = true,
+            value = "update user set uuid = :#{#user.uuid.toString()}, user_name = :#{#user.userName}, " +
+                    "full_name = :#{#user.fullName}, password = :#{#user.password} where id = :#{#user.id}")
+    void patchUser(@Param("user") User user);
 
     @Modifying
     @Query(nativeQuery = true, value = "delete from user where user.uuid = :uuid")
     void deleteByUuid(@Param("uuid") String uuid);
+
+    @Query(nativeQuery = true, value = "select * from user where user.uuid = :uuid")
+    Optional<User> findByUuid(@Param("uuid") String uuid);
+
+    @Query(nativeQuery = true, value = "select * from user where user.uuid = :uuid")
+    User getByUuid(@Param("uuid") String uuid);
+
+    Optional<User> findByUserName(String userName);
+
+
 
 }

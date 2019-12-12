@@ -89,4 +89,8 @@ public class User implements Serializable, MyEntity {
     public MyUUID getUuid() {
         return uuid;
     }
+
+    public void setUuid(MyUUID uuid) {
+        this.uuid = uuid;
+    }
 }

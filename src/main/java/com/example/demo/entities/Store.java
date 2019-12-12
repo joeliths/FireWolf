@@ -71,4 +71,12 @@ public class Store implements Serializable, MyEntity {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
 }

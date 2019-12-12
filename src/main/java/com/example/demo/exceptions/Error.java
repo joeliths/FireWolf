@@ -10,14 +10,14 @@ import java.util.Date;
 
 public class Error implements Serializable {
 
-    private final LocalDateTime timeOccurred;
+    private final String timeOccurred;
     private final int statusCode;
     private final String statusMessage;
     private final String detailedMessage;
     private final String path;
 
     public Error(int statusCode, String statusMessage, String detailedMessage) {
-        this.timeOccurred = LocalDateTime.now();
+        this.timeOccurred = LocalDateTime.now().toString();
         this.statusCode = statusCode;
         this.statusMessage = statusMessage;
         this.detailedMessage = detailedMessage;
@@ -30,7 +30,7 @@ public class Error implements Serializable {
         return requestUri.substring(baseUri.length());
     }
 
-    public LocalDateTime getTimeOccurred() {
+    public String getTimeOccurred() {
         return timeOccurred;
     }
 

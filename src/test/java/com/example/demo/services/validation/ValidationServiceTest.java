@@ -8,25 +8,25 @@ import org.junit.jupiter.api.TestInstance;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ValidationServiceTest {
 
-    private ValidationService validationService;
-
-    @BeforeAll
-    public void init(){
-     validationService = new ValidationService();
-    }
-
-    @Test
-    void checkIfAnyFieldsAreNull() {
-        assertTrue(validationService.checkIfAnyFieldsAreNull("null", null));
-    }
-
-    @Test
-    void checkIfAnyFieldsAreNull_returnFalse(){
-        assertFalse(validationService.checkIfAnyFieldsAreNull("null", "yeaaah"));
-    }
-
-    @Test
-    void checkIfAnyFieldsAreNull_returnFalseWithPrimitives(){
-        assertFalse(validationService.checkIfAnyFieldsAreNull("null", 5, true));
-    }
+//    private ValidationService validationService;
+//
+//    @BeforeAll
+//    public void init(){
+//     validationService = new ValidationService();
+//    }
+//
+//    @Test
+//    void checkIfAnyFieldsAreNull() {
+//        assertTrue(validationService.checkIfAnyFieldsAreNull("null", null));
+//    }
+//
+//    @Test
+//    void checkIfAnyFieldsAreNull_returnFalse(){
+//        assertFalse(validationService.checkIfAnyFieldsAreNull("null", "yeaaah"));
+//    }
+//
+//    @Test
+//    void checkIfAnyFieldsAreNull_returnFalseWithPrimitives(){
+//        assertFalse(validationService.checkIfAnyFieldsAreNull("null", 5, true));
+//    }
 }
