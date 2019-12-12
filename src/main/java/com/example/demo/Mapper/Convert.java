@@ -38,7 +38,6 @@ public  class Convert {
 
         Class<?> originClass = originObject.getClass();
         Method[] originMethods = originClass.getDeclaredMethods();
-        System.out.println("originMethod 2:" + originMethods[2]);
         T targetObject = targetClass.getConstructor().newInstance();
         Field[] targetFields = targetObject.getClass().getDeclaredFields();
 
@@ -76,13 +75,15 @@ public  class Convert {
             }
             //TODO: pass model - entity
             else if(isModelToEntityUUID(targetField)) {
-                String originString = targetField.get(originObject).toString();
+               /* String originString = targetField.get(originObject).toString();
                 MyUUID uuidObject = (MyUUID) targetField.get(targetObject);
                 uuidObject.setUuid(originString);
+                System.out.println("got here");
                 targetField.set(targetObject, uuidObject);
+                System.out.println("got here 2");
                 //MyUUID.class.getMethod("setUuid", String.class).invoke(uuidObject,originString);
                 targetField.setAccessible(false);
-                targetField.setAccessible(false);
+                targetField.setAccessible(false);*/
                 continue;
 
             }
@@ -94,9 +95,7 @@ public  class Convert {
 
                 //TODO: Here there be dragons
             else if(isNestedObject(originMethod)){
-                System.out.println("In usual dragons");
                 Object nestedOriginObject = originMethod.invoke(originObject);
-                System.out.println("targetfield type: " + targetField.getType());
                 Class nestedTargetClass = targetField.getType();
 
                 if(isBackReference(nestedOriginObject)){
@@ -117,11 +116,9 @@ public  class Convert {
                 Set<Object> targetSet = new HashSet<>();
                 for (Object nestedEntry: nestedSet) {
                     Object nestedOriginObject = originMethod.invoke(originObject);
-                    System.out.println("Now we need to check: " + targetField.getName() + " it was: " + targetField.getGenericType());
 
                     ParameterizedType setType = (ParameterizedType)targetField.getGenericType();
                     Class<?> nestedTargetClass = (Class<?>) setType.getActualTypeArguments()[0];
-                    System.out.println(nestedTargetClass);
                     if(isBackReference(nestedOriginObject)){
                         targetField.set(targetObject, gettargetBackReference(nestedOriginObject));
                         continue;
@@ -135,7 +132,6 @@ public  class Convert {
             }
 
             else {
-                System.out.println("normal happy field :)");
                 targetField.set(    targetObject,     originMethod.invoke(originObject)   );
             }
             targetField.setAccessible(false);
@@ -148,14 +144,11 @@ public  class Convert {
     private  int indexOfOriginMethod(Field field, Method[] methods){
         for(int i=0; i < methods.length; i++){
             String triedMethodName = methods[i].getName();
-            System.out.println(triedMethodName);
-
             String triedPrefix = triedMethodName.substring(0, 3);
 
             String triedRemaining = triedMethodName.substring(3).toLowerCase();
 
             if(     triedPrefix.equals("get")   &&  triedRemaining.equals(field.getName().toLowerCase()) ){
-                System.out.println("winner winner chicken dinner!");
                 return i;
             }
         }
@@ -183,7 +176,6 @@ public  class Convert {
         return false;
     }
     private  boolean isNestedObject(Method originMethod){
-        System.out.println("Här ska du kolla nu pontus: " + originMethod.getReturnType());
         return MyEntity.class.isAssignableFrom(originMethod.getReturnType());
     }
     private  boolean originIsNull(Field field, Object originObject){
