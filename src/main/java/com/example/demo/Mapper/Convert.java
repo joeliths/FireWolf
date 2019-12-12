@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
 @Service
@@ -19,18 +20,6 @@ public  class Convert {
     Map<Object,Object> backReferences = new HashMap<Object, Object>() {    };
 
 
-    private  Map<Class, Class> EntityModelHashMap = new HashMap<Class,Class>(){
-        {
-            put(Customer.class, CustomerModel.class);
-            put(InventoryProduct.class, InventoryProductModel.class);
-            put(PendingOrder.class, PendingOrderModel.class);
-            put(PendingOrderProduct.class, PendingOrderProductModel.class);
-            put(Product.class, ProductModel.class);
-            put(Store.class, StoreModel.class);
-            put(User.class, UserModel.class);
-            put(Vendor.class, VendorModel.class);
-        }
-    };
 
     public <T> T lowAccessConverter(Object originObject, Class<T> targetClass) {
         backReferences = new HashMap<Object, Object>() {    };
@@ -110,7 +99,7 @@ public  class Convert {
                 System.out.println("In usual dragons");
                 Object nestedOriginObject = originMethod.invoke(originObject);
                 System.out.println("targetfield type: " + targetField.getType());
-                Class nestedTargetClass = targetField.getType();    //EntityModelHashMap.get(targetField.getType());
+                Class nestedTargetClass = targetField.getType();
 
                 if(isBackReference(nestedOriginObject)){
                     targetField.set(targetObject, gettargetBackReference(nestedOriginObject));
@@ -130,7 +119,11 @@ public  class Convert {
                 Set<Object> targetSet = new HashSet<>();
                 for (Object nestedEntry: nestedSet) {
                     Object nestedOriginObject = originMethod.invoke(originObject);
-                    Class nestedTargetClass = EntityModelHashMap.get(nestedEntry.getClass());
+                    System.out.println("Now we need to check: " + targetField.getName() + " it was: " + targetField.getGenericType());
+
+                    ParameterizedType setType = (ParameterizedType)targetField.getGenericType();
+                    Class<?> nestedTargetClass = (Class<?>) setType.getActualTypeArguments()[0];
+                    System.out.println(nestedTargetClass);
                     if(isBackReference(nestedOriginObject)){
                         targetField.set(targetObject, gettargetBackReference(nestedOriginObject));
                         continue;
