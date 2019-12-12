@@ -35,7 +35,7 @@ public interface PendingOrderRepository extends JpaRepository<PendingOrder,Long>
                                            @Param("storeUuid") String storeUuid);
 
     @Query(nativeQuery = true, value = "SELECT * FROM pending_order WHERE id = LAST_INSERT_ID();")
-    PendingOrder getLatestPendingOrderUuid();
+    PendingOrder getLatestPendingOrder();
 
 
 
