@@ -36,8 +36,8 @@ public class StoreController {
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<?> getAllStores(){
-        return  new ResponseEntity<>(storeService.getAllStores(),HttpStatus.OK);
+    public ResponseEntity<?> getAllStoresToMap(){
+        return  new ResponseEntity<>(storeService.getAllStoresToMap(),HttpStatus.OK);
     }
 
     @PatchMapping(path = "/patchProduct",

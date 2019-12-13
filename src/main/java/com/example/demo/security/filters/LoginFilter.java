@@ -1,6 +1,6 @@
 package com.example.demo.security.filters;
 
-import com.example.demo.models.user.UserRequestModel;
+import com.example.demo.models.user.UserRegisterModel;
 import com.google.gson.Gson;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,7 +31,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
         String requestData = getRequestBody(request.getReader());
-        UserRequestModel user = getPOJOFromJson(requestData, UserRequestModel.class);
+        UserRegisterModel user = getPOJOFromJson(requestData, UserRegisterModel.class);
         UsernamePasswordAuthenticationToken token;
         if(checkNull(user)){
             token = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
@@ -51,8 +51,8 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
         return (T) obj;
     }
 
-    public boolean checkNull(UserRequestModel userRequestModel){
-        return null != userRequestModel.getUserName() && null != userRequestModel.getPassword();
+    public boolean checkNull(UserRegisterModel userRegisterModel){
+        return null != userRegisterModel.getUserName() && null != userRegisterModel.getPassword();
     }
 
 }

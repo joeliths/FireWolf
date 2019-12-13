@@ -15,13 +15,10 @@ public class ValidationService {
 
     private final UserRepository userRepository;
     private final VendorRepository vendorRepository;
-    private final CustomerRepository customerRepository;
 
-    public ValidationService(UserRepository userRepository, VendorRepository vendorRepository,
-                             CustomerRepository customerRepository) {
+    public ValidationService(UserRepository userRepository, VendorRepository vendorRepository) {
         this.userRepository = userRepository;
         this.vendorRepository = vendorRepository;
-        this.customerRepository = customerRepository;
     }
 
     public void validateThatFieldsAreNotNull(Object... objects){
@@ -30,21 +27,22 @@ public class ValidationService {
         }
     }
 
-    public void validateUserExists(String userUuid) {
-        if(userRepository.findByUuid(userUuid).isEmpty()) {
-            throw new ValidationException("No user with uuid '" + userUuid + "' was found.");
+    public void validateUserExists(String userName) {
+        if(userRepository.findByUserName(userName).isEmpty()) {
+            throw new ValidationException("No user with user name '" + userName + "' was found.");
         }
     }
 
-    public void validateUserNameNotTaken(String userName) {
+    public void validateUserNameIsNotTaken(String userName) {
         if(userRepository.findByUserName(userName).isPresent()) {
             throw new ValidationException("Username '" + userName + "' is already taken.");
         }
     }
 
-    public void validateVendorExists(String vendorUuid) {
-        if(vendorRepository.findByUuid(vendorUuid).isEmpty()) {
-            throw new ValidationException("No vendor with uuid '" + vendorUuid + "' was found.");
+    public void validateUserIsVendor(String userName) {
+        if(vendorRepository.findByUserName(userName).isEmpty()) {
+            throw new ValidationException("User with user name '" + userName + " needs to be a vendor to" +
+                    "register a store.");
         }
     }
 

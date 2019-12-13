@@ -32,16 +32,16 @@ public class VendorController {
         return ResponseEntity.ok(storeService.getAllStoresByUsername(principal.getName()));
     }
 
-    @PostMapping("/register-vendor/{userUuid}")
-    public ResponseEntity<?> registerUserAsVendor(@PathVariable String userUuid){
-        vendorService.registerUserAsVendor(userUuid);
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUserAsVendor(Principal userMakingTheRequest){
+        vendorService.registerUserAsVendor(userMakingTheRequest.getName());
         return ResponseEntity.status(CREATED).build();
     }
 
 
-    @PostMapping("/register-store/{vendorUuid}")
-    public ResponseEntity<?> registerStore(@PathVariable String vendorUuid, @RequestBody StoreModel storeModel){
-        vendorService.registerStore(vendorUuid, storeModel);
+    @PostMapping("/register/store")
+    public ResponseEntity<?> registerStore(Principal userMakingTheRequest, @RequestBody StoreModel storeModel){
+        vendorService.registerStore(userMakingTheRequest.getName(), storeModel);
         return ResponseEntity.status(CREATED).build();
     }
 

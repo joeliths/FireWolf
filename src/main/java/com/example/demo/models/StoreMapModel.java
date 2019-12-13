@@ -1,20 +1,18 @@
 package com.example.demo.models;
 
-import com.example.demo.entities.Position;
-
 import java.io.Serializable;
 
 public class StoreMapModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private PositionModel position;
-    private String storeUUid;
-    private String title;
+    private String uuid;
+    private String description;
 
-    public StoreMapModel(PositionModel position, String storeUUid, String title) {
+    public StoreMapModel(PositionModel position, String uuid, String description) {
         this.position = position;
-        this.storeUUid = storeUUid;
-        this.title = title;
+        this.uuid = uuid;
+        this.description = description;
     }
 
     public StoreMapModel() {
@@ -26,19 +24,27 @@ public class StoreMapModel implements Serializable {
 
 
 
-    public String getStoreUUid() {
-        return storeUUid;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setStoreUUid(String storeUUid) {
-        this.storeUUid = storeUUid;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
-    public String getTitle() {
-        return title;
+    public String getDescription() {
+        return description;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public PositionModel getPosition() {
+        return position;
+    }
+
+    public void setPosition(PositionModel position) {
+        this.position = position;
     }
 }

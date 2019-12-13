@@ -1,3 +1,38 @@
+### About
+todo
+
+### Endpoints
+<b>Register new user/customer</b>   
+POST http://localhost:8080/register   
+Request body:   
+```
+{"fullName": "", "userName": "", "password": ""}
+```
+<b>Login</b>   
+POST http://localhost:8080/login   
+Request body:   
+```
+{"userName": "", "password": ""}
+```
+<b>Logout</b>   
+POST http://localhost:8080/logout 
+
+<b>Update logged in user/customer</b>   
+PATCH http://localhost:8080/  
+Request body (Only the field(s) that should be updated need to be included):   
+```
+{"fullName": "", "userName": "", "password": ""}
+```
+
+<b>Register logged in user as vendor</b>   
+PATCH http://localhost:8080/vendor/register  
+
+<b>Create store for logged in vendor</b>   
+PATCH http://localhost:8080/vendor/register/store 
+
+
+
+
 ### How to set up ActiveMQ for jms to work
 
 - Download ActiveMQ 5 "Classic" from the official website.
