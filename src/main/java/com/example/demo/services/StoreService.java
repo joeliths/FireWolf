@@ -33,9 +33,9 @@ public class StoreService {
         return storeRepository.findFirstByAddress(address);
     }
 
-    public List<StoreMapModel> getAllStoresToMap(){
+    public Set<StoreMapModel> getAllStoresToMap(){
         List<Store> allStores = storeRepository.findAll();
-        List<StoreMapModel> storeMapModelsList = new ArrayList<>();
+        Set<StoreMapModel> storeMapModelsList = new HashSet<>();
         for (Store store : allStores) {
             StoreMapModel storeMapModel = convert.lowAccessConverter(store, StoreMapModel.class);
             storeMapModelsList.add(storeMapModel);
