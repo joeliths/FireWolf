@@ -68,13 +68,18 @@ public class UserService {
     }
 
     //For security
-    public User getUserByUserNameReturnEntity(String userName) {
-        Optional<User> foundUser = userRepository.findByUserName(userName);
+    public User getUserByUserNameReturnEntity(String username) {
+        Optional<User> foundUser = userRepository.findByUserName(username);
         if(foundUser.isEmpty()) {
             throw new EntityNotFoundException("Failed to authenticate. " +
-                    "No user with username '" + userName + "' was found.");
+                    "No user with username '" + username + "' was found.");
         }
         return foundUser.get();
+    }
+
+    public boolean checkIfEntityBelongsToUser(String username, long customerId){
+        long id = getUserByUserNameReturnEntity(username).getId();
+        return id == customerId;
     }
 
 }

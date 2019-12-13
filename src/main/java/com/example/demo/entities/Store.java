@@ -24,8 +24,8 @@ public class Store implements Serializable, MyEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @MapsId
-    private Position position;
+//    @MapsId
+//    private Position position;
 
     @OneToMany(mappedBy = "store"/*, cascade = CascadeType.PERSIST, orphanRemoval = true*/)
     Set<PendingOrder> pendingOrders;

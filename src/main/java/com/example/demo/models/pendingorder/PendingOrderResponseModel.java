@@ -2,6 +2,7 @@ package com.example.demo.models.pendingorder;
 
 import com.example.demo.models.user.Customer.CustomerModel;
 import com.example.demo.models.StoreModel;
+import com.example.demo.models.user.Customer.CustomerResponseModel;
 import com.example.demo.models.view.PendingOrderProductView;
 
 import java.io.Serializable;
