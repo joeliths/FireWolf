@@ -1,6 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.entities.PendingOrderProduct;
+import com.example.demo.models.view.PendingOrderProductView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.ws.rs.QueryParam;
 import java.util.List;
+import java.util.Set;
 
 public interface PendingOrderProductRepository extends JpaRepository<PendingOrderProduct, Long> {
 
@@ -20,4 +22,7 @@ public interface PendingOrderProductRepository extends JpaRepository<PendingOrde
 
     @Query(nativeQuery = true, value = "SELECT * FROM pending_order_product p WHERE p.pending_order_id = (SELECT id FROM pending_order WHERE uuid = :pendingOrderUuid)")
     List<PendingOrderProduct> getPendingOrderProductByPendingOrderUuid(@QueryParam("pendingOrderUuid")String pendingOrderUuid);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM pending_order_product_view WHERE pending_order_uuid = :uuid")
+    Set<PendingOrderProductView> getPendingOrderProductsByPendingOrderUuid(@QueryParam("uuid") String uuid);
 }

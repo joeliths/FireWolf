@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public interface CustomerRepository extends JpaRepository<Customer,Long> {
 
-    @Query(nativeQuery = true, value = "select * from customer c where c.uuid = :uuid")
-    Optional<Customer> findByUuid(@Param("uuid") String uuid);
+
 
 }

@@ -3,9 +3,7 @@ package com.example.demo.Mapper;
 import com.example.demo.entities.*;
 import com.example.demo.entities.helperclasses.MyUUID;
 import com.example.demo.exceptions.customExceptions.ModelMapperException;
-import com.example.demo.models.*;
-import com.example.demo.models.pendingorder.PendingOrderModel;
-import com.example.demo.models.user.UserModel;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -13,6 +11,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
+@Service
 public  class Convert {
     private  String[] lowAccessforbiddenFields = new String[]{ "id, userId, productId","serialVersionUID"};
     Map<Object,Object> backReferences = new HashMap<Object, Object>() {    };

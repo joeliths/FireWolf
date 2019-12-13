@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.user.UserRegisterModel;
+import com.example.demo.models.user.UserRequestModel;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,9 +24,10 @@ public class LoginController {
             consumes = "application/json",
             produces = "application/json")
     @ResponseBody
-    public ResponseEntity<?> registerUser(@RequestBody UserRegisterModel userRegisterModel){
-        userService.registerUser(userRegisterModel);
-        return new ResponseEntity<>( HttpStatus.OK);
+    public ResponseEntity<?> registerUser(@RequestBody UserRequestModel userRequestModel){
+        //userService.registerUser(userRegisterModel);
+        //return new ResponseEntity<>( HttpStatus.OK);
+        return null;
     }
 
     @GetMapping("/T/out")

@@ -33,6 +33,11 @@ public class PendingOrderController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("{uuid}")
+    public ResponseEntity getPendingOrder(@PathVariable String uuid){
+        return ResponseEntity.ok(pendingOrderService.getPendingOrderByUuid(uuid));
+    }
+
 //    @GetMapping("/customer")
 //    public ResponseEntity getPendingOrdersForCustomer(@PathVariable String userName) {
 //        return ResponseEntity.ok(pendingOrderService.getPendingOrdersForCustomer(userName));
