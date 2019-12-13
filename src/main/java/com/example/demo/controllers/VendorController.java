@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -22,16 +23,16 @@ public class VendorController {
         this.vendorService = vendorService;
     }
 
-    @PostMapping("/register-vendor/{userUuid}")
-    public ResponseEntity<?> registerUserAsVendor(@PathVariable String userUuid){
-        vendorService.registerUserAsVendor(userUuid);
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUserAsVendor(Principal userMakingTheRequest){
+        vendorService.registerUserAsVendor(userMakingTheRequest.getName());
         return ResponseEntity.status(CREATED).build();
     }
 
 
-    @PostMapping("/register-store/{vendorUuid}")
-    public ResponseEntity<?> registerStore(@PathVariable String vendorUuid, @RequestBody StoreModel storeModel){
-        vendorService.registerStore(vendorUuid, storeModel);
+    @PostMapping("/register/store")
+    public ResponseEntity<?> registerStore(Principal userMakingTheRequest, @RequestBody StoreModel storeModel){
+        vendorService.registerStore(userMakingTheRequest.getName(), storeModel);
         return ResponseEntity.status(CREATED).build();
     }
 

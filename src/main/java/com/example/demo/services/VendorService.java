@@ -26,17 +26,17 @@ public class VendorService {
         this.storeRepository = storeRepository;
     }
 
-    public void registerUserAsVendor(String userUuid) {
-        validationService.validateUserExists(userUuid);
-        vendorRepository.registerVendor(userUuid);
+    public void registerUserAsVendor(String userName) {
+        validationService.validateUserExists(userName);
+        vendorRepository.registerVendor(userName);
     }
 
-    public void registerStore(String vendorUuid, StoreModel storeModel){
-        validationService.validateVendorExists(vendorUuid);
+    public void registerStore(String userName, StoreModel storeModel){
+        validationService.validateUserIsVendor(userName);
         validationService.validateThatFieldsAreNotNull(storeModel.getAddress(), storeModel.getDescription());
 
         Store storeToAdd = modelConverter.lowAccessConverter(storeModel, Store.class);
-        storeToAdd.setVendor(vendorRepository.getByUuid(vendorUuid));
+        storeToAdd.setVendor(vendorRepository.getByUserName(userName));
         storeRepository.save(storeToAdd);
     }
 

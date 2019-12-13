@@ -3,7 +3,7 @@ package com.example.demo.services;
 import com.example.demo.Mapper.Convert;
 import com.example.demo.entities.Customer;
 import com.example.demo.entities.User;
-import com.example.demo.models.user.UserRequestModel;
+import com.example.demo.models.user.UserRegisterModel;
 import com.example.demo.repositories.CustomerRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.validation.ValidationService;
@@ -32,10 +32,10 @@ public class UserService {
         this.validationService = validationService;
     }
 
-    public void registerUserAndCustomer(UserRequestModel userModel){
+    public void registerUserAndCustomer(UserRegisterModel userModel){
         validationService.validateThatFieldsAreNotNull(
                 userModel.getFullName(), userModel.getUserName(), userModel.getPassword());
-        validationService.validateUserNameNotTaken(userModel.getUserName());
+        validationService.validateUserNameIsNotTaken(userModel.getUserName());
 
         Customer customerToAdd = new Customer();
         userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
@@ -43,16 +43,16 @@ public class UserService {
         customerRepository.save(customerToAdd);
     }
 
-    public void deleteUserByUUID(String uuid) {
-        validationService.validateUserExists(uuid);
-        userRepository.deleteByUuid(uuid);
+    public void deleteUser(String userName) {
+        validationService.validateUserExists(userName);
+        userRepository.deleteByUserName(userName);
     }
 
-    public void patchUser(String userUuid, UserRequestModel newUserFields) {
-        validationService.validateUserExists(userUuid);
-        validationService.validateUserNameNotTaken(newUserFields.getUserName());
+    public void patchUser(String userName, UserRegisterModel newUserFields) {
+        validationService.validateUserExists(userName);
+        validationService.validateUserNameIsNotTaken(newUserFields.getUserName());
 
-        User userToUpdate = userRepository.getByUuid(userUuid);
+        User userToUpdate = userRepository.getByUserName(userName);
 
         if(newUserFields.getUserName() != null) {
             userToUpdate.setUserName(newUserFields.getUserName());

@@ -1,3 +1,22 @@
+### About
+todo
+
+### Endpoints
+<b>Register new user/customer</b>   
+POST http://localhost:8080/user/register   
+Request body:   
+```
+{"fullName": "", "userName": "", "password": ""}
+```
+<b>Update existing user/customer</b> 
+PATCH http://localhost:8080/  
+Request body:   
+```
+{"fullName": "", "userName": "", "password": ""}
+```
+
+
+
 ### How to set up ActiveMQ for jms to work
 
 - Download ActiveMQ 5 "Classic" from the official website.
