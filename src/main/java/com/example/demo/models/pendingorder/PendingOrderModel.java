@@ -2,6 +2,7 @@ package com.example.demo.models.pendingorder;
 
 import com.example.demo.models.user.Customer.CustomerModel;
 import com.example.demo.models.StoreModel;
+import com.example.demo.models.user.Customer.CustomerResponseModel;
 import com.example.demo.models.view.PendingOrderProductView;
 
 import java.io.Serializable;
@@ -14,7 +15,7 @@ public class PendingOrderModel implements Serializable {
 
     private String uuid;
     private StoreModel store;
-    private CustomerModel customer;
+    private CustomerResponseModel customer;
     Set<PendingOrderProductView> pendingOrderProductsViews;
     private Date placementDateTime;
     private Date expirationDateTime;
@@ -61,11 +62,11 @@ public class PendingOrderModel implements Serializable {
         this.expirationDateTime = expirationDateTime;
     }
 
-    public CustomerModel getCustomer() {
+    public CustomerResponseModel getCustomer() {
         return customer;
     }
 
-    public void setCustomer(CustomerModel customerModel) {
+    public void setCustomer(CustomerResponseModel customerModel) {
         this.customer = customerModel;
     }
 }

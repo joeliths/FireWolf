@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/store")
 public class StoreController {
@@ -18,6 +20,11 @@ public class StoreController {
     @Autowired
     StoreService storeService;
 
+
+    @GetMapping("{uuid}")
+    public ResponseEntity<?> getStoreByUuid(@PathVariable String uuid, Principal principal){
+        return ResponseEntity.ok(storeService.getStoreByUuid(uuid, principal.getName()));
+    }
     @PostMapping(path = "/addProduct",
                  consumes = "application/json",
                  produces = "application/json")

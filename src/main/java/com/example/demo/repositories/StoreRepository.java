@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.scheduling.concurrent.ScheduledExecutorTask;
 
 import javax.transaction.Transactional;
+import javax.ws.rs.QueryParam;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -19,4 +21,6 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     @Query(nativeQuery = true, value = "select * from store where store.uuid = :uuid")
     Optional<Store> findByUuid(@Param("uuid") String uuid);
 
+    @Query(nativeQuery = true, value = "SELECT s.* FROM user u JOIN store s ON u.id = s.vendor_id WHERE u.user_name = :username")
+    List<Store> getAllStoresByVendorUsername(@QueryParam("username") String username);
 }

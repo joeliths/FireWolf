@@ -2,6 +2,7 @@ package com.example.demo.exceptions;
 
 import com.example.demo.exceptions.customExceptions.ModelMapperException;
 import com.example.demo.exceptions.customExceptions.UserRoleTypeNotFoundException;
+import com.example.demo.exceptions.customExceptions.WrongOwnerException;
 import com.example.demo.jms.ActiveMQSender;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class GlobalExceptionHandler {
         return createErrorResponse(BAD_REQUEST, "Request body is missing");
     }
 
-    @ExceptionHandler({ValidationException.class})
+    @ExceptionHandler({ValidationException.class, WrongOwnerException.class})
     public ResponseEntity<?> handleValidationException(Exception e) {
         return createErrorResponse(BAD_REQUEST, e.getMessage());
     }
