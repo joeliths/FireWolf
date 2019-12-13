@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-public class Position implements Serializable {
+public class Position implements Serializable, MyEntity {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -13,10 +13,14 @@ public class Position implements Serializable {
 
 
     @Column(name="lat")
-    private long lat;
+    private Double lat;
 
     @Column(name="lng")
-    private long lng;
+    private Double lng;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "store_id")
+    private Store store;
 
     public Long getId() {
         return id;
@@ -26,19 +30,19 @@ public class Position implements Serializable {
         this.id = id;
     }
 
-    public long getLat() {
+    public Double getLat() {
         return lat;
     }
 
-    public void setLat(long lat) {
+    public void setLat(Double lat) {
         this.lat = lat;
     }
 
-    public long getLng() {
+    public Double getLng() {
         return lng;
     }
 
-    public void setLng(long lng) {
+    public void setLng(Double lng) {
         this.lng = lng;
     }
 }
