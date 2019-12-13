@@ -17,12 +17,19 @@ Request body:
 <b>Logout</b>   
 POST http://localhost:8080/logout 
 
-<b>Update existing user/customer</b>   
+<b>Update logged in user/customer</b>   
 PATCH http://localhost:8080/  
-Request body (Only the field(s) that should be updated needs to be included):   
+Request body (Only the field(s) that should be updated need to be included):   
 ```
 {"fullName": "", "userName": "", "password": ""}
 ```
+
+<b>Register logged in user as vendor</b>   
+PATCH http://localhost:8080/vendor/register  
+
+<b>Create store for logged in vendor</b>   
+PATCH http://localhost:8080/vendor/register/store 
+
 
 
 
