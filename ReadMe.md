@@ -3,14 +3,23 @@ todo
 
 ### Endpoints
 <b>Register new user/customer</b>   
-POST http://localhost:8080/user/register   
+POST http://localhost:8080/register   
 Request body:   
 ```
 {"fullName": "", "userName": "", "password": ""}
 ```
-<b>Update existing user/customer</b> 
-PATCH http://localhost:8080/  
+<b>Login</b>   
+POST http://localhost:8080/login   
 Request body:   
+```
+{"userName": "", "password": ""}
+```
+<b>Logout</b>   
+POST http://localhost:8080/logout 
+
+<b>Update existing user/customer</b>   
+PATCH http://localhost:8080/  
+Request body (Only the field(s) that should be updated needs to be included):   
 ```
 {"fullName": "", "userName": "", "password": ""}
 ```

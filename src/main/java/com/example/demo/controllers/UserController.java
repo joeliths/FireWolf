@@ -21,14 +21,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PatchMapping("/{uuid}")
+    @PatchMapping
     public ResponseEntity<UserResponseModel> patchUser(Principal userMakingTheRequest,
                                                        @RequestBody UserRegisterModel updatedUser) {
         userService.patchUser(userMakingTheRequest.getName(), updatedUser);
         return ResponseEntity.status(OK).build();
     }
 
-    @DeleteMapping("/{uuid}")
+    @DeleteMapping
     public ResponseEntity<Integer> deleteUserByUuid(Principal userMakingTheRequest) {
         userService.deleteUser(userMakingTheRequest.getName());
         return ResponseEntity.status(OK).build();
