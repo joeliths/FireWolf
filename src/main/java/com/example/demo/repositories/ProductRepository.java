@@ -31,7 +31,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     int updateDescription(@Param("uuid")String uuid,
                              @Param("newDescription")String newDescription);
 
-    @Query(nativeQuery = true, value = "select * from user where user.uuid = :uuid")
+    @Query(nativeQuery = true, value = "select * from product where product.uuid = :uuid")
     Optional<Product> findByUuid(@Param("uuid") String uuid);
 
 

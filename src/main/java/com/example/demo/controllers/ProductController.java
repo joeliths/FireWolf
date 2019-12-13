@@ -23,7 +23,6 @@ public class ProductController {
     ProductService productService;
 
 
-    //TODO: Check if working
     @PostMapping(path = "/add",
             consumes = "application/json",
             produces = "application/json")
@@ -32,21 +31,32 @@ public class ProductController {
         String uuid = productService.addProduct(productModel);
         return new ResponseEntity<>(uuid, HttpStatus.OK);
     }
-    //TODO: Check if working
+
     @GetMapping(path ="/getByName",
             produces = "application/json")
     @ResponseBody
-    public ResponseEntity<?> GetProductsByName(@PathParam(value = "name") String name){
+    public ResponseEntity<?> GetProductsByName(@QueryParam(value = "name") String name){
         Set<ProductModel> results = productService.getProductsLike(name);
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
-    //TODO: Check if working
-    @GetMapping(path ="/getByUuid",
+
+    @GetMapping(path ="/getByUuid/{uuid}",
             produces = "application/json")
     @ResponseBody
-    public ResponseEntity<?> GetProductsByUuid(@RequestParam(value = "uuid", required = true) String uuid){
-        Set<ProductModel> results = productService.getProductsLike(uuid);
-        return new ResponseEntity<>(results, HttpStatus.OK);
+    public ResponseEntity<?> GetProductsByUuid(@PathVariable(value = "uuid", required = true) String uuid){
+        ProductModel resultModel= productService.getProductByUuid(uuid);
+        return new ResponseEntity<>(resultModel, HttpStatus.OK);
     }
+
+    @PatchMapping(path = "/update/{uuid}",
+            consumes = "application/json",
+            produces = "application/json")
+    @ResponseBody
+    public ResponseEntity updateProductByUuid(@PathVariable(value = "uuid", required = true)String uuid,
+                                              @RequestBody ProductModel productModel){
+        ProductModel resultModel= productService.updateProduct(uuid,productModel);
+        return new ResponseEntity(resultModel, HttpStatus.OK);
+    }
+
 
 }

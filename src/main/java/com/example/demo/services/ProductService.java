@@ -7,7 +7,9 @@ import com.example.demo.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.resource.spi.EISSystemException;
+import javax.swing.text.html.Option;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -63,12 +65,32 @@ public class ProductService {
     public ProductModel getProductByUuid(String uuid){
         Optional<Product> dbResponse = productRepository.findByUuid(uuid);
         if(dbResponse.isEmpty()){
-            System.out.println("something");
+            System.out.println("no matching uuid found");
         }else{
-
-                convert.lowAccessConverter( dbResponse.get(),ProductModel.class);
-
+            return convert.lowAccessConverter( dbResponse.get(),ProductModel.class);
         }
             return null;
+    }
+
+    public ProductModel updateProduct(String uuid, ProductModel inputModel) {
+        Optional dbResult = productRepository.findByUuid(uuid);
+        if(dbResult.isEmpty()){
+            //TODO:write here
+            System.out.println("do stuff");
+            throw new EntityNotFoundException();
+        }else{
+            Product newData = convert.lowAccessConverter(inputModel, Product.class);
+            Product retrievedFromDb = (Product)dbResult.get();
+            if(newData.getName() !=  null){
+                retrievedFromDb.setName(newData.getName());
+            }
+            if(newData.getDescription() != null){
+                retrievedFromDb.setName(newData.getName());
+            }
+            Product updatedEntity = productRepository.save(retrievedFromDb);
+            ProductModel updatedModel = convert.lowAccessConverter(updatedEntity, ProductModel.class);
+            return updatedModel;
+        }
+
     }
 }
