@@ -11,10 +11,11 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.resource.spi.EISSystemException;
 import javax.swing.text.html.Option;
+import javax.transaction.Transactional;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
-//TODO:Alot in this class
+@Transactional
 @Service
 public class ProductService {
     Convert convert = new Convert();
@@ -73,7 +74,7 @@ public class ProductService {
             return null;
     }
 
-    public ProductModel updateProduct(String uuid, ProductModel inputModel) {
+    public void updateProduct(String uuid, ProductModel inputModel) {
         Optional dbResult = productRepository.findByUuid(uuid);
         if(dbResult.isEmpty()){
             //TODO:write here
@@ -88,9 +89,7 @@ public class ProductService {
             if(newData.getDescription() != null){
                 retrievedFromDb.setName(newData.getName());
             }
-            Product updatedEntity = productRepository.save(retrievedFromDb);
-            ProductModel updatedModel = convert.lowAccessConverter(updatedEntity, ProductModel.class);
-            return updatedModel;
+            productRepository.updateProduct(retrievedFromDb);
         }
 
     }

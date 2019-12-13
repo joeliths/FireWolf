@@ -3,11 +3,12 @@ package com.example.demo.Mapper;
 import com.example.demo.entities.Product;
 import com.example.demo.models.ProductModel;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.validation.constraints.AssertTrue;
 
-import static org.junit.jupiter.api.Assertions.*;
 
+import static org.junit.jupiter.api.Assertions.*;
 class ConvertTest {
 
     @Test

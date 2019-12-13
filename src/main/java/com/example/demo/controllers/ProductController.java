@@ -54,8 +54,8 @@ public class ProductController {
     @ResponseBody
     public ResponseEntity updateProductByUuid(@PathVariable(value = "uuid", required = true)String uuid,
                                               @RequestBody ProductModel productModel){
-        ProductModel resultModel= productService.updateProduct(uuid,productModel);
-        return new ResponseEntity(resultModel, HttpStatus.OK);
+        productService.updateProduct(uuid,productModel);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 
