@@ -20,22 +20,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
                     "full_name = :#{#user.fullName}, password = :#{#user.password} where id = :#{#user.id}")
     void patchUser(@Param("user") User user);
 
-//    @Modifying
-//    @Query(nativeQuery = true, value = "delete from user where user.uuid = :uuid")
-//    void deleteByUserName(@Param("uuid") String uuid);
-
-    void deleteByUserName(String userName);
-
-//    @Query(nativeQuery = true, value = "select * from user where user.uuid = :uuid")
-//    Optional<User> findByUuid(@Param("uuid") String uuid);
-
-//    @Query(nativeQuery = true, value = "select * from user where user.uuid = :uuid")
-//    User getByUuid(@Param("uuid") String uuid);
-
     Optional<User> findByUserName(String userName);
 
     User getByUserName(String userName);
 
+    void deleteByUserName(String userName);
 
 
     ViewTest getById(long id);

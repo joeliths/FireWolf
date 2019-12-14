@@ -6,13 +6,12 @@ import com.example.demo.entities.User;
 import com.example.demo.models.user.UserRegisterModel;
 import com.example.demo.repositories.CustomerRepository;
 import com.example.demo.repositories.UserRepository;
-import com.example.demo.services.validation.ValidationService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.util.Optional;
+import javax.validation.ValidationException;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -21,21 +20,18 @@ public class UserService {
     private final UserRepository userRepository;
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ValidationService validationService;
-    private final Convert modelConverter = new Convert();
+    private final Convert modelConverter;
 
     public UserService(UserRepository userRepository, CustomerRepository customerRepository,
-                       PasswordEncoder passwordEncoder, ValidationService validationService) {
+                       PasswordEncoder passwordEncoder, Convert modelConverter) {
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
-        this.validationService = validationService;
+        this.modelConverter = modelConverter;
     }
 
     public void registerUserAndCustomer(UserRegisterModel userModel){
-        validationService.validateThatFieldsAreNotNull(
-                userModel.getFullName(), userModel.getUserName(), userModel.getPassword());
-        validationService.validateUserNameIsNotTaken(userModel.getUserName());
+        validateUserFields(userModel);
 
         Customer customerToAdd = new Customer();
         userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
@@ -44,17 +40,15 @@ public class UserService {
     }
 
     public void deleteUser(String userName) {
-        validationService.validateUserExists(userName);
         userRepository.deleteByUserName(userName);
     }
 
     public void patchUser(String userName, UserRegisterModel newUserFields) {
-        validationService.validateUserExists(userName);
-        validationService.validateUserNameIsNotTaken(newUserFields.getUserName());
 
         User userToUpdate = userRepository.getByUserName(userName);
 
         if(newUserFields.getUserName() != null) {
+            validateUserNameIsNotTaken(newUserFields.getUserName());
             userToUpdate.setUserName(newUserFields.getUserName());
         }
         if(newUserFields.getPassword() != null) {
@@ -67,14 +61,22 @@ public class UserService {
         userRepository.patchUser(userToUpdate);
     }
 
-    //For security
-    public User getUserByUserNameReturnEntity(String userName) {
-        Optional<User> foundUser = userRepository.findByUserName(userName);
-        if(foundUser.isEmpty()) {
-            throw new EntityNotFoundException("Failed to authenticate. " +
-                    "No user with username '" + userName + "' was found.");
+
+    //---Validation---
+
+    private void validateUserFields(UserRegisterModel user) {
+        if(Stream.of(user.getUserName(), user.getPassword(), user.getFullName())
+                .anyMatch(string -> string == null || string.isBlank())) {
+            throw new ValidationException("Missing fields.");
         }
-        return foundUser.get();
+        validateUserNameIsNotTaken(user.getUserName());
     }
+
+    private void validateUserNameIsNotTaken(String userName) {
+        if(userRepository.findByUserName(userName).isPresent()) {
+            throw new ValidationException("User name '" + userName + " is already taken.");
+        }
+    }
+
 
 }

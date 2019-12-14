@@ -5,6 +5,7 @@ import com.example.demo.security.JWT.JwtService;
 import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,7 +46,7 @@ public class CheckJwtFilter extends OncePerRequestFilter {
             }else {
                 //TODO: Add JWT to badJwt-table
                 SecurityContextHolder.clearContext();
-                throw new JwtException("Jwt is not correct");
+                throw new BadCredentialsException("Jwt is not correct");
             }
         }
 
