@@ -20,12 +20,12 @@ public interface VendorRepository extends JpaRepository<Vendor, Long> {
             "VALUES(uuid(), (SELECT id FROM user WHERE user.user_name = :userName))")
     void registerVendor(@Param("userName") String userName);
 
-    @Modifying
+
     @Query(nativeQuery = true, value = "SELECT * FROM vendor where user_id = (SELECT id FROM " +
             "user WHERE user.user_name = :userName)")
     Optional<Vendor> findByUserName(@Param("userName") String userName);
 
-    @Modifying
+
     @Query(nativeQuery = true, value = "SELECT * FROM vendor where user_id = (SELECT id FROM " +
             "user WHERE user.user_name = :userName)")
     Vendor getByUserName(@Param("userName") String userName);
