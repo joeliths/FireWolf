@@ -27,7 +27,7 @@ public class Store implements Serializable, MyEntity {
     private Long id;
 
     @OneToOne(mappedBy = "store", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
+            fetch = FetchType.LAZY)
     private Position position;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)

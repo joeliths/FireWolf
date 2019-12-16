@@ -8,6 +8,7 @@ public class StoreModel implements Serializable {
 
     private String address;
     private String description;
+    private PositionModel position;
 
     public StoreModel() {
     }

@@ -41,6 +41,7 @@ public class VendorService {
     }
 
     public void addStore(String userName, StoreModel storeModel){
+        System.out.println(userName);
         validateUserIsVendor(userName);
         validateStoreFields(storeModel);
 
@@ -88,7 +89,7 @@ public class VendorService {
     }
 
     private void validateUserIsVendor(String userName) {
-        if(vendorRepository.findByUserName(userName).isPresent()) {
+        if(vendorRepository.findByUserName(userName).isEmpty()) {
             throw new ForbiddenException("Cannot create a store for a user that is not a vendor.");
         }
     }
