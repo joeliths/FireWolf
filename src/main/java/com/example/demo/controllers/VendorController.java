@@ -48,10 +48,12 @@ public class VendorController {
         return ResponseEntity.status(CREATED).build();
     }
 
-    @PostMapping("/product/add/{storeUuid}")
-    public ResponseEntity<?> addProductToStore(Principal userMakingTheRequest, @PathVariable String storeUuid,
-                                               @RequestBody InventoryProductRequestModel product) {
-        vendorService.addProductToStore(userMakingTheRequest.getName(), storeUuid, product);
+    @PostMapping("/product/add/{storeUuid}/{productUuid}")
+    public ResponseEntity<?> addExistingTypeOfProductToStore(Principal userMakingTheRequest,
+                                                             @PathVariable String storeUuid,
+                                                             @PathVariable String productUuid,
+                                                             @RequestBody InventoryProductRequestModel product) {
+        vendorService.addInventoryProductToStore(userMakingTheRequest.getName(), storeUuid, productUuid, product);
         return ResponseEntity.status(CREATED).build();
     }
 

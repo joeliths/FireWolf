@@ -6,6 +6,7 @@ import com.example.demo.entities.Store;
 import com.example.demo.models.InventoryProductRequestModel;
 import com.example.demo.models.StoreModel;
 import com.example.demo.repositories.InventoryProductRepository;
+import com.example.demo.repositories.ProductRepository;
 import com.example.demo.repositories.StoreRepository;
 import com.example.demo.repositories.VendorRepository;
 import org.springframework.stereotype.Service;
@@ -25,14 +26,17 @@ public class VendorService {
     private final VendorRepository vendorRepository;
     private final StoreRepository storeRepository;
     private final InventoryProductRepository inventoryProductRepository;
+    private final ProductRepository productRepository;
     private final Convert modelConverter;
 
     public VendorService(VendorRepository vendorRepository, StoreRepository storeRepository,
-                         InventoryProductRepository inventoryProductRepository, Convert modelConverter) {
+                         InventoryProductRepository inventoryProductRepository, Convert modelConverter,
+                         ProductRepository productRepository) {
         this.vendorRepository = vendorRepository;
         this.storeRepository = storeRepository;
         this.inventoryProductRepository = inventoryProductRepository;
         this.modelConverter = modelConverter;
+        this.productRepository = productRepository;
     }
 
     public void registerUserAsVendor(String userName) {
@@ -50,9 +54,18 @@ public class VendorService {
         storeRepository.save(storeToAdd);
     }
 
-    public void addProductToStore(String userName, String storeUuid, InventoryProductRequestModel inventoryProduct) {
-        validateInventoryProductFields(inventoryProduct);
+    public void addInventoryProductToStore(String userName, String storeUuid, String productUuid,
+                                           InventoryProductRequestModel inventoryProductModel) {
+        validateProductExists(productUuid);
+        validateInventoryProductFields(inventoryProductModel);
         validateStoreBelongsToVendor(userName, storeUuid);
+//        //todo
+//        InventoryProduct inventoryProduct = modelConverter
+//                .lowAccessConverter(inventoryProductModel, InventoryProduct.class);
+//        System.out.println(inventoryProduct.getPrice());
+//        System.out.println(inventoryProduct.getStock());
+//        System.out.println(inventoryProduct.getProduct().getName());
+//        System.out.println(inventoryProduct.getProduct().getDescription());
     }
 
     public void updateProductInStore(String userName, String storeUuid, String inventoryProductUuid,
@@ -95,22 +108,26 @@ public class VendorService {
     }
 
     private void validateStoreFields(StoreModel store){
-        if(Stream.of(store.getAddress(), store.getDescription())
-                .anyMatch(string -> string == null || string.isBlank())) {
+        if(Stream.of(store.getAddress(), store.getDescription(), store.getPosition(), store.getPosition().getLng(),
+                store.getPosition().getLat())
+                .anyMatch(Objects::isNull)) {
             throw new ValidationException("Missing fields.");
         }
+
     }
 
     private void validateInventoryProductFields(InventoryProductRequestModel product) {
-        if(Stream.of(product.getName(), product.getDescription())
-                .anyMatch(string -> string == null || string.isBlank())) {
-            throw new ValidationException("Missing fields.");
-        }
         if(product.getPrice() < 0) {
             throw new ValidationException("Price can't be a negative value.");
         }
         if(product.getStock() < 0) {
             throw new ValidationException("Stock can't be a negative value.");
+        }
+    }
+
+    private void validateProductExists(String productUuid) {
+        if(productRepository.findByUuid(productUuid).isEmpty()) {
+            throw new EntityNotFoundException("Could not find product with uuid '" + productUuid + '.');
         }
     }
 
