@@ -8,6 +8,7 @@ import com.example.demo.exceptions.customExceptions.WrongOwnerException;
 import com.example.demo.models.ProductModel;
 import com.example.demo.models.StoreMapModel;
 import com.example.demo.models.StoreModel;
+import com.example.demo.models.view.StoreCustomerView;
 import com.example.demo.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,10 @@ public class StoreService {
             throw  new IllegalStateException("Not Found");
         }
         return (Store) dbResult.get();
+    }
+
+    public List<StoreCustomerView> getStoreDetailsByUuid(String uuid){
+        return storeRepository.getStoreDetailsByUuid(uuid);
     }
 
     public Set<StoreMapModel> getAllStoresToMap(){
