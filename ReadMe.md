@@ -1,40 +1,6 @@
 ### About
 todo
 
-### Endpoints
-<b>Register new user/customer</b>   
-POST http://localhost:8080/register   
-Request body:   
-```
-{"fullName": "", "userName": "", "password": ""}
-```
-<b>Login</b>   
-POST http://localhost:8080/login   
-Request body:   
-```
-{"userName": "", "password": ""}
-```
-<b>Logout</b>   
-POST http://localhost:8080/logout 
-
-<b>Update logged in user/customer</b>   
-PATCH http://localhost:8080/  
-Request body (Only the field(s) that should be updated need to be included):   
-```
-{"fullName": "", "userName": "", "password": ""}
-```
-
-<b>Register logged in user as vendor</b>   
-PATCH http://localhost:8080/vendor/register  
-
-<b>Create store for logged in vendor</b>   
-PATCH http://localhost:8080/vendor/register/store 
-
-<b>Register Pending Order</b>
-POST  http://localhost:8080/pending-orders
-```
-{"storeUUID": "", "userName": "", "password": ""}
-```
 
 
 
@@ -61,14 +27,69 @@ Add application.resources with the following text:
 
 **Description of API**
 
-**End Points** 
-
-**User:**
-
-Reserve products:
 
 
-Vendor:
-customer:
+
+#
+### Endpoints
+
+#####Standard user endpoints:
+<b>Register new user/customer</b>   
+POST http://localhost:8080/register   
+Request body:   
+```
+{"fullName": "", "userName": "", "password": ""}
+```
+<b>Login</b>   
+POST http://localhost:8080/login   
+Request body:   
+```
+{"userName": "", "password": ""}
+```
+<b>Logout</b>   
+POST http://localhost:8080/logout 
+
+<b>Update logged in user/customer</b>   
+PATCH http://localhost:8080/  
+Request body (Only the field(s) that should be updated need to be included):   
+```
+{"fullName": "", "userName": "", "password": ""}
+```
+
+
+#
+#####Customer endpoints
+
+<b>Register Pending Order</b> ((notConfirmed))
+POST  http://localhost:8080/pending-orders
+```
+{"storeUUID": ""}
+```
+
+<b>Get Pending Order</b> ((notConfirmed))
+GET  http://localhost:8080/pending-orders/{{UUID}}
+
+<b>get Customers every Pending Order</b> ((notConfirmed))
+GET  http://localhost:8080/customer/pending-orders/{{UUID}}
+
+
+<b>delete Pending Order</b> ((notConfirmed))
+DELETE  http://localhost:8080/pending-orders/{{UUID}}
+
+#
+**Vendor:**
+<b>Register new Product</b>((notconfirmed))
+
+<b>Register logged in user as vendor</b>   
+PATCH http://localhost:8080/vendor/register  
+
+<b>Create store for logged in vendor</b>   
+POST http://localhost:8080/vendor/store/add 
+```
+{"storeUUID": ""}
+```
+
+#
+**customer:**
 
  

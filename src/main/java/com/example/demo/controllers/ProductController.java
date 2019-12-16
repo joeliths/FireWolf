@@ -23,7 +23,7 @@ public class ProductController {
     ProductService productService;
 
 
-    @PostMapping(path = "/add",
+    @PostMapping(
             consumes = "application/json",
             produces = "application/json")
     @ResponseBody
@@ -40,7 +40,7 @@ public class ProductController {
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
 
-    @GetMapping(path ="/getByUuid/{uuid}",
+    @GetMapping(path ="/{uuid}",
             produces = "application/json")
     @ResponseBody
     public ResponseEntity<?> GetProductsByUuid(@PathVariable(value = "uuid", required = true) String uuid){
@@ -48,7 +48,7 @@ public class ProductController {
         return new ResponseEntity<>(resultModel, HttpStatus.OK);
     }
 
-    @PatchMapping(path = "/update/{uuid}",
+    @PatchMapping(path = "/{uuid}",
             consumes = "application/json",
             produces = "application/json")
     @ResponseBody
