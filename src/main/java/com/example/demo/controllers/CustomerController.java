@@ -8,9 +8,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
+
+    @Autowired
+    PendingOrderService pendingOrderService;
+
+    @GetMapping("/pending-orders")
+    public ResponseEntity getPendingOrdersForCustomer(Principal principal) {
+        return ResponseEntity.ok(pendingOrderService.getPendingOrdersForCustomer(principal.getName()));
+    }
+
 //    @Autowired
 //    PendingOrderService pendingOrderService;
 //

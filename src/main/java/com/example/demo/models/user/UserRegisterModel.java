@@ -3,7 +3,7 @@ package com.example.demo.models.user;
 import java.io.Serializable;
 import java.util.List;
 
-public class UserRequestModel implements Serializable {
+public class UserRegisterModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -11,10 +11,10 @@ public class UserRequestModel implements Serializable {
     private String userName;
     private String password;
 
-    public UserRequestModel() {
+    public UserRegisterModel() {
     }
 
-    public UserRequestModel(String fullName, String userName, String password) {
+    public UserRegisterModel(String fullName, String userName, String password) {
         this.fullName = fullName;
         this.userName = userName;
         this.password = password;

@@ -9,13 +9,13 @@ import java.util.UUID;
 public class PendingOrderRequestModel {
 
     private String storeUUID;
-    private String customerUUID;
     private List<PendingOrderProductRequestModel> orderedProducts;
 
-    public PendingOrderRequestModel(String storeUUID, String customerUUID,
+    public PendingOrderRequestModel(){}
+
+    public PendingOrderRequestModel(String storeUUID,
                                     List<PendingOrderProductRequestModel> orderedProducts) {
         this.storeUUID = storeUUID;
-        this.customerUUID = customerUUID;
         this.orderedProducts = orderedProducts;
     }
 
@@ -25,14 +25,6 @@ public class PendingOrderRequestModel {
 
     public void setStoreUUID(String storeUUID) {
         this.storeUUID = storeUUID;
-    }
-
-    public String getCustomerUUID() {
-        return customerUUID;
-    }
-
-    public void setCustomerUUID(String customerUUID) {
-        this.customerUUID = customerUUID;
     }
 
     public List<PendingOrderProductRequestModel> getOrderedProducts() {

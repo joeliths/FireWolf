@@ -12,6 +12,7 @@ import java.util.Optional;
 
 public interface CustomerRepository extends JpaRepository<Customer,Long> {
 
-
-
+    @Query(nativeQuery = true, value = "SELECT * FROM customer where user_id = (SELECT id FROM " +
+            "user WHERE user.user_name = :userName)")
+    Optional<Customer> findByUserName(@Param("userName") String userName);
 }

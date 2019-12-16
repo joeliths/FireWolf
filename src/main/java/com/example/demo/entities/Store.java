@@ -2,6 +2,8 @@ package com.example.demo.entities;
 
 import com.example.demo.entities.helperclasses.MyUUID;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,6 +25,10 @@ public class Store implements Serializable, MyEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(mappedBy = "store", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
+    private Position position;
 
     @OneToMany(mappedBy = "store"/*, cascade = CascadeType.PERSIST, orphanRemoval = true*/)
     Set<PendingOrder> pendingOrders;
@@ -80,5 +86,13 @@ public class Store implements Serializable, MyEntity {
 
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }
