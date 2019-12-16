@@ -2,21 +2,20 @@ package com.example.demo.models.pendingorder;
 
 import com.example.demo.models.pendingorder.nestedobjects.PendingOrderProductRequestModel;
 
-import javax.persistence.PrePersist;
 import java.util.List;
-import java.util.UUID;
+import java.util.Set;
 
 public class PendingOrderRequestModel {
 
     private String storeUUID;
-    private List<PendingOrderProductRequestModel> orderedProducts;
+    private Set<PendingOrderProductRequestModel> pendingOrderProducts;
 
     public PendingOrderRequestModel(){}
 
     public PendingOrderRequestModel(String storeUUID,
-                                    List<PendingOrderProductRequestModel> orderedProducts) {
+                                    Set<PendingOrderProductRequestModel> pendingOrderProducts) {
         this.storeUUID = storeUUID;
-        this.orderedProducts = orderedProducts;
+        this.pendingOrderProducts = pendingOrderProducts;
     }
 
     public String getStoreUUID() {
@@ -27,12 +26,12 @@ public class PendingOrderRequestModel {
         this.storeUUID = storeUUID;
     }
 
-    public List<PendingOrderProductRequestModel> getOrderedProducts() {
-        return orderedProducts;
+    public Set<PendingOrderProductRequestModel> getPendingOrderProducts() {
+        return pendingOrderProducts;
     }
 
-    public void setOrderedProducts(List<PendingOrderProductRequestModel> orderedProducts) {
-        this.orderedProducts = orderedProducts;
+    public void setPendingOrderProducts(Set<PendingOrderProductRequestModel> pendingOrderProducts) {
+        this.pendingOrderProducts = pendingOrderProducts;
     }
 
 

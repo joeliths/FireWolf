@@ -73,7 +73,7 @@ public class PendingOrderService {
      }else
          throw new RuntimeException(); //TODO: Better exception here!
 
-        pendingOrderModel.getOrderedProducts().forEach(p -> {
+        pendingOrderModel.getPendingOrderProducts().forEach(p -> {
             pendingOrderProductRepository.insertPendingOrderProduct(p.getQuantity(), p.getInventoryProductUUID(), pendingOrder.getUuid().toString());
         });
 

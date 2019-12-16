@@ -30,6 +30,11 @@ PATCH http://localhost:8080/vendor/register
 <b>Create store for logged in vendor</b>   
 PATCH http://localhost:8080/vendor/register/store 
 
+<b>Register Pending Order</b>
+POST  http://localhost:8080/pending-orders
+```
+{"storeUUID": "", "userName": "", "password": ""}
+```
 
 
 
