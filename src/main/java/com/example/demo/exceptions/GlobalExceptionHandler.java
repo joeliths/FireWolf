@@ -4,6 +4,8 @@ import com.example.demo.exceptions.customExceptions.ModelMapperException;
 import com.example.demo.exceptions.customExceptions.UserRoleTypeNotFoundException;
 import com.example.demo.exceptions.customExceptions.WrongOwnerException;
 import com.example.demo.jms.ActiveMQSender;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,8 +67,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<?> handleAuthenticationException(AuthenticationException e, HttpServletResponse response){
-        //TODO
-        return null;
+        //Todo: All sub exceptions of Authentication exception that are thrown in the security filters
+        // somehow gets converted to InsufficientAuthenticationException before reaching this method so
+        // specific messages and statuses cant be set...
+        return ResponseEntity.status(BAD_REQUEST)
+                .body(new ObjectMapper().createObjectNode().put("message: ", "Could not authenticate request."));
     }
 
     private ResponseEntity<?> createErrorResponse(HttpStatus httpStatus, String detailedMessage) {
