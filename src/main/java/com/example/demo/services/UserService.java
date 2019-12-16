@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
@@ -77,6 +78,20 @@ public class UserService {
         if(userRepository.findByUserName(userName).isPresent()) {
             throw new ValidationException("User name '" + userName + " is already taken.");
         }
+    }
+
+    private User getUserByUsername(String userName){
+        Optional<User> foundUser = userRepository.findByUserName(userName);
+        if(foundUser.isEmpty()) {
+            throw new EntityNotFoundException("Failed to authenticate. " +
+                    "No user with username '" + userName + "' was found.");
+        }
+        return foundUser.get();
+    }
+
+    public boolean checkIfEntityBelongsToUser(String username, long entityUserId){
+        long id = getUserByUsername(username).getId();
+        return id == entityUserId;
     }
 
 

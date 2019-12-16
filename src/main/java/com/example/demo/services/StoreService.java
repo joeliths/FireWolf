@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.Mapper.Convert;
+import com.example.demo.entities.PendingOrder;
 import com.example.demo.entities.Product;
 import com.example.demo.entities.Store;
 import com.example.demo.exceptions.customExceptions.WrongOwnerException;
@@ -70,4 +71,11 @@ public class StoreService {
         return convert.lowAccessConverter(store, StoreModel.class);
     }
 
+    public void deleteStore(String uuid, String name) {
+        Store store = getStoreEntity(uuid);
+        if(userService.checkIfEntityBelongsToUser(name, store.getVendor().getId())){
+            storeRepository.delete(store);
+        }else
+            throw new WrongOwnerException("Store with uuid "+uuid+" does not belong to user "+name);
+    }
 }
