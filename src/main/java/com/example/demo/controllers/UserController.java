@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Integer> deleteUserByUuid(Principal userMakingTheRequest) {
+    public ResponseEntity<Integer> deleteUser(Principal userMakingTheRequest) {
         userService.deleteUser(userMakingTheRequest.getName());
         return ResponseEntity.status(OK).build();
     }

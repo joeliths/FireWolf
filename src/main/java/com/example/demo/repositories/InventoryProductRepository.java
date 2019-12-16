@@ -36,4 +36,9 @@ public interface InventoryProductRepository extends JpaRepository<InventoryProdu
             .getResultList();
 */
 
+   @Query(nativeQuery = true, value = "SELECT * FROM inventory_product i WHERE (i.uuid = :inventoryProductUuid AND " +
+           "i.store_id = (SELECT id FROM store WHERE store.uuid = :storeUuid))")
+    Optional<InventoryProduct> findByStoreUuidAndInventoryProductUuid(@Param("storeUuid") String storeUuid,
+                                           @Param("inventoryProductUuid") String inventoryProductUuid);
+
 }

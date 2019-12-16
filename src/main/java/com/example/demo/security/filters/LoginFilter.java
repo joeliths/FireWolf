@@ -3,6 +3,7 @@ package com.example.demo.security.filters;
 import com.example.demo.models.user.UserRegisterModel;
 import com.google.gson.Gson;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -28,16 +29,18 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
+            throws AuthenticationException, IOException, ServletException {
 
         String requestData = getRequestBody(request.getReader());
         UserRegisterModel user = getPOJOFromJson(requestData, UserRegisterModel.class);
         UsernamePasswordAuthenticationToken token;
-        if(checkNull(user)){
-            token = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
-        }else
-            throw new NullPointerException("Null field");
+        if(checkIfNull(user)) {
+            throw new BadCredentialsException("Missing request body with user name and password.");
 
+        }
+
+        token = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
         return this.getAuthenticationManager().authenticate(token);
     }
 
@@ -51,8 +54,10 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
         return (T) obj;
     }
 
-    public boolean checkNull(UserRegisterModel userRegisterModel){
-        return null != userRegisterModel.getUserName() && null != userRegisterModel.getPassword();
+    public boolean checkIfNull(UserRegisterModel userRegisterModel){
+        return userRegisterModel == null ||
+                userRegisterModel.getUserName() == null ||
+                userRegisterModel.getPassword() == null;
     }
 
 }

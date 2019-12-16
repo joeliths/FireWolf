@@ -3,6 +3,7 @@ package com.example.demo.repositories;
 import com.example.demo.entities.InventoryProduct;
 import com.example.demo.entities.Store;
 import com.example.demo.entities.helperclasses.MyUUID;
+import org.checkerframework.checker.nullness.Opt;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,4 +24,9 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 
     @Query(nativeQuery = true, value = "SELECT s.* FROM user u JOIN store s ON u.id = s.vendor_id WHERE u.user_name = :username")
     List<Store> getAllStoresByVendorUsername(@QueryParam("username") String username);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM store where vendor_id = " +
+            "(SELECT id FROM user WHERE user_name = :userName)")
+    Optional<Store> findByVendorUserName(@Param("userName") String userName);
+
 }

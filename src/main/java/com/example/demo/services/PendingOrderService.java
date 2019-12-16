@@ -19,6 +19,7 @@ public class PendingOrderService {
 
     private final PendingOrderRepository pendingOrderRepository;
     private final PendingOrderProductRepository pendingOrderProductRepository;
+    private final CustomerRepository customerRepository;
 
     private final UserRepository userRepository;
 
@@ -34,16 +35,18 @@ public class PendingOrderService {
     @Autowired
     public PendingOrderService(PendingOrderRepository pendingOrderRepository,
                                PendingOrderProductRepository pendingOrderProductRepository,
-                               UserRepository userRepository
+                               UserRepository userRepository,
+                               CustomerRepository customerRepository
                                ) {
         this.pendingOrderRepository = pendingOrderRepository;
         this.pendingOrderProductRepository = pendingOrderProductRepository;
         this.userRepository = userRepository;
+        this.customerRepository = customerRepository;
     }
 
     public PendingOrderResponseModel getPendingOrderByUuid(String uuid, String username){
        PendingOrder pendingOrder = getPendingOrderEntityByUuid(uuid);
-       if(userService.checkIfEntityBelongsToUser(username, pendingOrder.getCustomer().getId())){
+       if(customerRepository.findByUserName(username).isPresent()){
            return toResponseModel(pendingOrder);
        }else
            throw new WrongOwnerException("Pending order with uuid "+uuid+" does not belong to user "+username);
@@ -80,7 +83,7 @@ public class PendingOrderService {
 
     public void deletePendingOrder(String uuid, String username){
         PendingOrder pendingOrder = getPendingOrderEntityByUuid(uuid);
-        if(userService.checkIfEntityBelongsToUser(username, pendingOrder.getCustomer().getId())){
+        if(customerRepository.findByUserName(username).isPresent()){
             pendingOrderRepository.delete(pendingOrder);
         }else
             throw new WrongOwnerException("Pending order with uuid "+uuid+" does not belong to user "+username);
@@ -88,7 +91,7 @@ public class PendingOrderService {
 
     public void updatePendingOrder(String uuid, PendingOrderRequestModel newPendingOrder, String username) {
         PendingOrder pendingOrder = getPendingOrderEntityByUuid(uuid);
-        if(userService.checkIfEntityBelongsToUser(username, pendingOrder.getCustomer().getId())){
+        if(customerRepository.findByUserName(username).isPresent()){
             //TODO: Update pendingorder
         }else
             throw new WrongOwnerException("Pending order with uuid "+uuid+" does not belong to user "+username);
