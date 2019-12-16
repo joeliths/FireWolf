@@ -35,4 +35,5 @@ public class PositionModel implements Serializable {
     public void setLng(Double lng) {
         this.lng = lng;
     }
+
 }

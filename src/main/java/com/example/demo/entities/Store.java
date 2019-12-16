@@ -27,15 +27,15 @@ public class Store implements Serializable, MyEntity {
     private Long id;
 
     @OneToOne(mappedBy = "store", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
+            fetch = FetchType.LAZY)
     private Position position;
 
-    @OneToMany(mappedBy = "store"/*, cascade = CascadeType.PERSIST, orphanRemoval = true*/)
+    @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
     Set<PendingOrder> pendingOrders;
 
-    /*>ska förmodligen tas bort. vi implementerar egen snabbare hämtning av inventoryProducts.
-    @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    Set<InventoryProduct> inventoryProducts;*/
+////    ska förmodligen tas bort. vi implementerar egen snabbare hämtning av inventoryProducts.
+//    @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
+//    Set<InventoryProduct> inventoryProducts;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vendor_id")

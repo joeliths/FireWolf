@@ -29,7 +29,7 @@ public class PendingOrder implements Serializable, MyEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
-    private Store store = new Store();
+    private Store store;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
@@ -87,7 +87,7 @@ public class PendingOrder implements Serializable, MyEntity{
     }
 
     public void setStore(Store store) {
-        this.store = store;
+        System.out.println(store.getAddress());this.store = store;
     }
 
     public Customer getCustomer() {

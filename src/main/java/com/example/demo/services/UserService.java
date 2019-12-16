@@ -3,16 +3,17 @@ package com.example.demo.services;
 import com.example.demo.Mapper.Convert;
 import com.example.demo.entities.Customer;
 import com.example.demo.entities.User;
-import com.example.demo.models.user.UserRequestModel;
+import com.example.demo.models.user.UserRegisterModel;
 import com.example.demo.repositories.CustomerRepository;
 import com.example.demo.repositories.UserRepository;
-import com.example.demo.services.validation.ValidationService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import javax.validation.ValidationException;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -21,21 +22,18 @@ public class UserService {
     private final UserRepository userRepository;
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
-    private final ValidationService validationService;
-    private final Convert modelConverter = new Convert();
+    private final Convert modelConverter;
 
     public UserService(UserRepository userRepository, CustomerRepository customerRepository,
-                       PasswordEncoder passwordEncoder, ValidationService validationService) {
+                       PasswordEncoder passwordEncoder, Convert modelConverter) {
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
-        this.validationService = validationService;
+        this.modelConverter = modelConverter;
     }
 
-    public void registerUserAndCustomer(UserRequestModel userModel){
-        validationService.validateThatFieldsAreNotNull(
-                userModel.getFullName(), userModel.getUserName(), userModel.getPassword());
-        validationService.validateUserNameNotTaken(userModel.getUserName());
+    public void registerUserAndCustomer(UserRegisterModel userModel){
+        validateUserFields(userModel);
 
         Customer customerToAdd = new Customer();
         userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
@@ -43,18 +41,16 @@ public class UserService {
         customerRepository.save(customerToAdd);
     }
 
-    public void deleteUserByUUID(String uuid) {
-        validationService.validateUserExists(uuid);
-        userRepository.deleteByUuid(uuid);
+    public void deleteUser(String userName) {
+        userRepository.deleteByUserName(userName);
     }
 
-    public void patchUser(String userUuid, UserRequestModel newUserFields) {
-        validationService.validateUserExists(userUuid);
-        validationService.validateUserNameNotTaken(newUserFields.getUserName());
+    public void patchUser(String userName, UserRegisterModel newUserFields) {
 
-        User userToUpdate = userRepository.getByUuid(userUuid);
+        User userToUpdate = userRepository.getByUserName(userName);
 
         if(newUserFields.getUserName() != null) {
+            validateUserNameIsNotTaken(newUserFields.getUserName());
             userToUpdate.setUserName(newUserFields.getUserName());
         }
         if(newUserFields.getPassword() != null) {
@@ -67,8 +63,24 @@ public class UserService {
         userRepository.patchUser(userToUpdate);
     }
 
-    //For security
-    public User getUserByUserNameReturnEntity(String userName) {
+
+    //---Validation---
+
+    private void validateUserFields(UserRegisterModel user) {
+        if(Stream.of(user.getUserName(), user.getPassword(), user.getFullName())
+                .anyMatch(string -> string == null || string.isBlank())) {
+            throw new ValidationException("Missing fields.");
+        }
+        validateUserNameIsNotTaken(user.getUserName());
+    }
+
+    private void validateUserNameIsNotTaken(String userName) {
+        if(userRepository.findByUserName(userName).isPresent()) {
+            throw new ValidationException("User name '" + userName + " is already taken.");
+        }
+    }
+
+    private User getUserByUsername(String userName){
         Optional<User> foundUser = userRepository.findByUserName(userName);
         if(foundUser.isEmpty()) {
             throw new EntityNotFoundException("Failed to authenticate. " +
@@ -76,5 +88,11 @@ public class UserService {
         }
         return foundUser.get();
     }
+
+    public boolean checkIfEntityBelongsToUser(String username, long entityUserId){
+        long id = getUserByUsername(username).getId();
+        return id == entityUserId;
+    }
+
 
 }

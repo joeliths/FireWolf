@@ -7,6 +7,8 @@ import com.example.demo.services.PendingOrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -22,50 +24,23 @@ public class PendingOrderController {
     }
 
     @PostMapping
-    public ResponseEntity addPendingOrder(@RequestBody PendingOrderRequestModel pendingOrder) {
-
-        return ResponseEntity.status(CREATED).body(pendingOrderService.addPendingOrder(pendingOrder));
+    public ResponseEntity addPendingOrder(@RequestBody PendingOrderRequestModel pendingOrder, Principal principal) {
+        return ResponseEntity.status(CREATED).body(pendingOrderService.addPendingOrder(pendingOrder, principal.getName()));
     }
 
     @DeleteMapping("{uuid}")
-    public ResponseEntity deletePendingOrder(@PathVariable String uuid){
-        pendingOrderService.deletePendingOrder(uuid);
-        return ResponseEntity.ok().build();
+    public ResponseEntity deletePendingOrder(@PathVariable String uuid, Principal principal){
+        pendingOrderService.deletePendingOrder(uuid, principal.getName());
+        return ResponseEntity.status(204).build();
     }
 
     @GetMapping("{uuid}")
-    public ResponseEntity getPendingOrder(@PathVariable String uuid){
-        return ResponseEntity.ok(pendingOrderService.getPendingOrderByUuid(uuid));
+    public ResponseEntity getPendingOrder(@PathVariable String uuid, Principal principal){
+        return ResponseEntity.ok(pendingOrderService.getPendingOrderByUuid(uuid, principal.getName()));
     }
 
-//    @GetMapping("/customer")
-//    public ResponseEntity getPendingOrdersForCustomer(@PathVariable String userName) {
-//        return ResponseEntity.ok(pendingOrderService.getPendingOrdersForCustomer(userName));
-//    }
-//
-//    @GetMapping("/store")
-//    public ResponseEntity getPendingOrdersForStore(@PathVariable MyUUID storeUUID) {
-//        return ResponseEntity.ok(pendingOrderService.getPendingOrdersForStore(storeUUID));
-//    }
-//
-//    @PutMapping
-//    public ResponseEntity updatePendingOrder(@PathVariable MyUUID pendingOrderUUID,
-//                                             @RequestBody PendingOrderRequestModel newPendingOrder) {
-//        pendingOrderService.updatePendingOrder(pendingOrderUUID, newPendingOrder);
-//        return ResponseEntity.ok().build();
-//    }
-//
-//    @DeleteMapping
-//    public ResponseEntity deletePendingOrder(@PathVariable MyUUID pendingOrderUUID) {
-//        pendingOrderService.deletePendingOrder(pendingOrderUUID);
-//        return ResponseEntity.ok().build();
-//    }
-//
-//    @DeleteMapping
-//    public ResponseEntity checkoutPendingOrder(@PathVariable MyUUID pendingOrderUUID) {
-//        pendingOrderService.checkoutPendingOrder(pendingOrderUUID);
-//        return ResponseEntity.ok().build();
-//    }
+
+
 
 
 

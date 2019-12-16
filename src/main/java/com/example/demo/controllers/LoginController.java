@@ -1,6 +1,8 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.user.UserRequestModel;
+import com.example.demo.models.user.UserLoginModel;
+import com.example.demo.models.user.UserRegisterModel;
+import com.example.demo.models.user.UserResponseModel;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,32 +10,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
+
+import static org.springframework.http.HttpStatus.CREATED;
+
 @RestController
 public class LoginController {
-    @Autowired
-    UserService userService;
 
-    @PostMapping(path = "/login",
-            consumes = "application/json",
-            produces = "application/json")
-    @ResponseBody
-    public ResponseEntity<?> login(@RequestBody String CHANGEME){
-        return new ResponseEntity<>( HttpStatus.FAILED_DEPENDENCY);
-    }
-    @PostMapping(path = "/registerUser",
-            consumes = "application/json",
-            produces = "application/json")
-    @ResponseBody
-    public ResponseEntity<?> registerUser(@RequestBody UserRequestModel userRequestModel){
-        //userService.registerUser(userRegisterModel);
-        //return new ResponseEntity<>( HttpStatus.OK);
-        return null;
+    private final UserService userService;
+
+    public LoginController(UserService userService) {
+        this.userService = userService;
     }
 
-    @GetMapping("/T/out")
-    public String logout(){
+    @PostMapping("/login")
+    public void login(@RequestBody UserLoginModel user){
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserResponseModel> registerUserAndCustomer(@RequestBody UserRegisterModel userModel) {
+        userService.registerUserAndCustomer(userModel);
+        return ResponseEntity.status(CREATED).build();
+    }
+
+    @GetMapping("/logout")
+    public void logout(){
         SecurityContextHolder.clearContext();
-        return "ok";
     }
 
 }
