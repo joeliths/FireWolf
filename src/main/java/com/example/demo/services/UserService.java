@@ -89,9 +89,9 @@ public class UserService {
         return foundUser.get();
     }
 
-    public boolean checkIfEntityBelongsToUser(String username, long customerId){
+    public boolean checkIfEntityBelongsToUser(String username, long entityUserId){
         long id = getUserByUsername(username).getId();
-        return id == customerId;
+        return id == entityUserId;
     }
 
 
