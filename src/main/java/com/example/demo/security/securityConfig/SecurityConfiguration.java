@@ -51,7 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(checkJwtFilter, ExceptionTranslationFilter.class)
                 .addFilterBefore(loginFilter(), checkJwtFilter.getClass());
 
-        http.csrf().disable().authorizeRequests().antMatchers("/login", "/register").permitAll();
+        http.csrf().disable().authorizeRequests().antMatchers("/login", "/register").permitAll().anyRequest().authenticated();
         http.exceptionHandling().authenticationEntryPoint(globalSecurityFilterExceptionHandler);
 
 
