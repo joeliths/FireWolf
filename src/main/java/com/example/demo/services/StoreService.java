@@ -9,10 +9,7 @@ import com.example.demo.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class StoreService {
@@ -31,6 +28,14 @@ public class StoreService {
 
     public Store getStoreByAddress(String address){
         return storeRepository.findFirstByAddress(address);
+    }
+
+    public Store getStoreByUuid(String uuid){
+        Optional dbResult= storeRepository.findByUuid(uuid);
+        if (dbResult.isEmpty()){
+            throw  new IllegalStateException("Not Found");
+        }
+        return (Store) dbResult.get();
     }
 
     public Set<StoreMapModel> getAllStoresToMap(){
