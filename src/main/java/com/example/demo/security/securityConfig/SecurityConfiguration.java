@@ -1,7 +1,7 @@
 package com.example.demo.security.securityConfig;
 
-
-import com.example.demo.exceptions.GlobalSecurityFilterExceptionHandler;
+//import com.example.demo.exceptions.GlobalSecurityFilterExceptionHandler;
+//
 import com.example.demo.security.JPAUserDetailsService;
 import com.example.demo.security.authenticationEventHandlers.SuccessHandler;
 import com.example.demo.security.filters.CheckJwtFilter;
@@ -36,8 +36,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     SuccessHandler handler;
     @Autowired
     CheckJwtFilter checkJwtFilter;
-    @Autowired
-    private GlobalSecurityFilterExceptionHandler globalSecurityFilterExceptionHandler;
+//    @Autowired
+//    private GlobalSecurityFilterExceptionHandler globalSecurityFilterExceptionHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -47,15 +47,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.exceptionHandling().authenticationEntryPoint(globalSecurityFilterExceptionHandler);
+        //http.exceptionHandling().authenticationEntryPoint(globalSecurityFilterExceptionHandler);
 
-        http.authorizeRequests().anyRequest().authenticated();
+
 
         http.addFilterBefore(checkJwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(checkJwtFilter, ExceptionTranslationFilter.class)
                 .addFilterBefore(loginFilter(), checkJwtFilter.getClass());
 
-
+        http.csrf().disable().authorizeRequests().antMatchers("/login", "/register").permitAll().anyRequest().authenticated();
 //        http.csrf().disable().authorizeRequests()
 //                //.antMatchers("/login", "/logout").permitAll()
 //                //.antMatchers("/registerUser").permitAll()
