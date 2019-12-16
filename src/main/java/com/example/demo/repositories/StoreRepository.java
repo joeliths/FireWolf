@@ -3,6 +3,8 @@ package com.example.demo.repositories;
 import com.example.demo.entities.InventoryProduct;
 import com.example.demo.entities.Store;
 import com.example.demo.entities.helperclasses.MyUUID;
+import com.example.demo.models.view.PendingOrderProductView;
+import com.example.demo.models.view.StoreCustomerView;
 import org.checkerframework.checker.nullness.Opt;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +31,6 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
             "(SELECT id FROM user WHERE user_name = :userName)")
     Optional<Store> findByVendorUserName(@Param("userName") String userName);
 
+    @Query(nativeQuery = true, value = "SELECT * FROM inventory_product_view WHERE inventory_product_uuid = :uuid")
+    List getStoreDetailsByUuid(@QueryParam("uuid") String uuid);
 }
