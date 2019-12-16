@@ -58,4 +58,10 @@ public class StoreController {
         return new ResponseEntity<>(productDeleted, HttpStatus.OK);
     }
 
+    @DeleteMapping("{uuid}")
+    public ResponseEntity deleteStore(@PathVariable String uuid, Principal principal){
+        storeService.deleteStore(uuid, principal.getName());
+        return ResponseEntity.status(204).build();
+    }
+
 }
