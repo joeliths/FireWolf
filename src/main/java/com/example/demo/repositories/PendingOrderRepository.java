@@ -29,12 +29,12 @@ public interface PendingOrderRepository extends JpaRepository<PendingOrder,Long>
 
     @Modifying(clearAutomatically = true)
     @Query(nativeQuery = true, value = "INSERT INTO pending_order(expiration_date_time, placement_date_time, uuid, customer_id, store_id) \n" +
-            "SELECT :expirationDate, :placementDate, (SELECT uuid()), (SELECT id FROM user u WHERE u.user_name = :username),\n" +
+            "SELECT (SELECT now()), (SELECT now()), (SELECT uuid()), (SELECT id FROM user u WHERE u.user_name = :username),\n" +
             "(SELECT store.id FROM store WHERE store.uuid = :storeUuid);")
     @Transactional
-    int insertPendingOrder(@Param("expirationDate") Date expirationDate, @Param("placementDate") Date placementDate,
-                                           @Param("username") String username,
-                                           @Param("storeUuid") String storeUuid);
+    int insertPendingOrder(
+            @Param("username") String username,
+            @Param("storeUuid") String storeUuid);
 
     @Query(nativeQuery = true, value = "SELECT * FROM pending_order WHERE id = LAST_INSERT_ID();")
     PendingOrder getLatestPendingOrder();

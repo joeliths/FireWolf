@@ -64,7 +64,7 @@ public class PendingOrderService {
 
 
     public String addPendingOrder(PendingOrderRequestModel pendingOrderModel, String username){
-     int insertedRows = pendingOrderRepository.insertPendingOrder(new Date(), new Date(),
+     int insertedRows = pendingOrderRepository.insertPendingOrder(
                                                                     username,
                                                                     pendingOrderModel.getStoreUUID());
      PendingOrder pendingOrder;
