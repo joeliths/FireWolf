@@ -33,4 +33,12 @@ public class StoreModel implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public PositionModel getPosition() {
+        return position;
+    }
+
+    public void setPosition(PositionModel position) {
+        this.position = position;
+    }
 }
