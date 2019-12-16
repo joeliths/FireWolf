@@ -32,9 +32,10 @@ public class VendorService {
     }
 
     public void registerStore(String userName, StoreModel storeModel){
+        System.out.println("woah");
         validationService.validateUserIsVendor(userName);
         validationService.validateThatFieldsAreNotNull(storeModel.getAddress(), storeModel.getDescription());
-
+        System.out.println("woah2");
         Store storeToAdd = modelConverter.lowAccessConverter(storeModel, Store.class);
         storeToAdd.setVendor(vendorRepository.getByUserName(userName));
         storeRepository.save(storeToAdd);
