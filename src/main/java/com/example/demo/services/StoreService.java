@@ -12,9 +12,11 @@ import com.example.demo.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
+
 
 @Service
 public class StoreService {
@@ -36,6 +38,14 @@ public class StoreService {
 
     public Store getStoreByAddress(String address){
         return storeRepository.findFirstByAddress(address);
+    }
+
+    public Store getStoreByUuid(String uuid){
+        Optional dbResult= storeRepository.findByUuid(uuid);
+        if (dbResult.isEmpty()){
+            throw  new IllegalStateException("Not Found");
+        }
+        return (Store) dbResult.get();
     }
 
     public Set<StoreMapModel> getAllStoresToMap(){

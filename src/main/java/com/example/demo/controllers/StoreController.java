@@ -40,6 +40,13 @@ public class StoreController {
         return  new ResponseEntity<>(storeService.getAllStoresToMap(),HttpStatus.OK);
     }
 
+    @GetMapping("/{uuid}")
+    @ResponseBody
+    public ResponseEntity<?> getStoreByUuid(@PathVariable String uuid){
+        System.out.println(uuid);
+        return  new ResponseEntity<>(storeService.getStoreByUuid(uuid),HttpStatus.OK);
+    }
+
     @PatchMapping(path = "/patchProduct",
             consumes = "application/json",
             produces = "application/json")
