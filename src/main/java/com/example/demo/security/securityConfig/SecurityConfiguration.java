@@ -47,13 +47,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.exceptionHandling().authenticationEntryPoint(globalSecurityFilterExceptionHandler);
 
-        http.authorizeRequests().anyRequest().authenticated();
 
         http.addFilterBefore(checkJwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(checkJwtFilter, ExceptionTranslationFilter.class)
                 .addFilterBefore(loginFilter(), checkJwtFilter.getClass());
+
+        http.csrf().disable().authorizeRequests().anyRequest().permitAll();
+        http.exceptionHandling().authenticationEntryPoint(globalSecurityFilterExceptionHandler);
+
+
 
 
 //        http.csrf().disable().authorizeRequests()
