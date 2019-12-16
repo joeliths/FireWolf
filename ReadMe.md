@@ -17,3 +17,18 @@ https://github.com/joeliths/Jms
 
 Add application.resources with the following text:
 (WRITE THIS SEGMENT)
+
+
+**Description of API**
+
+**End Points** 
+
+**User:**
+
+Reserve products:
+
+
+Vendor:
+customer:
+
+ 
