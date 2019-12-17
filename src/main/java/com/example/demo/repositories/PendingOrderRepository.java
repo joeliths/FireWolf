@@ -44,6 +44,9 @@ public interface PendingOrderRepository extends JpaRepository<PendingOrder,Long>
             "WHERE u.user_name = :username")
     List<PendingOrder> getPendingOrderByCustomer(@QueryParam("username") String username);
 
+    @Query(nativeQuery = true, value = "SELECT * FROM pending_order WHERE store_id = (SELECT id from STORE WHERE uuid = :storeUuid);")
+    List<PendingOrder> getPendingOrderByStore(@QueryParam("storeUuid")String storeUuid);
+
 
 
 

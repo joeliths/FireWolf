@@ -34,11 +34,11 @@ public class InventoryProduct implements Serializable, MyEntity{
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product = new Product();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
+    @JoinColumn(name = "store_id", nullable = false)
     private Store store = new Store();
 
     @OneToMany(mappedBy = "inventoryProduct",

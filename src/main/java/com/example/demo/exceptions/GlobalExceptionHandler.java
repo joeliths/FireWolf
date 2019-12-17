@@ -6,6 +6,7 @@ import com.example.demo.exceptions.customExceptions.WrongOwnerException;
 import com.example.demo.jms.ActiveMQSender;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.hibernate.JDBCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,6 +59,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({UserRoleTypeNotFoundException.class, EntityNotFoundException.class})
     public ResponseEntity<?> handleEntityNotFoundException(Exception e){
         return createErrorResponse(NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler({JDBCException.class})
+    public ResponseEntity<?> handleSQLException(Exception e){
+        return createErrorResponse(BAD_REQUEST, e.getMessage());
     }
 
     @ExceptionHandler(ModelMapperException.class)
