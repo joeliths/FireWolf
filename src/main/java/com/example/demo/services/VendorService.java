@@ -83,13 +83,13 @@ public class VendorService {
 
     //---Validation--
 
-    private void validateStoreBelongsToVendor(String userName, String storeUuid) {
+    public void validateStoreBelongsToVendor(String userName, String storeUuid) {
         if(storeRepository.findByVendorUserName(userName).isEmpty()) {
             throw new ForbiddenException("Cannot modify a store that is not owned.");
         }
     }
 
-    private void validateProductExistsInStore(String storeUuid, String inventoryProductUuid) {
+    public void validateProductExistsInStore(String storeUuid, String inventoryProductUuid) {
         if(inventoryProductRepository
                 .findByStoreUuidAndInventoryProductUuid(storeUuid, inventoryProductUuid).isEmpty()) {
             throw new ForbiddenException("Cannot modify a product that is not owned.");

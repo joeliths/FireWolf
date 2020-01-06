@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.transaction.Transactional;
+import javax.ws.rs.QueryParam;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -40,5 +42,10 @@ public interface InventoryProductRepository extends JpaRepository<InventoryProdu
            "i.store_id = (SELECT id FROM store WHERE store.uuid = :storeUuid))")
     Optional<InventoryProduct> findByStoreUuidAndInventoryProductUuid(@Param("storeUuid") String storeUuid,
                                            @Param("inventoryProductUuid") String inventoryProductUuid);
+
+   @Modifying
+   @Transactional
+   @Query(nativeQuery = true, value = "DELETE FROM inventory_product WHERE store_id = (SELECT id FROM store WHERE uuid = :storeUuid)")
+    int deleteInventoryProductsByStoreUuid(@QueryParam("storeUuid")String storeUuid);
 
 }

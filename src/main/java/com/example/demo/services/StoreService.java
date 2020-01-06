@@ -8,6 +8,8 @@ import com.example.demo.exceptions.customExceptions.WrongOwnerException;
 import com.example.demo.models.ProductModel;
 import com.example.demo.models.StoreMapModel;
 import com.example.demo.models.StoreModel;
+import com.example.demo.models.view.StoreCustomerView;
+import com.example.demo.repositories.InventoryProductRepository;
 import com.example.demo.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,13 +25,15 @@ public class StoreService {
 
     final private StoreRepository storeRepository;
     final private UserService userService;
+    final private InventoryProductRepository inventoryProductRepository;
 
     Convert convert = new Convert();
 
     @Autowired
-    public StoreService(StoreRepository storeRepository, UserService userService) {
+    public StoreService(StoreRepository storeRepository, UserService userService, InventoryProductRepository inventoryProductRepository) {
         this.storeRepository = storeRepository;
         this.userService = userService;
+        this.inventoryProductRepository = inventoryProductRepository;
     }
 
     public List<Store> getAllStores(){
@@ -46,6 +50,10 @@ public class StoreService {
             throw  new IllegalStateException("Not Found");
         }
         return (Store) dbResult.get();
+    }
+
+    public List<StoreCustomerView> getStoreDetailsByUuid(String uuid){
+        return storeRepository.getStoreDetailsByUuid(uuid);
     }
 
     public Set<StoreMapModel> getAllStoresToMap(){
@@ -84,6 +92,7 @@ public class StoreService {
     public void deleteStore(String uuid, String name) {
         Store store = getStoreEntity(uuid);
         if(userService.checkIfEntityBelongsToUser(name, store.getVendor().getId())){
+            inventoryProductRepository.deleteInventoryProductsByStoreUuid(uuid);
             storeRepository.delete(store);
         }else
             throw new WrongOwnerException("Store with uuid "+uuid+" does not belong to user "+name);

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,7 @@ public class PendingOrderService {
     private final PendingOrderRepository pendingOrderRepository;
     private final PendingOrderProductRepository pendingOrderProductRepository;
     private final CustomerRepository customerRepository;
+    private final VendorService vendorService;
 
     private final UserRepository userRepository;
 
@@ -36,12 +38,14 @@ public class PendingOrderService {
     public PendingOrderService(PendingOrderRepository pendingOrderRepository,
                                PendingOrderProductRepository pendingOrderProductRepository,
                                UserRepository userRepository,
-                               CustomerRepository customerRepository
+                               CustomerRepository customerRepository,
+                               VendorService vendorService
                                ) {
         this.pendingOrderRepository = pendingOrderRepository;
         this.pendingOrderProductRepository = pendingOrderProductRepository;
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
+        this.vendorService = vendorService;
     }
 
     public PendingOrderResponseModel getPendingOrderByUuid(String uuid, String username){
@@ -50,7 +54,6 @@ public class PendingOrderService {
            return toResponseModel(pendingOrder);
        }else
            throw new WrongOwnerException("Pending order with uuid "+uuid+" does not belong to user "+username);
-
     }
 
     public PendingOrder getPendingOrderEntityByUuid(String uuid){
@@ -63,6 +66,7 @@ public class PendingOrderService {
     }
 
 
+    @Transactional
     public String addPendingOrder(PendingOrderRequestModel pendingOrderModel, String username){
      int insertedRows = pendingOrderRepository.insertPendingOrder(
                                                                     username,
@@ -73,7 +77,10 @@ public class PendingOrderService {
      }else
          throw new RuntimeException(); //TODO: Better exception here!
 
+        String storeUuid = pendingOrderModel.getStoreUUID();
+
         pendingOrderModel.getPendingOrderProducts().forEach(p -> {
+            vendorService.validateProductExistsInStore(storeUuid, p.getInventoryProductUUID());
             pendingOrderProductRepository.insertPendingOrderProduct(p.getQuantity(), p.getInventoryProductUUID(), pendingOrder.getUuid().toString());
         });
 
@@ -100,6 +107,13 @@ public class PendingOrderService {
 
     public List<PendingOrderResponseModel> getPendingOrdersForCustomer(String userName) {
         return pendingOrderRepository.getPendingOrderByCustomer(userName)
+                .stream()
+                .map(po -> toResponseModel(po)).collect(Collectors.toList());
+    }
+
+    public List<PendingOrderResponseModel> getPendingOrdersForStore(String storeUuid, String userName){
+        vendorService.validateStoreBelongsToVendor(userName, storeUuid);
+        return pendingOrderRepository.getPendingOrderByStore(storeUuid)
                 .stream()
                 .map(po -> toResponseModel(po)).collect(Collectors.toList());
     }
