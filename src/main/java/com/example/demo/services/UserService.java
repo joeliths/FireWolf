@@ -32,12 +32,16 @@ public class UserService {
         this.modelConverter = modelConverter;
     }
 
-    public void registerUserAndCustomer(UserRegisterModel userModel){
-        validateUserFields(userModel);
+    public void registerUserAndCustomer(UserRegisterModel user){
+        boolean areUserFieldsInvalid = Stream.of(user.getUserName(), user.getPassword(), user.getFullName())
+                .anyMatch(string -> string == null || string.isBlank());
+        if(areUserFieldsInvalid || isUserNameTaken(user.getUserName())) {
+            throw new ValidationException("Invalid fields for user.");
+        }
 
         Customer customerToAdd = new Customer();
-        userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
-        customerToAdd.setUser(modelConverter.lowAccessConverter(userModel, User.class));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        customerToAdd.setUser(modelConverter.lowAccessConverter(user, User.class));
         customerRepository.save(customerToAdd);
     }
 
@@ -50,7 +54,9 @@ public class UserService {
         User userToUpdate = userRepository.getByUserName(userName);
 
         if(newUserFields.getUserName() != null) {
-            validateUserNameIsNotTaken(newUserFields.getUserName());
+            if(isUserNameTaken(newUserFields.getUserName())) {
+                throw new ValidationException("Username is taken.");
+            }
             userToUpdate.setUserName(newUserFields.getUserName());
         }
         if(newUserFields.getPassword() != null) {
@@ -64,33 +70,15 @@ public class UserService {
     }
 
 
-    //---Validation---
 
-    private void validateUserFields(UserRegisterModel user) {
-        if(Stream.of(user.getUserName(), user.getPassword(), user.getFullName())
-                .anyMatch(string -> string == null || string.isBlank())) {
-            throw new ValidationException("Missing fields.");
-        }
-        validateUserNameIsNotTaken(user.getUserName());
-    }
-
-    private void validateUserNameIsNotTaken(String userName) {
-        if(userRepository.findByUserName(userName).isPresent()) {
-            throw new ValidationException("User name '" + userName + " is already taken.");
-        }
-    }
-
-    private User getUserByUsername(String userName){
-        Optional<User> foundUser = userRepository.findByUserName(userName);
-        if(foundUser.isEmpty()) {
-            throw new EntityNotFoundException("Failed to authenticate. " +
-                    "No user with username '" + userName + "' was found.");
-        }
-        return foundUser.get();
+    private boolean isUserNameTaken(String userName) {
+        return userRepository.findByUserName(userName).isPresent();
     }
 
     public boolean checkIfEntityBelongsToUser(String username, long entityUserId){
-        long id = getUserByUsername(username).getId();
+        User foundUser = userRepository.findByUserName(username)
+                .orElseThrow(EntityNotFoundException::new);
+        long id = foundUser.getId();
         return id == entityUserId;
     }
 
