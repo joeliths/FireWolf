@@ -16,6 +16,7 @@ import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.NotAllowedException;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
