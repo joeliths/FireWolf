@@ -60,6 +60,8 @@ public interface InventoryProductRepository extends JpaRepository<InventoryProdu
                     "where id = :#{#inventoryProduct.id}")
     void patchInventoryProduct(@Param("inventoryProduct") InventoryProduct inventoryProduct);
 
+    @Modifying
+    @Query(nativeQuery = true, value = "DELETE FROM inventory_product WHERE uuid = :uuid")
     void deleteByUuid(String uuid);
 
 }
