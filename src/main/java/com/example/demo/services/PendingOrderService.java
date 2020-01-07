@@ -113,7 +113,7 @@ public class PendingOrderService {
     }
 
     public List<PendingOrderResponseModel> getPendingOrdersForStore(String storeUuid, String userName){
-        vendorService.doesStoreNotBelongToVendor(userName, storeUuid);
+        vendorService.doesStoreNotBelongToVendor(userName);
         return pendingOrderRepository.getPendingOrderByStore(storeUuid)
                 .stream()
                 .map(po -> toResponseModel(po)).collect(Collectors.toList());

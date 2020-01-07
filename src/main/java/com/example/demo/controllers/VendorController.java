@@ -58,7 +58,7 @@ public class VendorController {
     }
 
     @PostMapping("/product/add/{storeUuid}/{productUuid}")
-    public ResponseEntity<?> addExistingTypeOfProductToStore(Principal userMakingTheRequest,
+    public ResponseEntity<?> addProductToStore(Principal userMakingTheRequest,
                                                              @PathVariable String storeUuid,
                                                              @PathVariable String productUuid,
                                                              @RequestBody InventoryProductRequestModel product) {

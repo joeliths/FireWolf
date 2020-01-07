@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.Mapper.Convert;
+import com.example.demo.entities.InventoryProduct;
 import com.example.demo.entities.Position;
 import com.example.demo.entities.Store;
 import com.example.demo.models.InventoryProductRequestModel;
@@ -55,7 +56,7 @@ public class VendorService {
         if(areStoreFieldsInvalid) {
             throw new ValidationException("Invalid fields for store.");
         }
-        
+
         Store storeToAdd = new Store(store.getAddress(), store.getDescription());
         storeToAdd.setVendor(vendorRepository.getByUserName(userName));
         storeToAdd.setPosition(new Position(store.getPosition().getLat(), store.getPosition().getLng()));
@@ -70,18 +71,22 @@ public class VendorService {
         if(areInventoryProductFieldsInvalid(inventoryProduct)) {
             throw new ValidationException("Invalid fields for product");
         }
-        if(doesStoreNotBelongToVendor(userName, storeUuid)) {
+        if(doesStoreNotBelongToVendor(userName)) {
             throw new ValidationException();
         }
 
-        //Todo: add inventory prod to store
+        InventoryProduct inventoryProductToAdd = modelConverter
+                .lowAccessConverter(inventoryProduct, InventoryProduct.class);
+        inventoryProductToAdd.setProduct(productRepository.getByUuid(productUuid));
+        inventoryProductToAdd.setStore(storeRepository.getByUuid(storeUuid));
+        inventoryProductRepository.save(inventoryProductToAdd);
 
     }
 
     public void updateProductInStore(String userName, String storeUuid, String inventoryProductUuid,
                                      InventoryProductRequestModel updatedProduct) {
 
-        if(doesStoreNotBelongToVendor(userName, storeUuid) ||
+        if(doesStoreNotBelongToVendor(userName) ||
                 doesInventoryProductNotExistInStore(storeUuid, inventoryProductUuid)) {
             throw new ForbiddenException();
         }
@@ -95,7 +100,7 @@ public class VendorService {
 
     public void removeProductFromStore(String userName, String storeUuid, String inventoryProductUuid) {
 
-        if(doesStoreNotBelongToVendor(userName, storeUuid) ||
+        if(doesStoreNotBelongToVendor(userName) ||
                 doesInventoryProductNotExistInStore(storeUuid, inventoryProductUuid)) {
             throw new ValidationException();
         }
@@ -106,9 +111,8 @@ public class VendorService {
 
     
 
-    public boolean doesStoreNotBelongToVendor(String userName, String storeUuid) {
+    public boolean doesStoreNotBelongToVendor(String userName) {
         return storeRepository.findByVendorUserName(userName).isEmpty();
-        //todo
     }
 
     public boolean doesInventoryProductNotExistInStore(String storeUuid, String inventoryProductUuid) {

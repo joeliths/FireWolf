@@ -23,6 +23,9 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     @Query(nativeQuery = true, value = "select * from store where store.uuid = :uuid")
     Optional<Store> findByUuid(@Param("uuid") String uuid);
 
+    @Query(nativeQuery = true, value = "select * from store where store.uuid = :uuid")
+    Store getByUuid(@Param("uuid") String uuid);
+
     @Query(nativeQuery = true, value = "SELECT s.* FROM user u JOIN store s ON u.id = s.vendor_id WHERE u.user_name = :username")
     List<Store> getAllStoresByVendorUsername(@QueryParam("username") String username);
 

@@ -42,6 +42,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(nativeQuery = true, value = "select * from product where product.uuid = :uuid")
     Optional<Product> findByUuid(@Param("uuid") String uuid);
 
+    @Query(nativeQuery = true, value = "select * from product where product.uuid = :uuid")
+    Product getByUuid(@Param("uuid") String uuid);
+
 
     int deleteByUuid(String uuid);
 
