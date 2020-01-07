@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.Mapper.Convert;
 import com.example.demo.entities.*;
+import com.example.demo.exceptions.customExceptions.InsertEntityException;
 import com.example.demo.exceptions.customExceptions.WrongOwnerException;
 import com.example.demo.models.pendingorder.PendingOrderRequestModel;
 import com.example.demo.models.pendingorder.PendingOrderResponseModel;
@@ -75,13 +76,13 @@ public class PendingOrderService {
      if(insertedRows > 0){
          pendingOrder = pendingOrderRepository.getLatestPendingOrder();
      }else
-         throw new RuntimeException(); //TODO: Better exception here!
+         throw new InsertEntityException("Order failed to be saved");
 
-        String storeUuid = pendingOrderModel.getStoreUUID();
+     String storeUuid = pendingOrderModel.getStoreUUID();
 
-        pendingOrderModel.getPendingOrderProducts().forEach(p -> {
-            vendorService.validateProductExistsInStore(storeUuid, p.getInventoryProductUUID());
-            pendingOrderProductRepository.insertPendingOrderProduct(p.getQuantity(), p.getInventoryProductUUID(), pendingOrder.getUuid().toString());
+     pendingOrderModel.getPendingOrderProducts().forEach(p -> {
+         if(vendorService.doesInventoryProductNotExistInStore(storeUuid, p.getInventoryProductUUID()))
+             throw new WrongOwnerException("Store with uuid "+storeUuid+" does not carry inventory product");                                   pendingOrderProductRepository.insertPendingOrderProduct(p.getQuantity(), p.getInventoryProductUUID(), pendingOrder                  .getUuid().toString());
         });
 
      return pendingOrder.getUuid().toString();
@@ -112,7 +113,7 @@ public class PendingOrderService {
     }
 
     public List<PendingOrderResponseModel> getPendingOrdersForStore(String storeUuid, String userName){
-        vendorService.validateStoreBelongsToVendor(userName, storeUuid);
+        vendorService.doesStoreNotBelongToVendor(userName, storeUuid);
         return pendingOrderRepository.getPendingOrderByStore(storeUuid)
                 .stream()
                 .map(po -> toResponseModel(po)).collect(Collectors.toList());

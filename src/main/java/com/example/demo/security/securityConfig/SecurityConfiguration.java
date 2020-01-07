@@ -21,7 +21,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -29,13 +28,11 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    UserNamePasswordProvider userNamePasswordProvider;
+    private UserNamePasswordProvider userNamePasswordProvider;
     @Autowired
-    SuccessHandler successHandler;
+    private SuccessHandler successHandler;
     @Autowired
-    SuccessHandler handler;
-    @Autowired
-    CheckJwtFilter checkJwtFilter;
+    private CheckJwtFilter checkJwtFilter;
     @Autowired
     private GlobalSecurityFilterExceptionHandler globalSecurityFilterExceptionHandler;
 
@@ -54,9 +51,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests().antMatchers("/login", "/register").permitAll().anyRequest().authenticated();
         http.exceptionHandling().authenticationEntryPoint(globalSecurityFilterExceptionHandler);
 
-
-
-
 //        http.csrf().disable().authorizeRequests()
 //                //.antMatchers("/login", "/logout").permitAll()
 //                //.antMatchers("/registerUser").permitAll()
@@ -73,7 +67,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public LoginFilter loginFilter() throws Exception {
-        LoginFilter loginFilter = new LoginFilter(new AntPathRequestMatcher("/login", "POST"), authenticationManagerBean(), handler);
+        LoginFilter loginFilter = new LoginFilter(new AntPathRequestMatcher("/login", "POST"), authenticationManagerBean(), successHandler);
 
         return loginFilter;
     }

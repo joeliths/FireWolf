@@ -31,13 +31,13 @@ public class UserNamePasswordProvider implements AuthenticationProvider {
         try{
             userDetails = userDetailsService.loadUserByUsername(authentication.getPrincipal().toString());
         }catch(UsernameNotFoundException e){
-            throw new UsernameNotFoundException(e.getMessage());
+            throw new BadCredentialsException(e.getMessage());
         }
 
         if(passwordEncoder.matches(authentication.getCredentials().toString(), userDetails.getPassword())){
             authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
         }else{
-            throw new BadCredentialsException("Something went wrong");
+            throw new BadCredentialsException("Authentication failed");
         }
         return authentication;
     }

@@ -1,5 +1,6 @@
 package com.example.demo.exceptions;
 
+import com.example.demo.exceptions.customExceptions.InsertEntityException;
 import com.example.demo.exceptions.customExceptions.ModelMapperException;
 import com.example.demo.exceptions.customExceptions.UserRoleTypeNotFoundException;
 import com.example.demo.exceptions.customExceptions.WrongOwnerException;
@@ -61,7 +62,7 @@ public class GlobalExceptionHandler {
         return createErrorResponse(NOT_FOUND, e.getMessage());
     }
 
-    @ExceptionHandler({JDBCException.class})
+    @ExceptionHandler({JDBCException.class, InsertEntityException.class})
     public ResponseEntity<?> handleSQLException(Exception e){
         return createErrorResponse(BAD_REQUEST, e.getMessage());
     }
@@ -76,8 +77,15 @@ public class GlobalExceptionHandler {
         //Todo: All sub exceptions of Authentication exception that are thrown in the security filters
         // somehow gets converted to InsufficientAuthenticationException before reaching this method so
         // specific messages and statuses cant be set...
+        System.out.println(e.getMessage());
+        System.out.println(e.getClass().getSimpleName());
         return ResponseEntity.status(BAD_REQUEST)
                 .body(new ObjectMapper().createObjectNode().put("message: ", "Could not authenticate request."));
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException e){
+        return createErrorResponse(BAD_REQUEST, e.getMessage());
     }
 
     private ResponseEntity<?> createErrorResponse(HttpStatus httpStatus, String detailedMessage) {
