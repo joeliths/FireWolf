@@ -102,6 +102,7 @@ public class VendorService {
 
     }
 
+    
 
     public boolean doesStoreNotBelongToVendor(String userName, String storeUuid) {
         return false;//storeRepository.findByVendorUserName(userName).isEmpty();
