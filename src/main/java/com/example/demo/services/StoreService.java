@@ -10,6 +10,7 @@ import com.example.demo.models.StoreMapModel;
 import com.example.demo.models.StoreModel;
 import com.example.demo.models.view.StoreCustomerView;
 import com.example.demo.repositories.InventoryProductRepository;
+import com.example.demo.repositories.PendingOrderRepository;
 import com.example.demo.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,14 +27,16 @@ public class StoreService {
     final private StoreRepository storeRepository;
     final private UserService userService;
     final private InventoryProductRepository inventoryProductRepository;
+    final private PendingOrderRepository pendingOrderRepository;
 
     Convert convert = new Convert();
 
     @Autowired
-    public StoreService(StoreRepository storeRepository, UserService userService, InventoryProductRepository inventoryProductRepository) {
+    public StoreService(StoreRepository storeRepository, UserService userService, PendingOrderRepository pendingOrderRepository, InventoryProductRepository inventoryProductRepository) {
         this.storeRepository = storeRepository;
         this.userService = userService;
         this.inventoryProductRepository = inventoryProductRepository;
+        this.pendingOrderRepository = pendingOrderRepository;
     }
 
     public List<Store> getAllStores(){
@@ -92,7 +95,7 @@ public class StoreService {
     public void deleteStore(String uuid, String name) {
         Store store = getStoreEntity(uuid);
         if(userService.checkIfEntityBelongsToUser(name, store.getVendor().getId())){
-            inventoryProductRepository.deleteInventoryProductsByStoreUuid(uuid);
+            inventoryProductRepository.deleteAllByStore(store);
             storeRepository.delete(store);
         }else
             throw new WrongOwnerException("Store with uuid "+uuid+" does not belong to user "+name);

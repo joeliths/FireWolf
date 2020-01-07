@@ -1,6 +1,7 @@
 package com.example.demo.repositories;
 
 import com.example.demo.entities.InventoryProduct;
+import com.example.demo.entities.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -47,5 +48,8 @@ public interface InventoryProductRepository extends JpaRepository<InventoryProdu
    @Transactional
    @Query(nativeQuery = true, value = "DELETE FROM inventory_product WHERE store_id = (SELECT id FROM store WHERE uuid = :storeUuid)")
     int deleteInventoryProductsByStoreUuid(@QueryParam("storeUuid")String storeUuid);
+
+   @Transactional
+   void deleteAllByStore(Store store);
 
 }

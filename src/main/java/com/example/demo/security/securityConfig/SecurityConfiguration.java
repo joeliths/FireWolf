@@ -47,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(checkJwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(checkJwtFilter, ExceptionTranslationFilter.class)
-                .addFilterBefore(loginFilter(), checkJwtFilter.getClass());
+                .addFilterAfter(loginFilter(), ExceptionTranslationFilter.class);
 
         http.csrf().disable().authorizeRequests().antMatchers("/login", "/register").permitAll().anyRequest().authenticated();
         http.exceptionHandling().authenticationEntryPoint(globalSecurityFilterExceptionHandler);
