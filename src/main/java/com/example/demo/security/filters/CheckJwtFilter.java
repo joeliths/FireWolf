@@ -34,7 +34,6 @@ public class CheckJwtFilter extends OncePerRequestFilter {
 
         String authHeader = httpServletRequest.getHeader("Authorization");
         if(null != authHeader && authHeader.startsWith("Bearer ")) {
-            System.out.println("no");
             //TODO: Check Database if Jwt is in badJwt-table
             String jwtToken = authHeader.substring(7);
             String username = jwtService.getSubject(jwtToken);

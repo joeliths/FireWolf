@@ -85,7 +85,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException e){
-        return createErrorResponse(BAD_REQUEST, e.getMessage());
+        return ResponseEntity.status(BAD_REQUEST)
+                .body(new ObjectMapper().createObjectNode().put("message: ", e.getMessage()));
     }
 
     private ResponseEntity<?> createErrorResponse(HttpStatus httpStatus, String detailedMessage) {
