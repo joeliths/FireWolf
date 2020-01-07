@@ -2,8 +2,8 @@ package com.example.demo.models;
 
 public class InventoryProductRequestModel {
 
-    private int price;
-    private int stock;
+    private Integer price;
+    private Integer stock;
 
     public InventoryProductRequestModel() {
     }
@@ -13,19 +13,19 @@ public class InventoryProductRequestModel {
         this.stock = stock;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
-    public int getStock() {
+    public Integer getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(Integer stock) {
         this.stock = stock;
     }
 }

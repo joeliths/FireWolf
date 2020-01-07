@@ -95,7 +95,17 @@ public class VendorService {
             throw new ValidationException("Invalid fields for product.");
         }
 
-        //todo: update prod
+        InventoryProduct prodToUpdate = inventoryProductRepository.findByUuid(inventoryProductUuid)
+                .orElseThrow(() -> new EntityNotFoundException("Could not find selected inventory product."));
+
+        if(updatedProduct.getStock() != null) {
+            prodToUpdate.setStock(updatedProduct.getStock());
+        }
+        if(updatedProduct.getPrice() != null) {
+            prodToUpdate.setPrice(updatedProduct.getPrice());
+        }
+
+        inventoryProductRepository.patchInventoryProduct(prodToUpdate);
     }
 
     public void removeProductFromStore(String userName, String storeUuid, String inventoryProductUuid) {
@@ -105,8 +115,7 @@ public class VendorService {
             throw new ValidationException();
         }
 
-        //todo: remove prod
-
+        inventoryProductRepository.deleteByUuid(inventoryProductUuid);
     }
 
     
