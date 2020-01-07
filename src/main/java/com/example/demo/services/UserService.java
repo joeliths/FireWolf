@@ -35,8 +35,11 @@ public class UserService {
     public void registerUserAndCustomer(UserRegisterModel user){
         boolean areUserFieldsInvalid = Stream.of(user.getUserName(), user.getPassword(), user.getFullName())
                 .anyMatch(string -> string == null || string.isBlank());
-        if(areUserFieldsInvalid || isUserNameTaken(user.getUserName())) {
-            throw new ValidationException("Invalid fields for user.");
+        if(areUserFieldsInvalid) {
+            throw new ValidationException("Missing fields for user.");
+        }
+        else if (isUserNameTaken(user.getUserName())) {
+            throw new ValidationException("Username is already taken.");
         }
 
         Customer customerToAdd = new Customer();

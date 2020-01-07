@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.Mapper.Convert;
+import com.example.demo.entities.Position;
 import com.example.demo.entities.Store;
 import com.example.demo.models.InventoryProductRequestModel;
 import com.example.demo.models.StoreModel;
@@ -39,7 +40,7 @@ public class VendorService {
 
     public void registerUserAsVendor(String userName) {
         if(isUserAlreadyVendor(userName)) {
-            throw new ValidationException();
+            throw new ValidationException("User is already vendor.");
         }
         vendorRepository.registerVendor(userName);
     }
@@ -54,9 +55,10 @@ public class VendorService {
         if(areStoreFieldsInvalid) {
             throw new ValidationException("Invalid fields for store.");
         }
-
-        Store storeToAdd = modelConverter.lowAccessConverter(store, Store.class);
+        
+        Store storeToAdd = new Store(store.getAddress(), store.getDescription());
         storeToAdd.setVendor(vendorRepository.getByUserName(userName));
+        storeToAdd.setPosition(new Position(store.getPosition().getLat(), store.getPosition().getLng()));
         storeRepository.save(storeToAdd);
     }
 

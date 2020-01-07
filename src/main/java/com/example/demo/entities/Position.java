@@ -22,6 +22,15 @@ public class Position implements Serializable, MyEntity {
     @JoinColumn(name = "store_id")
     private Store store;
 
+    public Position() {
+    }
+
+    public Position(Double lat, Double lng) {
+        this.lat = lat;
+        this.lng = lng;
+    }
+
+
     public Long getId() {
         return id;
     }

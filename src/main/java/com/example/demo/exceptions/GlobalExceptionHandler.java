@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
-        return createErrorResponse(BAD_REQUEST, "Request body is missing.");
+        return createErrorResponse(BAD_REQUEST, "Invalid request body.");
     }
 
     @ExceptionHandler({ValidationException.class, WrongOwnerException.class})
@@ -74,13 +74,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<?> handleAuthenticationException(AuthenticationException e, HttpServletResponse response){
-        //Todo: All sub exceptions of Authentication exception that are thrown in the security filters
-        // somehow gets converted to InsufficientAuthenticationException before reaching this method so
-        // specific messages and statuses cant be set...
-        System.out.println(e.getMessage());
-        System.out.println(e.getClass().getSimpleName());
-        return ResponseEntity.status(BAD_REQUEST)
-                .body(new ObjectMapper().createObjectNode().put("message: ", "Could not authenticate request."));
+        return ResponseEntity.status(UNAUTHORIZED)
+                .body("{ \"message\": \"" + "Could not authenticate request." + "\" }");
     }
 
     @ExceptionHandler(BadCredentialsException.class)

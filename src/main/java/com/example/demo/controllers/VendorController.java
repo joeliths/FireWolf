@@ -39,7 +39,7 @@ public class VendorController {
         return ResponseEntity.ok(storeService.getAllStoresByUsername(principal.getName()));
     }
 
-    @PatchMapping("/register")
+    @PostMapping
     public ResponseEntity<?> registerUserAsVendor(Principal userMakingTheRequest){
         vendorService.registerUserAsVendor(userMakingTheRequest.getName());
         return ResponseEntity.status(CREATED).build();
