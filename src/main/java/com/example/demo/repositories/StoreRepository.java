@@ -5,7 +5,6 @@ import com.example.demo.entities.Store;
 import com.example.demo.entities.helperclasses.MyUUID;
 import com.example.demo.models.view.PendingOrderProductView;
 import com.example.demo.models.view.StoreCustomerView;
-import org.checkerframework.checker.nullness.Opt;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

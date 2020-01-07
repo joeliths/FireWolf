@@ -3,7 +3,6 @@ package com.example.demo.repositories;
 import com.example.demo.entities.InventoryProduct;
 import com.example.demo.entities.User;
 import com.example.demo.entities.Vendor;
-import org.checkerframework.checker.nullness.Opt;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
