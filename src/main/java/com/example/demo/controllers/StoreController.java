@@ -37,6 +37,7 @@ public class StoreController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<?> getAllStoresToMap(){
+        System.out.println("fggg");
         return  new ResponseEntity<>(storeService.getAllStoresToMap(),HttpStatus.OK);
     }
 

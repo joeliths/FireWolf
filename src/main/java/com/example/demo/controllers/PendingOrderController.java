@@ -30,6 +30,7 @@ public class PendingOrderController {
 
     @DeleteMapping("{uuid}")
     public ResponseEntity deletePendingOrder(@PathVariable String uuid, Principal principal){
+        System.out.println(principal.getName());
         pendingOrderService.deletePendingOrder(uuid, principal.getName());
         return ResponseEntity.status(204).build();
     }
