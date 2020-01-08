@@ -1,21 +1,18 @@
 package com.example.demo.services;
 
 import com.example.demo.Mapper.Convert;
-import com.example.demo.entities.InventoryProduct;
-import com.example.demo.entities.Position;
-import com.example.demo.entities.Store;
+import com.example.demo.entities.*;
 import com.example.demo.models.InventoryProductRequestModel;
 import com.example.demo.models.StoreModel;
-import com.example.demo.repositories.InventoryProductRepository;
-import com.example.demo.repositories.ProductRepository;
-import com.example.demo.repositories.StoreRepository;
-import com.example.demo.repositories.VendorRepository;
+import com.example.demo.repositories.*;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import javax.ws.rs.ForbiddenException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -25,24 +22,32 @@ public class VendorService {
 
     private final VendorRepository vendorRepository;
     private final StoreRepository storeRepository;
+    private final UserRepository userRepository;
     private final InventoryProductRepository inventoryProductRepository;
     private final ProductRepository productRepository;
     private final Convert modelConverter;
+    private final UserRoleRepository userRoleRepository;
 
     public VendorService(VendorRepository vendorRepository, StoreRepository storeRepository,
                          InventoryProductRepository inventoryProductRepository, Convert modelConverter,
-                         ProductRepository productRepository) {
+                         ProductRepository productRepository, UserRepository userRepository,
+                         UserRoleRepository userRoleRepository) {
         this.vendorRepository = vendorRepository;
         this.storeRepository = storeRepository;
         this.inventoryProductRepository = inventoryProductRepository;
         this.modelConverter = modelConverter;
         this.productRepository = productRepository;
+        this.userRepository = userRepository;
+        this.userRoleRepository = userRoleRepository;
     }
 
     public void registerUserAsVendor(String userName) {
         if(isUserAlreadyVendor(userName)) {
             throw new ValidationException("User is already vendor.");
         }
+        User user = userRepository.findByUserName(userName).get();
+        UserRole vendorRole = userRoleRepository.getUserRoleByRole("ROLE_VENDOR").get();
+        user.getRoles().add(vendorRole);
         vendorRepository.registerVendor(userName);
     }
 

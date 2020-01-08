@@ -3,15 +3,19 @@ package com.example.demo.services;
 import com.example.demo.Mapper.Convert;
 import com.example.demo.entities.Customer;
 import com.example.demo.entities.User;
+import com.example.demo.entities.UserRole;
 import com.example.demo.models.user.UserRegisterModel;
 import com.example.demo.repositories.CustomerRepository;
 import com.example.demo.repositories.UserRepository;
+import com.example.demo.repositories.UserRoleRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -23,13 +27,16 @@ public class UserService {
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
     private final Convert modelConverter;
+    private final UserRoleRepository userRoleRepository;
 
     public UserService(UserRepository userRepository, CustomerRepository customerRepository,
-                       PasswordEncoder passwordEncoder, Convert modelConverter) {
+                       PasswordEncoder passwordEncoder, Convert modelConverter,
+                       UserRoleRepository userRoleRepository) {
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelConverter = modelConverter;
+        this.userRoleRepository = userRoleRepository;
     }
 
     public void registerUserAndCustomer(UserRegisterModel user){
@@ -44,7 +51,11 @@ public class UserService {
 
         Customer customerToAdd = new Customer();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        customerToAdd.setUser(modelConverter.lowAccessConverter(user, User.class));
+        User userEntity = modelConverter.lowAccessConverter(user, User.class);
+        UserRole customerRole = userRoleRepository.getUserRoleByRole("ROLE_CUSTOMER").get();
+        UserRole userRole = userRoleRepository.getUserRoleByRole("ROLE_USER").get();
+        userEntity.setRoles(new HashSet<UserRole>(Arrays.asList(customerRole, userRole)));
+        customerToAdd.setUser(userEntity);
         customerRepository.save(customerToAdd);
     }
 
