@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.models.InventoryProductRequestModel;
 import com.example.demo.models.StoreModel;
+import com.example.demo.models.pendingorder.PendingOrderResponseModel;
 import com.example.demo.services.PendingOrderService;
 import com.example.demo.services.StoreService;
 import com.example.demo.services.VendorService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -35,7 +37,7 @@ public class VendorController {
 
 
     @GetMapping("/store")
-    public ResponseEntity<?> getAllStores(Principal principal){
+    public ResponseEntity<List<StoreModel>> getAllStores(Principal principal){
         return ResponseEntity.ok(storeService.getAllStoresByUsername(principal.getName()));
     }
 
@@ -53,7 +55,7 @@ public class VendorController {
     }
 
     @GetMapping("/store/{uuid}/pending-orders")
-    public ResponseEntity<?> getStorePendingOrders(Principal userMakingTheRequest, @PathVariable String uuid){
+    public ResponseEntity<List<PendingOrderResponseModel>> getStorePendingOrders(Principal userMakingTheRequest, @PathVariable String uuid){
         return ResponseEntity.ok(pendingOrderService.getPendingOrdersForStore(uuid, userMakingTheRequest.getName()));
     }
 

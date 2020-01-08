@@ -35,7 +35,7 @@ public class ProductController {
     @GetMapping(path ="/getByName",
             produces = "application/json")
     @ResponseBody
-    public ResponseEntity<?> GetProductsByName(@QueryParam(value = "name") String name){
+    public ResponseEntity<Set<ProductModel>> GetProductsByName(@QueryParam(value = "name") String name){
         Set<ProductModel> results = productService.getProductsLike(name);
         return new ResponseEntity<>(results, HttpStatus.OK);
     }
@@ -43,7 +43,7 @@ public class ProductController {
     @GetMapping(path ="/{uuid}",
             produces = "application/json")
     @ResponseBody
-    public ResponseEntity<?> GetProductsByUuid(@PathVariable(value = "uuid", required = true) String uuid){
+    public ResponseEntity<ProductModel> GetProductsByUuid(@PathVariable(value = "uuid", required = true) String uuid){
         ProductModel resultModel= productService.getProductByUuid(uuid);
         return new ResponseEntity<>(resultModel, HttpStatus.OK);
     }
