@@ -72,16 +72,9 @@ public class GlobalExceptionHandler {
         return createErrorResponse(INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
-    @ExceptionHandler(AuthenticationException.class)
+    @ExceptionHandler({AuthenticationException.class, BadCredentialsException.class})
     public ResponseEntity<?> handleAuthenticationException(AuthenticationException e, HttpServletResponse response){
-        return ResponseEntity.status(UNAUTHORIZED)
-                .body("{ \"message\": \"" + "Could not authenticate request." + "\" }");
-    }
-
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException e){
-        return ResponseEntity.status(BAD_REQUEST)
-                .body(new ObjectMapper().createObjectNode().put("message: ", e.getMessage()));
+        return createErrorResponse(UNAUTHORIZED, e.getMessage());
     }
 
     private ResponseEntity<?> createErrorResponse(HttpStatus httpStatus, String detailedMessage) {
