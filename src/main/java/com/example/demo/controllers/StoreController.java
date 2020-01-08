@@ -37,7 +37,7 @@ public class StoreController {
     public ResponseEntity<?> getStoreDetailsByUuid(@PathVariable String uuid){
         return  new ResponseEntity<>(storeService.getStoreDetailsByUuid(uuid),HttpStatus.OK);
     }
-    
+
     @DeleteMapping("{uuid}")
     public ResponseEntity deleteStore(@PathVariable String uuid, Principal principal){
         storeService.deleteStore(uuid, principal.getName());
