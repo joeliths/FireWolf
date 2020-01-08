@@ -11,6 +11,7 @@ import com.example.demo.security.providers.UserNamePasswordProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -49,7 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilterAfter(checkJwtFilter, ExceptionTranslationFilter.class)
                 .addFilterAfter(loginFilter(), ExceptionTranslationFilter.class);
 
-        http.csrf().disable().authorizeRequests().antMatchers("/login", "/register").permitAll().anyRequest().authenticated();
+        http.csrf().disable().authorizeRequests().antMatchers("/login", "/register", "/store/details/**").permitAll().antMatchers(HttpMethod.GET, "/store").permitAll().anyRequest().authenticated();
         http.exceptionHandling().authenticationEntryPoint(globalSecurityFilterExceptionHandler);
 
 //        http.csrf().disable().authorizeRequests()
