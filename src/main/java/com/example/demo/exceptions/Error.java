@@ -23,9 +23,13 @@ public class Error implements Serializable {
     }
 
     private String getRequestPath() {
-        String requestUri = ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString();
-        String baseUri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
-        return requestUri.substring(baseUri.length());
+        try {
+            String requestUri = ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString();
+            String baseUri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
+            return requestUri.substring(baseUri.length());
+        } catch (IllegalStateException e) {
+            return "Must be logged in to obtain request path.";
+        }
     }
 
     public String getTimeOccurred() {
