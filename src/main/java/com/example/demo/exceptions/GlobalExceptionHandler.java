@@ -78,8 +78,9 @@ public class GlobalExceptionHandler {
     }
 
     private ResponseEntity<?> createErrorResponse(HttpStatus httpStatus, String detailedMessage) {
-        return ResponseEntity.status(httpStatus)
-                .body(new Error(httpStatus.value(), httpStatus.getReasonPhrase(), detailedMessage));
+        Error customExceptionDetails = new Error(httpStatus.value(), httpStatus.getReasonPhrase(), detailedMessage);
+        jms.sendExceptionDetailsToExceptionQueue(customExceptionDetails);
+        return ResponseEntity.status(httpStatus).body(customExceptionDetails);
     }
 
 

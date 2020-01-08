@@ -1,5 +1,6 @@
 package com.example.demo.exceptions;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.Serializable;
@@ -45,5 +46,16 @@ public class Error implements Serializable {
 
     public String getPath() {
         return path;
+    }
+
+    @Override
+    public String toString() {
+        return "Error{" +
+                "timeOccurred='" + timeOccurred + '\'' +
+                ", statusCode=" + statusCode +
+                ", statusMessage='" + statusMessage + '\'' +
+                ", detailedMessage='" + detailedMessage + '\'' +
+                ", path='" + path + '\'' +
+                '}';
     }
 }

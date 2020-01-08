@@ -1,5 +1,6 @@
 package com.example.demo.jms;
 
+import com.example.demo.exceptions.Error;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
@@ -14,9 +15,8 @@ public class ActiveMQSender {
         this.jmsTemplate = jmsTemplate;
     }
 
-    public void sendExceptionDetailsToExceptionQueue(Throwable exception) {
-        //todo: What should be sent? date occurred/stacktrace etc...
-        //jmsTemplate.convertAndSend("ExceptionQueue", exceptionDetails);
+    public void sendExceptionDetailsToExceptionQueue(Error customizedExceptionDetails) {
+        jmsTemplate.convertAndSend("ExceptionQueue", customizedExceptionDetails.toString());
     }
 
 }
