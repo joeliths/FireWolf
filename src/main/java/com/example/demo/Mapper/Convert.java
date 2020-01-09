@@ -23,6 +23,7 @@ public  class Convert {
         try {
             return convert(originObject,targetClass,lowAccessforbiddenFields);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ModelMapperException("Could not convert between model and entity" + e);
         }
     }
@@ -34,7 +35,7 @@ public  class Convert {
             InstantiationException,
             InvocationTargetException {
 
-
+        System.out.println(originObject.getClass());
         Class<?> originClass = originObject.getClass();
         Method[] originMethods = originClass.getDeclaredMethods();
         T targetObject = targetClass.getConstructor().newInstance();
@@ -95,6 +96,7 @@ public  class Convert {
                 //TODO: Here there be dragons
             else if(isNestedObject(originMethod)){
                 Object nestedOriginObject = originMethod.invoke(originObject);
+                System.out.println(originMethod);
                 Class nestedTargetClass = targetField.getType();
 
                 if(isBackReference(nestedOriginObject)){
