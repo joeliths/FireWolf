@@ -55,7 +55,7 @@ public class VendorService {
     }
 
     public void addStore(String userName, StoreModel store){
-        if(!isUserAlreadyVendor(userName)) {
+        if(store.getPosition() == null || !isUserAlreadyVendor(userName)) {
             throw new ValidationException();
         }
 
