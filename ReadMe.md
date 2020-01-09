@@ -29,7 +29,8 @@ This is FireMarknadsplatShopify.&trade;
 
 ### How to set up ActiveMQ for jms to work
 
-- Download ActiveMQ 5 "Classic" from the official website.
+- Download ActiveMQ 5 "Classic" from the official website. 
+  https://activemq.apache.org/components/classic/download/
 - Type "java -version" in a command prompt to see if you have the java 64 or 32 bit version installed.
 - The script InstallService.bat can be found in "downloaded folder"/bin/win
 - Run the script as an administrator. Running it through the command line will show if it succeeded.
