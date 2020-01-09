@@ -33,6 +33,6 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
             "(SELECT id FROM user WHERE user_name = :userName)")
     Optional<Store> findByVendorUserName(@Param("userName") String userName);
 
-    @Query(nativeQuery = true, value = "SELECT * FROM inventory_product_view WHERE inventory_product_uuid = :uuid")
+    @Query(nativeQuery = true, value = "SELECT * FROM inventory_product_view WHERE store_uuid = :uuid")
     List getStoreDetailsByUuid(@QueryParam("uuid") String uuid);
 }

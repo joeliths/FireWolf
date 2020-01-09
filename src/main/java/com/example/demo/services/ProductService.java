@@ -39,9 +39,9 @@ public class ProductService {
     }
 
     //TODO:test method.
-    public boolean deleteProduct(ProductModel productModel) {
+    public boolean deleteProduct(String uuid) {
         //TODO:change to using coneverted to entity.
-        productRepository.deleteByUuid(productModel.getUuid());
+        productRepository.deleteByUuid(uuid);
         return true;
     }
 
