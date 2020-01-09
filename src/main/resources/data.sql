@@ -19,6 +19,15 @@ INSERT INTO firewolf.position(lat, lng, store_id) VALUES(23.6, 70, 2);
 
 INSERT INTO inventory_product(price, stock, uuid, product_id, store_id) VALUES (23, 2, (SELECT uuid()), 1, 1 ), (45, 6, (SELECT uuid()), 2, 1);
 
+insert into pending_order(id, expiration_date_time, placement_date_time, uuid, customer_id, store_id)
+values(1,'2011-12-18 13:17:17','2011-12-18 13:47:17',"388abc70-1c34-4236-87d0-b9eb231dfbb2",2,1);
+
+insert into pending_order_product(id, quantity, uuid, inventory_product_id, pending_order_id)
+values (1, 2,
+"338abc70-1c34-4236-87d0-b9eb211dfbb7", 1,1);
+
+
+
 CREATE OR REPLACE VIEW inventory_product_view AS
 select
  p.uuid AS product_uuid,

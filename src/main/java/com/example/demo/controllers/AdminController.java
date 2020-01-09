@@ -18,12 +18,12 @@ public class AdminController {
     @Autowired
     UserService userService;
 
-    @DeleteMapping(path = "/deleteProduct",
+    @DeleteMapping(path = "/deleteProduct/{uuid}",
              consumes = "application/json",
              produces = "application/json")
     @ResponseBody
-    public ResponseEntity<?> deleteProduct(@RequestBody ProductModel productModel){
-        boolean productDeleted = productService.deleteProduct(productModel);
+    public ResponseEntity<?> deleteProduct(@PathVariable String uuid){
+        boolean productDeleted = productService.deleteProduct(uuid);
         return new ResponseEntity<>(productDeleted, HttpStatus.OK);
     }
 
