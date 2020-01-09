@@ -1,9 +1,6 @@
 package com.example.demo.exceptions;
 
-import com.example.demo.exceptions.customExceptions.InsertEntityException;
-import com.example.demo.exceptions.customExceptions.ModelMapperException;
-import com.example.demo.exceptions.customExceptions.UserRoleTypeNotFoundException;
-import com.example.demo.exceptions.customExceptions.WrongOwnerException;
+import com.example.demo.exceptions.customExceptions.*;
 import com.example.demo.jms.ActiveMQSender;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -21,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
+import javax.naming.InsufficientResourcesException;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ValidationException;
@@ -45,6 +43,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException e) {
         return createErrorResponse(BAD_REQUEST, "Invalid request body.");
+    }
+
+    @ExceptionHandler(NotSufficientStockException.class)
+    public ResponseEntity<?> notSufficientStockException(NotSufficientStockException e) {
+        return createErrorResponse(BAD_REQUEST, "sufficient stock not available.");
     }
 
     @ExceptionHandler({ValidationException.class, WrongOwnerException.class})
