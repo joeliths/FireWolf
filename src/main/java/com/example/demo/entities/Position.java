@@ -18,8 +18,8 @@ public class Position implements Serializable, MyEntity {
     @Column(name="lng")
     private Double lng;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
+    @OneToOne(mappedBy = "position", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     private Store store;
 
     public Position() {

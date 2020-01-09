@@ -9,6 +9,15 @@ public class StoreModel implements Serializable {
     private String address;
     private String description;
     private PositionModel position;
+    private String uuid;
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
     public StoreModel() {
     }

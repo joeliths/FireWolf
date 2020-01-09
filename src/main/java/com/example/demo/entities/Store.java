@@ -26,8 +26,9 @@ public class Store implements Serializable, MyEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "store", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "position_id", referencedColumnName = "id")
     private Position position;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
