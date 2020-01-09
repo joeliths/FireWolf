@@ -35,7 +35,7 @@ This is FireMarknadsplatShopify.&trade;
 - Run the script as an administrator. Running it through the command line will show if it succeeded.
 - Press the windows key and type "services" to see installed services on the computer then navigate to ActiveMQ and right click on it to start it.
 - A manager for ActiveMQ should now exist on localhost:8161. To see an overview of the queues, go to the link, click on manage, enter admin as both the username and password and then go to the queue tab.
-- Add this to application properties in both the sender and receiver project to be able to connect to the queues:
+- Add this to application properties to be able to connect to the queues:
 ```
 spring.activemq.user=admin
 spring.activemq.password=admin
