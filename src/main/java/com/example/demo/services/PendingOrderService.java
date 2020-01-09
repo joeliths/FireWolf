@@ -3,14 +3,18 @@ package com.example.demo.services;
 import com.example.demo.Mapper.Convert;
 import com.example.demo.entities.*;
 import com.example.demo.exceptions.customExceptions.InsertEntityException;
+import com.example.demo.exceptions.customExceptions.NotSufficientStockException;
 import com.example.demo.exceptions.customExceptions.WrongOwnerException;
+import com.example.demo.models.PendingOrderProductModel;
 import com.example.demo.models.pendingorder.PendingOrderRequestModel;
 import com.example.demo.models.pendingorder.PendingOrderResponseModel;
+import com.example.demo.models.pendingorder.nestedobjects.PendingOrderProductRequestModel;
 import com.example.demo.models.view.PendingOrderProductView;
 import com.example.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.naming.InsufficientResourcesException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.*;
@@ -22,6 +26,7 @@ public class PendingOrderService {
     private final PendingOrderRepository pendingOrderRepository;
     private final PendingOrderProductRepository pendingOrderProductRepository;
     private final CustomerRepository customerRepository;
+    private final InventoryProductRepository inventoryProductRepository;
     private final VendorService vendorService;
 
     private final UserRepository userRepository;
@@ -40,13 +45,15 @@ public class PendingOrderService {
                                PendingOrderProductRepository pendingOrderProductRepository,
                                UserRepository userRepository,
                                CustomerRepository customerRepository,
-                               VendorService vendorService
+                               VendorService vendorService,
+                               InventoryProductRepository inventoryProductRepository
                                ) {
         this.pendingOrderRepository = pendingOrderRepository;
         this.pendingOrderProductRepository = pendingOrderProductRepository;
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
         this.vendorService = vendorService;
+        this.inventoryProductRepository = inventoryProductRepository;
     }
 
     public PendingOrderResponseModel getPendingOrderByUuid(String uuid, String username){
@@ -69,6 +76,8 @@ public class PendingOrderService {
 
     @Transactional
     public String addPendingOrder(PendingOrderRequestModel pendingOrderModel, String username){
+
+
      int insertedRows = pendingOrderRepository.insertPendingOrder(
                                                                     username,
                                                                     pendingOrderModel.getStoreUUID());
@@ -81,8 +90,14 @@ public class PendingOrderService {
      String storeUuid = pendingOrderModel.getStoreUUID();
 
      pendingOrderModel.getPendingOrderProducts().forEach(p -> {
-         if(vendorService.doesInventoryProductNotExistInStore(storeUuid, p.getInventoryProductUUID()))
-             throw new WrongOwnerException("Store with uuid "+storeUuid+" does not carry inventory product");                                   pendingOrderProductRepository.insertPendingOrderProduct(p.getQuantity(), p.getInventoryProductUUID(), pendingOrder                  .getUuid().toString());
+         if(vendorService.doesInventoryProductNotExistInStore(storeUuid, p.getInventoryProductUUID())) {
+             throw new WrongOwnerException("Store with uuid " + storeUuid + " does not carry inventory product");
+         }
+         InventoryProduct inventoryProduct =inventoryProductRepository.findByUuid(p.getInventoryProductUUID()).get();
+         if(inventoryProduct.getStock() < p.getQuantity() ){
+             throw new NotSufficientStockException("Stock of product " + inventoryProduct.getProduct().getName() + "is lower than requested amount");
+         }
+         pendingOrderProductRepository.insertPendingOrderProduct(p.getQuantity(), p.getInventoryProductUUID(), pendingOrder                  .getUuid().toString());
         });
 
      return pendingOrder.getUuid().toString();

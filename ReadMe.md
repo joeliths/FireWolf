@@ -29,13 +29,14 @@ This is FireMarknadsplatShopify.&trade;
 
 ### How to set up ActiveMQ for jms to work
 
-- Download ActiveMQ 5 "Classic" from the official website.
+- Download ActiveMQ 5 "Classic" from the official website. 
+  https://activemq.apache.org/components/classic/download/
 - Type "java -version" in a command prompt to see if you have the java 64 or 32 bit version installed.
 - The script InstallService.bat can be found in "downloaded folder"/bin/win
 - Run the script as an administrator. Running it through the command line will show if it succeeded.
 - Press the windows key and type "services" to see installed services on the computer then navigate to ActiveMQ and right click on it to start it.
 - A manager for ActiveMQ should now exist on localhost:8161. To see an overview of the queues, go to the link, click on manage, enter admin as both the username and password and then go to the queue tab.
-- Add this to application properties in both the sender and receiver project to be able to connect to the queues:
+- Add this to application properties to be able to connect to the queues:
 ```
 spring.activemq.user=admin
 spring.activemq.password=admin
@@ -56,64 +57,5 @@ You will be able to register both as customer and vendor. You will need to log i
 ### Endpoints and Entities
 
 ####localhost:[port]/swagger-ui.html
-
-#####Standard user endpoints:
-<b>Register new user/customer</b>   
-POST http://localhost:8080/register   
-Request body:   
-```
-{"fullName": "", "userName": "", "password": ""}
-```
-<b>Login</b>   
-POST http://localhost:8080/login   
-Request body:   
-```
-{"userName": "", "password": ""}
-```
-<b>Logout</b>   
-POST http://localhost:8080/logout 
-
-<b>Update logged in user/customer</b>   
-PATCH http://localhost:8080/  
-Request body (Only the field(s) that should be updated need to be included):   
-```
-{"fullName": "", "userName": "", "password": ""}
-```
-
-
-#
-#####Customer endpoints
-
-<b>Register Pending Order</b> ((notConfirmed))
-POST  http://localhost:8080/pending-orders
-```
-{"storeUUID": ""}
-```
-
-<b>Get Pending Order</b> ((notConfirmed))
-GET  http://localhost:8080/pending-orders/{{UUID}}
-
-<b>get Customers every Pending Order</b> ((notConfirmed))
-GET  http://localhost:8080/customer/pending-orders/{{UUID}}
-
-
-<b>delete Pending Order</b> ((notConfirmed))
-DELETE  http://localhost:8080/pending-orders/{{UUID}}
-
-#
-**Vendor:**
-<b>Register new Product</b>((notconfirmed))
-
-<b>Register logged in user as vendor</b>   
-PATCH http://localhost:8080/vendor/register  
-
-<b>Create store for logged in vendor</b>   
-POST http://localhost:8080/vendor/store/add 
-```
-{"storeUUID": ""}
-```
-
-#
-**customer:**
 
  
