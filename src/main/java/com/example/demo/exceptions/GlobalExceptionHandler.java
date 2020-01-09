@@ -75,7 +75,7 @@ public class GlobalExceptionHandler {
         return createErrorResponse(INTERNAL_SERVER_ERROR, e.getMessage());
     }
 
-    @ExceptionHandler({AuthenticationException.class, BadCredentialsException.class})
+    @ExceptionHandler({AuthenticationException.class})
     public ResponseEntity<?> handleAuthenticationException(AuthenticationException e, HttpServletResponse response){
         return createErrorResponse(UNAUTHORIZED, e.getMessage());
     }

@@ -35,6 +35,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
         UserRegisterModel user = getPOJOFromJson(requestData, UserRegisterModel.class);
         UsernamePasswordAuthenticationToken token;
         if(checkIfNull(user)) {
+            System.out.println("wow");
             throw new BadCredentialsException("Missing request body with user name and password.");
         }
 

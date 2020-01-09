@@ -13,8 +13,6 @@ INSERT INTO product(description, name, uuid) VALUES ("Tasty!", "Chips", (SELECT 
 
 INSERT INTO store(address, description, uuid, vendor_id) VALUES ("Mellangärdet 23", "Cool store", (SELECT uuid()), 1), ("Storgatan 43A", "Cool store", (SELECT uuid()), 1);
 
-INSERT INTO store(address, description, uuid, vendor_id) VALUES ("Mellangärdet 23", "Cool store", (SELECT uuid()), 1);
-
 INSERT INTO fire_wolf.position(lat, lng, store_id) VALUES(23.4, 4, 1);
 
 INSERT INTO fire_wolf.position(lat, lng, store_id) VALUES(23.6, 70, 2);

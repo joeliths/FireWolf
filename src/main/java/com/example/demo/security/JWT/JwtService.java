@@ -1,9 +1,6 @@
 package com.example.demo.security.JWT;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.*;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +26,8 @@ public class JwtService {
 //        }
 //    }
 
-    public String getSubject(String token){
-        try{
-            return getClaims(token).getSubject();
-        }catch(JwtException e){
-            throw new BadCredentialsException(e.getMessage());
-        }
+    public String getSubject(String token) throws JwtException {
+      return getClaims(token).getSubject();
     }
 
 
