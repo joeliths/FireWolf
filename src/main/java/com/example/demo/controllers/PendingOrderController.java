@@ -29,14 +29,14 @@ public class PendingOrderController {
         return ResponseEntity.status(CREATED).body(pendingOrderService.addPendingOrder(pendingOrder, principal.getName()));
     }
 
-    @DeleteMapping("{uuid}")
+    @DeleteMapping("/customer/{uuid}")
     public ResponseEntity deletePendingOrder(@PathVariable String uuid, Principal principal){
         System.out.println(principal.getName());
         pendingOrderService.deletePendingOrder(uuid, principal.getName());
         return ResponseEntity.status(204).build();
     }
 
-    @GetMapping("{uuid}")
+    @GetMapping("/customer/{uuid}")
     public ResponseEntity<PendingOrderResponseModel> getPendingOrder(@PathVariable String uuid, Principal principal){
         return ResponseEntity.ok(pendingOrderService.getPendingOrderByUuid(uuid, principal.getName()));
     }

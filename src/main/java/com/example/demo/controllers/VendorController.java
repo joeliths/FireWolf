@@ -37,7 +37,7 @@ public class VendorController {
 
 
     @GetMapping("/store")
-    public ResponseEntity<List<StoreModel>> getAllStores(Principal principal){
+    public ResponseEntity<List<StoreModel>> getVendorStores(Principal principal){
         return ResponseEntity.ok(storeService.getAllStoresByUsername(principal.getName()));
     }
 

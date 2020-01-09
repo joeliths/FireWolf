@@ -81,8 +81,10 @@ public class PendingOrderService {
      String storeUuid = pendingOrderModel.getStoreUUID();
 
      pendingOrderModel.getPendingOrderProducts().forEach(p -> {
-         if(vendorService.doesInventoryProductNotExistInStore(storeUuid, p.getInventoryProductUUID()))
-             throw new WrongOwnerException("Store with uuid "+storeUuid+" does not carry inventory product");                                   pendingOrderProductRepository.insertPendingOrderProduct(p.getQuantity(), p.getInventoryProductUUID(), pendingOrder                  .getUuid().toString());
+         if(vendorService.doesInventoryProductNotExistInStore(storeUuid, p.getInventoryProductUUID())) {
+             throw new WrongOwnerException("Store with uuid " + storeUuid + " does not carry inventory product");
+         }
+         pendingOrderProductRepository.insertPendingOrderProduct(p.getQuantity(), p.getInventoryProductUUID(), pendingOrder                  .getUuid().toString());
         });
 
      return pendingOrder.getUuid().toString();
