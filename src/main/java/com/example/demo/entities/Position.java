@@ -22,6 +22,14 @@ public class Position implements Serializable, MyEntity {
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private Store store;
 
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
     public Position() {
     }
 
