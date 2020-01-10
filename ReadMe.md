@@ -14,7 +14,7 @@ This is FireMarknadsplatShopify.&trade;
 
 - Download MySQL Server at https://dev.mysql.com/downloads/mysql/
 - Extract the zip-file named mysql-[version]-[system].zip
-- Start the server by going to [path-to-mysql-folder]/bin and type the following command:
+- Start the database server by going to [path-to-mysql-folder]/bin and type the following command:
 ```
 > mysqld
 ```
@@ -43,9 +43,21 @@ spring.activemq.password=admin
 spring.activemq.broker-url=tcp://localhost:61616
 ```
 
-Add application.resources with the following text:
-(WRITE THIS SEGMENT)
+### in src/main/resources:
+##### Add application.properties with the following text:
+spring.datasource.url=jdbc:mysql://localhost:[DATABASE-PORT]/firewolf?&serverTimezone=UTC
+spring.datasource.username=[DATABASE-USERNAME]
+spring.datasource.password=[DATABASE-PASSWORD]
+spring.jpa.hibernate.ddl-auto=create
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.datasource.initialization-mode=always
+spring.activemq.user=admin
+spring.activemq.password=admin
+spring.activemq.broker-url=tcp://localhost:61616
 
+To Run javaserver:
+Run src/main/java/com.example.demo/services/DemoApplication
 
 **Description of API**
 
@@ -55,7 +67,7 @@ You will be able to register both as customer and vendor. You will need to log i
 
 #
 ### Endpoints and Entities
-
-####localhost:[port]/swagger-ui.html
+For the complete list, run the java application and check out:
+##### localhost:[port]/swagger-ui.html
 
  
