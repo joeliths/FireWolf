@@ -32,6 +32,7 @@ public class CheckJwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+        SecurityContextHolder.getContext().getAuthentication().getAuthorities().forEach(a -> System.out.println(a.getAuthority()));
         String authHeader = httpServletRequest.getHeader("Authorization");
         if(null != authHeader && authHeader.startsWith("Bearer ")) {
             //TODO: Check Database if Jwt is in badJwt-table
