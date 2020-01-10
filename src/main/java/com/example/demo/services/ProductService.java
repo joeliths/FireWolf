@@ -12,6 +12,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.resource.spi.EISSystemException;
 import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
+import javax.ws.rs.BadRequestException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -49,6 +50,9 @@ public class ProductService {
 
 
     public Set<ProductModel> getProductsLike(String searchTerm){
+        if(searchTerm == null) {
+            throw new BadRequestException("Missing query param 'name'.");
+        }
         try {
 
             Set<Product> productEntities = productRepository.findByNameIgnoreCaseContaining(searchTerm);
