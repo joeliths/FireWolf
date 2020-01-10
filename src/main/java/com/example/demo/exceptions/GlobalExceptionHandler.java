@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
         return createErrorResponse(BAD_REQUEST, "sufficient stock not available.");
     }
 
-    @ExceptionHandler({ValidationException.class, WrongOwnerException.class})
+    @ExceptionHandler({ValidationException.class, WrongOwnerException.class, BadRequestException.class})
     public ResponseEntity<?> handleValidationException(Exception e) {
         return createErrorResponse(BAD_REQUEST, e.getMessage());
     }
