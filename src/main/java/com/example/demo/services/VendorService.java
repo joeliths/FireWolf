@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.ForbiddenException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -99,7 +100,7 @@ public class VendorService {
 
         if(doesStoreNotBelongToVendor(userName, storeUuid) ||
                 doesInventoryProductNotExistInStore(storeUuid, inventoryProductUuid)) {
-            throw new ForbiddenException();
+            throw new BadRequestException();
         }
 
         if(areInventoryProductFieldsInvalid(updatedProduct)) {
@@ -144,7 +145,9 @@ public class VendorService {
     }
 
     private boolean areInventoryProductFieldsInvalid(InventoryProductRequestModel product) {
-        return product.getPrice() < 0 || product.getStock() < 0;
+        boolean isPriceLowerThanZero = product.getPrice() != null && product.getPrice() < 0;
+        boolean isStockLowerThanZero = product.getStock() != null && product.getStock() < 0;
+        return isPriceLowerThanZero || isStockLowerThanZero;
     }
 
 

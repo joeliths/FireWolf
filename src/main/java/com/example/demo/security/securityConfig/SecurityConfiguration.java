@@ -58,13 +58,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/login", "/register").permitAll()
                 .antMatchers(HttpMethod.GET, "/store", "/store/details/**").permitAll()
+
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/products/**").hasRole("ADMIN")
                 .antMatchers("/vendor/**", "/store/**").hasRole("VENDOR")
                 .antMatchers(HttpMethod.GET, "/products/**").hasRole("VENDOR")
                 .antMatchers(HttpMethod.POST, "/products").hasAnyRole("VENDOR","ADMIN")
+
                 .antMatchers("/vendor", "/user", "/logout").hasRole("USER")
                 .antMatchers("/customer", "customer/**", "/pending-orders", "/pending-orders/**").hasRole("CUSTOMER")
+                .antMatchers("/vendor/**", "/store/**").hasRole("VENDOR")
+                .antMatchers(HttpMethod.GET, "/products/**").hasRole("VENDOR")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PATCH, "/products/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().logout().disable()
                 .exceptionHandling().authenticationEntryPoint(globalSecurityFilterExceptionHandler);

@@ -12,6 +12,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.resource.spi.EISSystemException;
 import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
+import javax.ws.rs.BadRequestException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
@@ -38,15 +39,20 @@ public class ProductService {
 
     }
 
-    //TODO:test method.
     public boolean deleteProduct(String uuid) {
-        //TODO:change to using coneverted to entity.
-        productRepository.deleteByUuid(uuid);
+        Optional<Product> product = productRepository.findByUuid(uuid);
+        if(product.isEmpty())
+            throw new EntityNotFoundException("Product with uuid "+uuid+" can not be found");
+
+        productRepository.delete(product.get());
         return true;
     }
 
 
     public Set<ProductModel> getProductsLike(String searchTerm){
+        if(searchTerm == null) {
+            throw new BadRequestException("Missing query param 'name'.");
+        }
         try {
 
             Set<Product> productEntities = productRepository.findByNameIgnoreCaseContaining(searchTerm);
@@ -77,17 +83,15 @@ public class ProductService {
     public void updateProduct(String uuid, ProductModel inputModel) {
         Optional dbResult = productRepository.findByUuid(uuid);
         if(dbResult.isEmpty()){
-            //TODO:write here
-            System.out.println("do stuff");
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("Product with uuid "+uuid+" not found");
         }else{
-            Product newData = convert.lowAccessConverter(inputModel, Product.class);
+//            Product newData = convert.lowAccessConverter(inputModel, Product.class);
             Product retrievedFromDb = (Product)dbResult.get();
-            if(newData.getName() !=  null){
-                retrievedFromDb.setName(newData.getName());
+            if(inputModel.getName() !=  null){
+                retrievedFromDb.setName(inputModel.getName());
             }
-            if(newData.getDescription() != null){
-                retrievedFromDb.setName(newData.getName());
+            if(inputModel.getDescription() != null){
+                retrievedFromDb.setDescription(inputModel.getDescription());
             }
             productRepository.updateProduct(retrievedFromDb);
         }
