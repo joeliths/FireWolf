@@ -55,8 +55,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(jwtExceptionCatcher, checkJwtFilter.getClass());
 
         http.csrf().disable().formLogin().disable().httpBasic().disable()
-                .authorizeRequests().antMatchers(HttpMethod.POST, "/login", "/register").permitAll()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/login", "/register").permitAll()
                 .antMatchers(HttpMethod.GET, "/store", "/store/details/**").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PATCH, "/products/**").hasRole("ADMIN")
+                .antMatchers("/vendor/**", "/store/**").hasRole("VENDOR")
+                .antMatchers(HttpMethod.GET, "/products/**").hasRole("VENDOR")
+                .antMatchers("/vendor", "/user", "/logout").hasRole("USER")
+                .antMatchers("/customer", "customer/**", "/pending-orders", "/pending-orders/**").hasRole("CUSTOMER")
                 .anyRequest().authenticated()
                 .and().logout().disable()
                 .exceptionHandling().authenticationEntryPoint(globalSecurityFilterExceptionHandler);
