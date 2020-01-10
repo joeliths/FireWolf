@@ -28,8 +28,8 @@ public class Store implements Serializable, MyEntity {
 
 
     @OnDelete(action =OnDeleteAction.CASCADE)
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "position_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "store", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
     private Position position;
 
     @OnDelete(action =OnDeleteAction.CASCADE)

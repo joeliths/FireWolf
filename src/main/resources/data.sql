@@ -23,6 +23,15 @@ INSERT INTO pending_order(expiration_date_time, placement_date_time, uuid, custo
 
 INSERT INTO pending_order_product(quantity, uuid, inventory_product_id, pending_order_id) VALUES (1, "533818dd-4925-45d4-8d2d-387edc01336c", 1, 1);
 
+insert into pending_order(id, expiration_date_time, placement_date_time, uuid, customer_id, store_id)
+values(1,'2011-12-18 13:17:17','2011-12-18 13:47:17',"388abc70-1c34-4236-87d0-b9eb231dfbb2",2,1);
+
+insert into pending_order_product(id, quantity, uuid, inventory_product_id, pending_order_id)
+values (1, 2,
+"338abc70-1c34-4236-87d0-b9eb211dfbb7", 1,1);
+
+
+
 CREATE OR REPLACE VIEW inventory_product_view AS
 select
  p.uuid AS product_uuid,

@@ -27,11 +27,13 @@ public class VendorService {
     private final ProductRepository productRepository;
     private final Convert modelConverter;
     private final UserRoleRepository userRoleRepository;
+    private final PositionRepository positionRepository;
 
     public VendorService(VendorRepository vendorRepository, StoreRepository storeRepository,
                          InventoryProductRepository inventoryProductRepository, Convert modelConverter,
                          ProductRepository productRepository, UserRepository userRepository,
-                         UserRoleRepository userRoleRepository) {
+                         UserRoleRepository userRoleRepository,
+                         PositionRepository positionRepository) {
         this.vendorRepository = vendorRepository;
         this.storeRepository = storeRepository;
         this.inventoryProductRepository = inventoryProductRepository;
@@ -39,6 +41,7 @@ public class VendorService {
         this.productRepository = productRepository;
         this.userRepository = userRepository;
         this.userRoleRepository = userRoleRepository;
+        this.positionRepository = positionRepository;
     }
 
     public void registerUserAsVendor(String userName) {
@@ -52,7 +55,7 @@ public class VendorService {
     }
 
     public void addStore(String userName, StoreModel store){
-        if(!isUserAlreadyVendor(userName)) {
+        if(store.getPosition() == null || !isUserAlreadyVendor(userName)) {
             throw new ValidationException();
         }
 
@@ -64,8 +67,10 @@ public class VendorService {
 
         Store storeToAdd = new Store(store.getAddress(), store.getDescription());
         storeToAdd.setVendor(vendorRepository.getByUserName(userName));
-        storeToAdd.setPosition(new Position(store.getPosition().getLat(), store.getPosition().getLng()));
-        storeRepository.save(storeToAdd);
+        Position position = new Position(store.getPosition().getLat(), store.getPosition().getLng());
+        position.setStore(storeToAdd);
+
+        positionRepository.save(position);
     }
 
     public void addInventoryProductToStore(String userName, String storeUuid, String productUuid,
