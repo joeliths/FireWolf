@@ -20,7 +20,7 @@ This is FireMarknadsplatShopify.&trade;
 ```
 - To start mysql:
 ```
-> mysql -u root
+> mysql -u [USERNAME] -p
 ```
 - Create database "firewolf":
 ```
@@ -57,6 +57,7 @@ spring.activemq.password=admin
 spring.activemq.broker-url=tcp://localhost:61616
 
 To Run javaserver:
+javaversion 11
 Run src/main/java/com.example.demo/services/DemoApplication
 
 **Description of API**
