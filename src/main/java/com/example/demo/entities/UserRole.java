@@ -20,7 +20,6 @@ public class UserRole implements Serializable {
     private String role;
 
     public UserRole(){
-
     }
 
     public UserRole(String role) {
@@ -42,4 +41,5 @@ public class UserRole implements Serializable {
     public void setRole(String role) {
         this.role = role;
     }
+
 }

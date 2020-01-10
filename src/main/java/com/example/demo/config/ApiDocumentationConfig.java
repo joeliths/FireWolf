@@ -12,6 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class ApiDocumentationConfig {
+
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -20,4 +21,5 @@ public class ApiDocumentationConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
+
 }

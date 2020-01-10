@@ -1,6 +1,5 @@
 package com.example.demo.entities;
 
-
 import com.example.demo.entities.helperclasses.MyUUID;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -8,9 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Set;
-
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -61,4 +58,5 @@ public class Customer implements Serializable, MyEntity {
     public void setUser(User user) {
         this.user = user;
     }
+
 }

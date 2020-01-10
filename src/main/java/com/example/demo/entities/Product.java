@@ -2,14 +2,9 @@ package com.example.demo.entities;
 
 import com.example.demo.entities.helperclasses.MyUUID;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -21,7 +16,6 @@ public class Product implements Serializable, MyEntity{
     private MyUUID uuid = new MyUUID();
 
     public Product(){
-
     }
 
     @Id
@@ -36,8 +30,6 @@ public class Product implements Serializable, MyEntity{
     public Long getId() {
         return id;
     }
-
-
 
     public void setId(Long id) {
         this.id = id;

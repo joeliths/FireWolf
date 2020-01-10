@@ -1,14 +1,13 @@
 package com.example.demo.entities;
 
 import com.example.demo.entities.helperclasses.MyUUID;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
-import java.util.UUID;
+
 
 @Entity
 public class Vendor implements Serializable, MyEntity {
@@ -27,7 +26,6 @@ public class Vendor implements Serializable, MyEntity {
     @OnDelete(action =OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "vendor", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private Set<Store> stores;
-
 
     public Vendor() {
     }

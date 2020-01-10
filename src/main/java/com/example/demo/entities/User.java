@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -36,7 +35,6 @@ public class User implements Serializable, MyEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<UserRole> roles;
 
-    
     public User() {
     }
 
@@ -93,4 +91,5 @@ public class User implements Serializable, MyEntity {
     public void setUuid(MyUUID uuid) {
         this.uuid = uuid;
     }
+
 }

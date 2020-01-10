@@ -1,6 +1,5 @@
 package com.example.demo.controllers;
 
-import com.example.demo.entities.helperclasses.MyUUID;
 import com.example.demo.models.pendingorder.PendingOrderRequestModel;
 import com.example.demo.models.pendingorder.PendingOrderResponseModel;
 import com.example.demo.services.PendingOrderService;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
-
 
 @RestController
 @RequestMapping("/pending-orders")
@@ -40,16 +37,5 @@ public class PendingOrderController {
     public ResponseEntity<PendingOrderResponseModel> getPendingOrder(@PathVariable String uuid, Principal principal){
         return ResponseEntity.ok(pendingOrderService.getPendingOrderByUuid(uuid, principal.getName()));
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }

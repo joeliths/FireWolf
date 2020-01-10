@@ -3,7 +3,6 @@ package com.example.demo.security;
 import com.example.demo.entities.User;
 import com.example.demo.entities.UserRole;
 import com.example.demo.repositories.UserRepository;
-import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

@@ -30,5 +30,4 @@ public class GlobalSecurityFilterExceptionHandler implements AuthenticationEntry
         resolver.resolveException(request, response, null, e);
     }
 
-    //private void handleSpringSecurityException
 }

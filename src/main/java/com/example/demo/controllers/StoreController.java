@@ -18,12 +18,12 @@ import java.util.Set;
 @Controller
 @RequestMapping("/store")
 public class StoreController {
+
     @Autowired
     VendorService vendorService;
 
     @Autowired
     StoreService storeService;
-
 
     @GetMapping("{uuid}")
     public ResponseEntity<StoreModel> getStoreByUuid(@PathVariable String uuid, Principal principal){

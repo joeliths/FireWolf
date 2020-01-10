@@ -34,5 +34,4 @@ public class InventoryProductModel implements Serializable {
         this.price = price;
     }
 
-
 }

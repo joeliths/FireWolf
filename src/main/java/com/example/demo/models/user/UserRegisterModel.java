@@ -1,7 +1,6 @@
 package com.example.demo.models.user;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class UserRegisterModel implements Serializable {
 

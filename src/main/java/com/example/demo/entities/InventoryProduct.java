@@ -32,9 +32,7 @@ public class InventoryProduct implements Serializable, MyEntity{
     @Column(name="price", length=100, nullable=false)
     private  int price;
 
-
-
-
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product = new Product();
@@ -44,6 +42,7 @@ public class InventoryProduct implements Serializable, MyEntity{
     @JoinColumn(name = "store_id", nullable = false)
     private Store store = new Store();
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "inventoryProduct",
             cascade = CascadeType.PERSIST,
     orphanRemoval = true)
@@ -97,4 +96,5 @@ public class InventoryProduct implements Serializable, MyEntity{
     public void setPendingOrderProducts(Set<PendingOrderProduct> pendingOrderProducts) {
         this.pendingOrderProducts = pendingOrderProducts;
     }
+
 }

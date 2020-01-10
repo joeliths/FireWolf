@@ -31,10 +31,11 @@ public class CheckJwtFilter extends OncePerRequestFilter {
     UserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+                                    FilterChain filterChain) throws ServletException, IOException {
+
         String authHeader = httpServletRequest.getHeader("Authorization");
         if(null != authHeader && authHeader.startsWith("Bearer ")) {
-            //TODO: Check Database if Jwt is in badJwt-table
             String jwtToken = authHeader.substring(7);
             String username = jwtService.getSubject(jwtToken);
             UserDetails userDetails = fetchUserDetails(username);
@@ -44,12 +45,9 @@ public class CheckJwtFilter extends OncePerRequestFilter {
                             userDetails.getPassword(), userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(token);
                 }else {
-                    //TODO: Add JWT to badJwt-table
+                    //Add JWT to badJwt-table here if the program would be used for real.
                 }
-
-
         }
-
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 

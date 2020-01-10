@@ -85,4 +85,5 @@ public class PendingOrderProduct implements Serializable, MyEntity {
                 ", quantity=" + quantity +
                 '}';
     }
+
 }

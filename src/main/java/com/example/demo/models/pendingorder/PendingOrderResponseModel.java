@@ -2,7 +2,6 @@ package com.example.demo.models.pendingorder;
 
 import com.example.demo.models.user.Customer.CustomerModel;
 import com.example.demo.models.StoreModel;
-import com.example.demo.models.user.Customer.CustomerResponseModel;
 import com.example.demo.models.view.PendingOrderProductView;
 
 import java.io.Serializable;
@@ -35,8 +34,6 @@ public class PendingOrderResponseModel implements Serializable {
     public void setStore(StoreModel store) {
         this.store = store;
     }
-
-
 
     public Set<PendingOrderProductView> getPendingOrderProductsViews() {
         return pendingOrderProductsViews;

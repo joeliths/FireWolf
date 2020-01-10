@@ -1,7 +1,6 @@
 package com.example.demo.repositories;
 
 import com.example.demo.entities.PendingOrder;
-import com.example.demo.entities.PendingOrderProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,23 +8,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.ws.rs.QueryParam;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 public interface PendingOrderRepository extends JpaRepository<PendingOrder,Long> {
 
-
-    @Query(value = "Select * from pending_order limit 1",nativeQuery = true)
-    PendingOrder getTesting();
-
-    @Query(nativeQuery = true, value = "select * from pending_order p where p.uuid = :uuid")
-    PendingOrder findFirstByUuid(@Param("uuid") String uuid);
-
-
     @Query(nativeQuery = true, value = "select * from pending_order p where p.uuid = :uuid")
     Optional<PendingOrder> findByUuid(@Param("uuid") String uuid);
-
 
     @Modifying(clearAutomatically = true)
     @Query(nativeQuery = true, value = "INSERT INTO pending_order(expiration_date_time, placement_date_time, uuid, customer_id, store_id) \n" +
@@ -46,21 +35,5 @@ public interface PendingOrderRepository extends JpaRepository<PendingOrder,Long>
 
     @Query(nativeQuery = true, value = "SELECT * FROM pending_order WHERE store_id = (SELECT id from STORE WHERE uuid = :storeUuid);")
     List<PendingOrder> getPendingOrderByStore(@QueryParam("storeUuid")String storeUuid);
-
-    @Modifying
-    @Transactional
-    @Query(nativeQuery = true, value = "DELETE FROM pending_order WHERE store_id IN (SELECT id FROM store WHERE vendor_id IN (SELECT id FROM user WHERE uuid = :vendorUuid));")
-    int deletePendingOrdersByStoreByVendor(@Param("vendorUuid")String vendorUuid);
-
-//    @Modifying
-//    @Transactional
-//    @Query(nativeQuery = true, value = "DELETE FROM pending_order WHERE store_id IN (SELECT id FROM store WHERE vendor_id IN (SELECT id FROM user WHERE uuid = :vendorUuid));")
-//    void deletePendingOrdersByStore(@Param("storeUuid")String storeUuid);
-
-//    @Modifying
-//    @Transactional
-//    @Query(nativeQuery = true, value = "SELECT * FROM pending_order WHERE store_id = (SELECT id from store WHERE uuid = :storeUuid);" )
-//    intgetPendingOrderByStore(@Param("vendorUuid")String storeUuid);
-
 
 }

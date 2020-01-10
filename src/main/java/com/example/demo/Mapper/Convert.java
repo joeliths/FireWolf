@@ -13,10 +13,9 @@ import java.util.*;
 
 @Service
 public  class Convert {
+
     private  String[] lowAccessforbiddenFields = new String[]{ "id, userId, productId","serialVersionUID"};
     Map<Object,Object> backReferences = new HashMap<Object, Object>() {    };
-
-
 
     public <T> T lowAccessConverter(Object originObject, Class<T> targetClass) {
         backReferences = new HashMap<Object, Object>() {    };
@@ -28,14 +27,12 @@ public  class Convert {
         }
     }
 
-
     private  <T> T convert(Object originObject, Class<T> targetClass, String[] forbiddenFields)
             throws IllegalAccessException,
             NoSuchMethodException,
             InstantiationException,
             InvocationTargetException {
 
-        System.out.println(originObject.getClass());
         Class<?> originClass = originObject.getClass();
         Method[] originMethods = originClass.getDeclaredMethods();
         T targetObject = targetClass.getConstructor().newInstance();
@@ -50,10 +47,6 @@ public  class Convert {
                 targetField.setAccessible(false);
                 continue;
             }
-            /*if( originIsNull(targetField, originObject)){
-                targetField.setAccessible(false);
-                continue;
-            }*/
 
             int originMethodIndex = indexOfOriginMethod(targetField,originMethods);
             if (originMethodIndex==-1){
@@ -61,31 +54,15 @@ public  class Convert {
                 continue;
             }
 
-
-
-
             Method originMethod = originMethods[originMethodIndex];
             originMethod.setAccessible(true);
 
-
-            //Probably done
             if(isEntityToModelUUID(targetField)){
                 targetField.set(    targetObject,   originMethod.invoke(originObject).toString()   );
                 continue;
             }
-            //TODO: pass model - entity
             else if(isModelToEntityUUID(targetField)) {
-               /* String originString = targetField.get(originObject).toString();
-                MyUUID uuidObject = (MyUUID) targetField.get(targetObject);
-                uuidObject.setUuid(originString);
-                System.out.println("got here");
-                targetField.set(targetObject, uuidObject);
-                System.out.println("got here 2");
-                //MyUUID.class.getMethod("setUuid", String.class).invoke(uuidObject,originString);
-                targetField.setAccessible(false);
-                targetField.setAccessible(false);*/
                 continue;
-
             }
             else if(targetReferenceTypeNotNull(targetField, targetObject)){
                 targetField.setAccessible(false);
@@ -93,7 +70,6 @@ public  class Convert {
                 continue;
             }
 
-                //TODO: Here there be dragons
             else if(isNestedObject(originMethod)){
                 Object nestedOriginObject = originMethod.invoke(originObject);
                 System.out.println(originMethod);
@@ -105,7 +81,7 @@ public  class Convert {
                     targetField.setAccessible(false);
                     continue;
                 }
-                //recursion
+
                 Object nestedTarget = convert(nestedOriginObject, nestedTargetClass, forbiddenFields);
                 nestedTarget = nestedTargetClass.cast(nestedTarget);
                 targetField.set(targetObject, nestedTarget);
@@ -140,7 +116,6 @@ public  class Convert {
         }
         return targetObject;
     }
-
 
     private  int indexOfOriginMethod(Field field, Method[] methods){
         for(int i=0; i < methods.length; i++){
@@ -223,6 +198,5 @@ public  class Convert {
     private Object gettargetBackReference(Object oldObj){
         return backReferences.get(oldObj);
     }
-
 
 }

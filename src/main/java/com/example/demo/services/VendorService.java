@@ -5,14 +5,13 @@ import com.example.demo.entities.*;
 import com.example.demo.models.InventoryProductRequestModel;
 import com.example.demo.models.StoreModel;
 import com.example.demo.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
-import javax.ws.rs.ForbiddenException;
-import java.util.Arrays;
-import java.util.HashSet;
+import javax.ws.rs.BadRequestException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -30,11 +29,11 @@ public class VendorService {
     private final UserRoleRepository userRoleRepository;
     private final PositionRepository positionRepository;
 
-    public VendorService(VendorRepository vendorRepository, StoreRepository storeRepository,
+    public VendorService(VendorRepository vendorRepository,
                          InventoryProductRepository inventoryProductRepository, Convert modelConverter,
                          ProductRepository productRepository, UserRepository userRepository,
                          UserRoleRepository userRoleRepository,
-                         PositionRepository positionRepository) {
+                         PositionRepository positionRepository, StoreRepository storeRepository) {
         this.vendorRepository = vendorRepository;
         this.storeRepository = storeRepository;
         this.inventoryProductRepository = inventoryProductRepository;
@@ -99,7 +98,7 @@ public class VendorService {
 
         if(doesStoreNotBelongToVendor(userName, storeUuid) ||
                 doesInventoryProductNotExistInStore(storeUuid, inventoryProductUuid)) {
-            throw new ForbiddenException();
+            throw new BadRequestException();
         }
 
         if(areInventoryProductFieldsInvalid(updatedProduct)) {
@@ -144,10 +143,9 @@ public class VendorService {
     }
 
     private boolean areInventoryProductFieldsInvalid(InventoryProductRequestModel product) {
-        return product.getPrice() < 0 || product.getStock() < 0;
+        boolean isPriceLowerThanZero = product.getPrice() != null && product.getPrice() < 0;
+        boolean isStockLowerThanZero = product.getStock() != null && product.getStock() < 0;
+        return isPriceLowerThanZero || isStockLowerThanZero;
     }
-
-
-
 
 }

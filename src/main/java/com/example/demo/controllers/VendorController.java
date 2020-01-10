@@ -6,16 +6,11 @@ import com.example.demo.models.pendingorder.PendingOrderResponseModel;
 import com.example.demo.services.PendingOrderService;
 import com.example.demo.services.StoreService;
 import com.example.demo.services.VendorService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.security.Principal;
 import java.util.List;
-import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -35,7 +30,6 @@ public class VendorController {
         this.pendingOrderService = pendingOrderService;
     }
 
-
     @GetMapping("/store")
     public ResponseEntity<List<StoreModel>> getVendorStores(Principal principal){
         return ResponseEntity.ok(storeService.getAllStoresByUsername(principal.getName()));
@@ -46,7 +40,6 @@ public class VendorController {
         vendorService.registerUserAsVendor(userMakingTheRequest.getName());
         return ResponseEntity.status(CREATED).build();
     }
-
 
     @PostMapping("/store/add")
     public ResponseEntity<?> addStore(Principal userMakingTheRequest, @RequestBody StoreModel storeModel){
@@ -83,6 +76,5 @@ public class VendorController {
         vendorService.removeProductFromStore(userMakingTheRequest.getName(), storeUuid, inventoryProductUuid);
         return ResponseEntity.status(OK).build();
     }
-
 
 }

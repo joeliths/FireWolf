@@ -5,16 +5,13 @@ import com.example.demo.entities.*;
 import com.example.demo.exceptions.customExceptions.InsertEntityException;
 import com.example.demo.exceptions.customExceptions.NotSufficientStockException;
 import com.example.demo.exceptions.customExceptions.WrongOwnerException;
-import com.example.demo.models.PendingOrderProductModel;
 import com.example.demo.models.pendingorder.PendingOrderRequestModel;
 import com.example.demo.models.pendingorder.PendingOrderResponseModel;
-import com.example.demo.models.pendingorder.nestedobjects.PendingOrderProductRequestModel;
 import com.example.demo.models.view.PendingOrderProductView;
 import com.example.demo.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.naming.InsufficientResourcesException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.*;
@@ -30,8 +27,6 @@ public class PendingOrderService {
     private final VendorService vendorService;
     private final StoreRepository storeRepository;
 
-    private final UserRepository userRepository;
-
     @Autowired
     UserService userService;
 
@@ -44,7 +39,6 @@ public class PendingOrderService {
     @Autowired
     public PendingOrderService(PendingOrderRepository pendingOrderRepository,
                                PendingOrderProductRepository pendingOrderProductRepository,
-                               UserRepository userRepository,
                                CustomerRepository customerRepository,
                                VendorService vendorService,
                                InventoryProductRepository inventoryProductRepository,
@@ -52,7 +46,6 @@ public class PendingOrderService {
                                ) {
         this.pendingOrderRepository = pendingOrderRepository;
         this.pendingOrderProductRepository = pendingOrderProductRepository;
-        this.userRepository = userRepository;
         this.customerRepository = customerRepository;
         this.vendorService = vendorService;
         this.inventoryProductRepository = inventoryProductRepository;
@@ -69,21 +62,18 @@ public class PendingOrderService {
 
     public PendingOrder getPendingOrderEntityByUuid(String uuid){
         Optional<PendingOrder> optionalPendingOrder = pendingOrderRepository.findByUuid(uuid);
-        return optionalPendingOrder.orElseThrow(() -> new EntityNotFoundException("Pending order with uuid "+uuid+" cannot be found"));
+        return optionalPendingOrder.orElseThrow(() -> new EntityNotFoundException("Pending order with uuid "+uuid+
+                " cannot be found"));
     }
 
     public Set<PendingOrderProductView> getPendingOrderViewsByPendingOrderUuid(String pendingOrderUuid){
         return pendingOrderProductRepository.getPendingOrderProductsByPendingOrderUuid(pendingOrderUuid);
     }
 
-
     @Transactional
     public String addPendingOrder(PendingOrderRequestModel pendingOrderModel, String username){
 
-
-     int insertedRows = pendingOrderRepository.insertPendingOrder(
-                                                                    username,
-                                                                    pendingOrderModel.getStoreUUID());
+     int insertedRows = pendingOrderRepository.insertPendingOrder(username, pendingOrderModel.getStoreUUID());
      PendingOrder pendingOrder;
      if(insertedRows > 0){
          pendingOrder = pendingOrderRepository.getLatestPendingOrder();
@@ -98,10 +88,11 @@ public class PendingOrderService {
          }
          InventoryProduct inventoryProduct = inventoryProductRepository.findByUuid(p.getInventoryProductUUID()).get();
          if(inventoryProduct.getStock() < p.getQuantity() ){
-             throw new NotSufficientStockException("Stock of product " + inventoryProduct.getProduct().getName() + "is lower than requested amount");
+             throw new NotSufficientStockException("Stock of product " + inventoryProduct.getProduct().getName() +
+                     "is lower than requested amount");
          }
-         //pendingOrder.getPendingOrderProducts().add(new PendingOrderProduct(p.getQuantity(), pendingOrder, inventoryProduct));
-         pendingOrderProductRepository.insertPendingOrderProduct(p.getQuantity(), p.getInventoryProductUUID(), pendingOrder                  .getUuid().toString());
+         pendingOrderProductRepository.insertPendingOrderProduct(p.getQuantity(), p.getInventoryProductUUID(),
+                 pendingOrder.getUuid().toString());
         });
 
      return pendingOrder.getUuid().toString();
@@ -147,6 +138,5 @@ public class PendingOrderService {
         pendingOrderModel.setPendingOrderProductsViews(products);
         return  pendingOrderModel;
     }
-
 
 }

@@ -1,11 +1,8 @@
 package com.example.demo.services;
 
 import com.example.demo.Mapper.Convert;
-import com.example.demo.entities.PendingOrder;
-import com.example.demo.entities.Product;
 import com.example.demo.entities.Store;
 import com.example.demo.exceptions.customExceptions.WrongOwnerException;
-import com.example.demo.models.ProductModel;
 import com.example.demo.models.StoreMapModel;
 import com.example.demo.models.StoreModel;
 import com.example.demo.models.view.StoreCustomerView;
@@ -15,11 +12,9 @@ import com.example.demo.repositories.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
-
 
 @Service
 public class StoreService {
@@ -27,16 +22,14 @@ public class StoreService {
     final private StoreRepository storeRepository;
     final private UserService userService;
     final private InventoryProductRepository inventoryProductRepository;
-    final private PendingOrderRepository pendingOrderRepository;
-
     Convert convert = new Convert();
 
     @Autowired
-    public StoreService(StoreRepository storeRepository, UserService userService, PendingOrderRepository pendingOrderRepository, InventoryProductRepository inventoryProductRepository) {
+    public StoreService(StoreRepository storeRepository, UserService userService,
+                        InventoryProductRepository inventoryProductRepository) {
         this.storeRepository = storeRepository;
         this.userService = userService;
         this.inventoryProductRepository = inventoryProductRepository;
-        this.pendingOrderRepository = pendingOrderRepository;
     }
 
     public List<Store> getAllStores(){
@@ -56,6 +49,9 @@ public class StoreService {
     }
 
     public List<StoreCustomerView> getStoreDetailsByUuid(String uuid){
+        if(storeRepository.findByUuid(uuid).isEmpty())
+            throw new EntityNotFoundException("Store with uuid "+uuid+" does not exist");
+
         return storeRepository.getStoreDetailsByUuid(uuid);
     }
 
