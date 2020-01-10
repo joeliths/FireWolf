@@ -24,8 +24,8 @@ public class Vendor implements Serializable, MyEntity {
     @Embedded
     private MyUUID uuid = new MyUUID();
 
-
-    @OneToMany(mappedBy = "vendor", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @OnDelete(action =OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "vendor", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     private Set<Store> stores;
 
 

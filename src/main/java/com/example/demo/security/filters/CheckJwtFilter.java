@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -37,15 +38,16 @@ public class CheckJwtFilter extends OncePerRequestFilter {
             String jwtToken = authHeader.substring(7);
             String username = jwtService.getSubject(jwtToken);
             UserDetails userDetails = fetchUserDetails(username);
-            if (username.equals(userDetails.getUsername())) {
+                if (userDetails.getUsername() != null || userDetails.getAuthorities() != null
+                                                      || userDetails.getPassword() != null) {
                     UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
                             userDetails.getPassword(), userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(token);
-            }else {
-                //TODO: Add JWT to badJwt-table
-                SecurityContextHolder.clearContext();
-                throw new BadCredentialsException("Jwt is not correct");
-            }
+                }else {
+                    //TODO: Add JWT to badJwt-table
+                }
+
+
         }
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);

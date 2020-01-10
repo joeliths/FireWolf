@@ -6,6 +6,7 @@ import com.example.demo.entities.helperclasses.MyUUID;
 import com.example.demo.models.view.PendingOrderProductView;
 import com.example.demo.models.view.StoreCustomerView;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.scheduling.concurrent.ScheduledExecutorTask;
@@ -35,4 +36,17 @@ import java.util.Set;
 
     @Query(nativeQuery = true, value = "SELECT * FROM inventory_product_view WHERE store_uuid = :uuid")
     List getStoreDetailsByUuid(@QueryParam("uuid") String uuid);
-}
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true, value = "DELETE FROM store WHERE vendor_id = (SELECT id FROM user WHERE uuid = :uuid)")
+    int removeStoreByVendor(@Param("uuid")String uuid);
+
+
+
+
+@Transactional
+@Modifying
+@Query(nativeQuery = true, value = "DELETE FROM inventory_product WHERE store_id IN (SELECT id FROM store WHERE vendor_id = (SELECT id FROM user WHERE uuid = :uuid))")
+    int removeInventoryProductsByVendor(@Param("uuid")String uuid);
+        }

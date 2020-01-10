@@ -17,12 +17,8 @@ public class Product implements Serializable, MyEntity{
 
     private static final long serialVersionUID = 1L;
 
-
-
     @Embedded
     private MyUUID uuid = new MyUUID();
-
-
 
     public Product(){
 

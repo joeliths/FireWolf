@@ -27,6 +27,7 @@ public class Customer implements Serializable, MyEntity {
     @Embedded
     private MyUUID uuid = new MyUUID();
 
+    @OnDelete(action =OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PendingOrder> pendingOrders;
 

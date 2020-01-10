@@ -33,9 +33,8 @@ public class LoginController {
         return ResponseEntity.status(CREATED).build();
     }
 
-    @GetMapping("/logout2")
+    @GetMapping("/logout")
     public void logout(){
-        System.out.println("Damn");
         SecurityContextHolder.clearContext();
     }
 

@@ -24,6 +24,7 @@ public class GlobalSecurityFilterExceptionHandler implements AuthenticationEntry
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e)
             throws IOException, ServletException {
+        System.out.println("TESTING");
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         resolver.resolveException(request, response, null, e);

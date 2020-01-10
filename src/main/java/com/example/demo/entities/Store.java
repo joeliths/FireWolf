@@ -27,16 +27,18 @@ public class Store implements Serializable, MyEntity {
     private Long id;
 
 
+    @OnDelete(action =OnDeleteAction.CASCADE)
     @OneToOne(mappedBy = "store", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     private Position position;
 
+    @OnDelete(action =OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
     Set<PendingOrder> pendingOrders;
 
-////    ska förmodligen tas bort. vi implementerar egen snabbare hämtning av inventoryProducts.
-//    @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
-//    Set<InventoryProduct> inventoryProducts;
+    @OnDelete(action =OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    Set<InventoryProduct> inventoryProducts;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vendor_id")
@@ -95,5 +97,21 @@ public class Store implements Serializable, MyEntity {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    public Set<PendingOrder> getPendingOrders() {
+        return pendingOrders;
+    }
+
+    public void setPendingOrders(Set<PendingOrder> pendingOrders) {
+        this.pendingOrders = pendingOrders;
+    }
+
+    public Set<InventoryProduct> getInventoryProducts() {
+        return inventoryProducts;
+    }
+
+    public void setInventoryProducts(Set<InventoryProduct> inventoryProducts) {
+        this.inventoryProducts = inventoryProducts;
     }
 }

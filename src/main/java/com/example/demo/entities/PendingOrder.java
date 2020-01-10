@@ -2,6 +2,8 @@ package com.example.demo.entities;
 
 import com.example.demo.entities.helperclasses.MyUUID;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -35,9 +37,10 @@ public class PendingOrder implements Serializable, MyEntity{
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(
             mappedBy = "pendingOrder",
-            cascade = CascadeType.ALL,
+            cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE},
             orphanRemoval = true
     )
     private Set<PendingOrderProduct> pendingOrderProducts = new HashSet<>();

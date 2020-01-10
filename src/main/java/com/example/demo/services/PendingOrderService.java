@@ -93,10 +93,11 @@ public class PendingOrderService {
          if(vendorService.doesInventoryProductNotExistInStore(storeUuid, p.getInventoryProductUUID())) {
              throw new WrongOwnerException("Store with uuid " + storeUuid + " does not carry inventory product");
          }
-         InventoryProduct inventoryProduct =inventoryProductRepository.findByUuid(p.getInventoryProductUUID()).get();
+         InventoryProduct inventoryProduct = inventoryProductRepository.findByUuid(p.getInventoryProductUUID()).get();
          if(inventoryProduct.getStock() < p.getQuantity() ){
              throw new NotSufficientStockException("Stock of product " + inventoryProduct.getProduct().getName() + "is lower than requested amount");
          }
+         //pendingOrder.getPendingOrderProducts().add(new PendingOrderProduct(p.getQuantity(), pendingOrder, inventoryProduct));
          pendingOrderProductRepository.insertPendingOrderProduct(p.getQuantity(), p.getInventoryProductUUID(), pendingOrder                  .getUuid().toString());
         });
 

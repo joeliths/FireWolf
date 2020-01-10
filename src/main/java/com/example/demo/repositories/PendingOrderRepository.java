@@ -49,11 +49,18 @@ public interface PendingOrderRepository extends JpaRepository<PendingOrder,Long>
 
     @Modifying
     @Transactional
-    @Query(nativeQuery = true, value = "DELETE FROM pending_order WHERE store_id = (SELECT id from store WHERE uuid = :storeUuid);" )
-    int deletePendingOrdersByStore(@Param("storeUuid")String storeUuid);
+    @Query(nativeQuery = true, value = "DELETE FROM pending_order WHERE store_id IN (SELECT id FROM store WHERE vendor_id IN (SELECT id FROM user WHERE uuid = :vendorUuid));")
+    int deletePendingOrdersByStoreByVendor(@Param("vendorUuid")String vendorUuid);
 
+//    @Modifying
+//    @Transactional
+//    @Query(nativeQuery = true, value = "DELETE FROM pending_order WHERE store_id IN (SELECT id FROM store WHERE vendor_id IN (SELECT id FROM user WHERE uuid = :vendorUuid));")
+//    void deletePendingOrdersByStore(@Param("storeUuid")String storeUuid);
 
-
+//    @Modifying
+//    @Transactional
+//    @Query(nativeQuery = true, value = "SELECT * FROM pending_order WHERE store_id = (SELECT id from store WHERE uuid = :storeUuid);" )
+//    intgetPendingOrderByStore(@Param("vendorUuid")String storeUuid);
 
 
 }

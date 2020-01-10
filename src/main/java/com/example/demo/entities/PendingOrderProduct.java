@@ -37,8 +37,10 @@ public class PendingOrderProduct implements Serializable, MyEntity {
     public PendingOrderProduct() {
     }
 
-    public PendingOrderProduct(int quantity) {
+    public PendingOrderProduct(int quantity, PendingOrder pendingOrder, InventoryProduct inventoryProduct) {
         this.quantity = quantity;
+        this.pendingOrder = pendingOrder;
+        this.inventoryProduct = inventoryProduct;
     }
 
     public Long getId() {

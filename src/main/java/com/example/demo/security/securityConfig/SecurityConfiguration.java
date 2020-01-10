@@ -7,6 +7,7 @@ import com.example.demo.security.authenticationEventHandlers.SuccessHandler;
 import com.example.demo.security.filters.CheckJwtFilter;
 
 import com.example.demo.security.filters.LoginFilter;
+import com.example.demo.security.filters.exceptions.JWTExceptionCatcher;
 import com.example.demo.security.providers.UserNamePasswordProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,6 +38,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private CheckJwtFilter checkJwtFilter;
     @Autowired
     private GlobalSecurityFilterExceptionHandler globalSecurityFilterExceptionHandler;
+    @Autowired
+    private JWTExceptionCatcher jwtExceptionCatcher;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -46,23 +49,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.
+                addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter.class).addFilterAfter(loginFilter(), ExceptionTranslationFilter.class).
+                addFilterBefore(checkJwtFilter, loginFilter().getClass())
+                .addFilterBefore(jwtExceptionCatcher, checkJwtFilter.getClass());
 
-        http.addFilterBefore(checkJwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(checkJwtFilter, ExceptionTranslationFilter.class)
-                .addFilterAfter(loginFilter(), ExceptionTranslationFilter.class);
-
-        http.csrf().disable().authorizeRequests().antMatchers("/login", "/register", "/store/details/**").permitAll().antMatchers(HttpMethod.GET, "/store").permitAll().
-                antMatchers("/logout2").authenticated().anyRequest().authenticated();
-        http.exceptionHandling().authenticationEntryPoint(globalSecurityFilterExceptionHandler);
-
-//        http.csrf().disable().authorizeRequests()
-//                //.antMatchers("/login", "/logout").permitAll()
-//                //.antMatchers("/registerUser").permitAll()
-//                .anyRequest().permitAll();
-
-//                .and()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.csrf().disable().formLogin().disable().httpBasic().disable()
+                .authorizeRequests().antMatchers(HttpMethod.POST, "/login", "/register").permitAll()
+                .antMatchers(HttpMethod.GET, "/store", "/store/details/**").permitAll()
+                .anyRequest().authenticated()
+                .and().logout().disable()
+                .exceptionHandling().authenticationEntryPoint(globalSecurityFilterExceptionHandler);
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -72,8 +71,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     public LoginFilter loginFilter() throws Exception {
         LoginFilter loginFilter = new LoginFilter(new AntPathRequestMatcher("/login", "POST"), authenticationManagerBean(), successHandler);
-
-
         return loginFilter;
     }
 
