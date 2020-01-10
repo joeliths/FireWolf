@@ -11,15 +11,15 @@ INSERT INTO user_role_roles(user_id, role_id) VALUES (1, 1), (1, 2), (1, 3), (1,
 
 INSERT INTO product(description, name, uuid) VALUES ("Tasty!", "Chips", "9f3edcd7-7b0d-41f5-90de-335f3b15ffb9"), ("Not so good", "Beef", "a6f6166d-5d94-4441-9114-75d30da21f73");
 
-INSERT INTO fire_wolf.position(lat, lng) VALUES(23.4, 4);
+INSERT INTO firewolf.position(lat, lng) VALUES(23.4, 4);
 
-INSERT INTO fire_wolf.position(lat, lng) VALUES(23.6, 70);
+INSERT INTO firewolf.position(lat, lng) VALUES(23.6, 70);
 
 INSERT INTO store(address, description, uuid, vendor_id) VALUES ("Mellangärdet 23", "Cool store", "09558eca-87e1-436e-8ae8-96fe5e19a7eb", 1), ("Storgatan 43A", "Cool store", "22cc18b2-2d18-442d-8269-dc5f1e03b734", 1);
 
-INSERT INTO fire_wolf.position(lat, lng, store_id) VALUES(23.4, 4, 1);
+INSERT INTO firewolf.position(lat, lng, store_id) VALUES(23.4, 4, 1);
 
-INSERT INTO fire_wolf.position(lat, lng, store_id) VALUES(23.6, 70, 2);
+INSERT INTO firewolf.position(lat, lng, store_id) VALUES(23.6, 70, 2);
 
 INSERT INTO inventory_product(price, stock, uuid, product_id, store_id) VALUES (23, 2, "ec17c771-22e5-4b1a-a906-73401f4f271b", 1, 1 ), (45, 6, "c9801a81-b0b3-42e8-a752-a9089d2aec6a", 2, 1);
 
