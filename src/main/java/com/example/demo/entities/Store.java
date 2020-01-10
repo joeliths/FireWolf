@@ -26,7 +26,6 @@ public class Store implements Serializable, MyEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @OnDelete(action =OnDeleteAction.CASCADE)
     @OneToOne(mappedBy = "store", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
@@ -36,9 +35,9 @@ public class Store implements Serializable, MyEntity {
     @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
     Set<PendingOrder> pendingOrders;
 
-    @OnDelete(action =OnDeleteAction.CASCADE)
-    @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    Set<InventoryProduct> inventoryProducts;
+//    @OnDelete(action =OnDeleteAction.CASCADE)
+//    @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
+//    Set<InventoryProduct> inventoryProducts;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vendor_id")
@@ -106,12 +105,12 @@ public class Store implements Serializable, MyEntity {
     public void setPendingOrders(Set<PendingOrder> pendingOrders) {
         this.pendingOrders = pendingOrders;
     }
-
-    public Set<InventoryProduct> getInventoryProducts() {
-        return inventoryProducts;
-    }
-
-    public void setInventoryProducts(Set<InventoryProduct> inventoryProducts) {
-        this.inventoryProducts = inventoryProducts;
-    }
+//
+//    public Set<InventoryProduct> getInventoryProducts() {
+//        return inventoryProducts;
+//    }
+//
+//    public void setInventoryProducts(Set<InventoryProduct> inventoryProducts) {
+//        this.inventoryProducts = inventoryProducts;
+//    }
 }

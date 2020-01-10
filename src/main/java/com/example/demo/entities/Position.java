@@ -1,5 +1,8 @@
 package com.example.demo.entities;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -18,6 +21,7 @@ public class Position implements Serializable, MyEntity {
     @Column(name="lng")
     private Double lng;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "store_id", referencedColumnName = "id")
     private Store store;

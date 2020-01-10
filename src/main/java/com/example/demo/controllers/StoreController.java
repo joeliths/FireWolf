@@ -1,6 +1,5 @@
 package com.example.demo.controllers;
 
-import com.example.demo.models.InventoryProductModel;
 import com.example.demo.models.StoreMapModel;
 import com.example.demo.models.StoreModel;
 import com.example.demo.models.view.StoreCustomerView;
@@ -37,7 +36,7 @@ public class StoreController {
         return  new ResponseEntity<>(storeService.getAllStoresToMap(),HttpStatus.OK);
     }
 
-   @GetMapping("/details/{uuid}")
+    @GetMapping("/details/{uuid}")
     @ResponseBody
     public ResponseEntity<List<StoreCustomerView>> getStoreDetailsByUuid(@PathVariable String uuid){
         return  new ResponseEntity<>(storeService.getStoreDetailsByUuid(uuid),HttpStatus.OK);
