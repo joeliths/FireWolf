@@ -28,6 +28,7 @@ public class PendingOrderService {
     private final CustomerRepository customerRepository;
     private final InventoryProductRepository inventoryProductRepository;
     private final VendorService vendorService;
+    private final StoreRepository storeRepository;
 
     private final UserRepository userRepository;
 
@@ -46,7 +47,8 @@ public class PendingOrderService {
                                UserRepository userRepository,
                                CustomerRepository customerRepository,
                                VendorService vendorService,
-                               InventoryProductRepository inventoryProductRepository
+                               InventoryProductRepository inventoryProductRepository,
+                               StoreRepository storeRepository
                                ) {
         this.pendingOrderRepository = pendingOrderRepository;
         this.pendingOrderProductRepository = pendingOrderProductRepository;
@@ -54,6 +56,7 @@ public class PendingOrderService {
         this.customerRepository = customerRepository;
         this.vendorService = vendorService;
         this.inventoryProductRepository = inventoryProductRepository;
+        this.storeRepository = storeRepository;
     }
 
     public PendingOrderResponseModel getPendingOrderByUuid(String uuid, String username){
@@ -129,7 +132,10 @@ public class PendingOrderService {
     }
 
     public List<PendingOrderResponseModel> getPendingOrdersForStore(String storeUuid, String userName){
-        vendorService.doesStoreNotBelongToVendor(userName);
+        if(storeRepository.findByUuid(storeUuid).isEmpty()) {
+            throw new EntityNotFoundException("Invalid store uuid.");
+        }
+        vendorService.doesStoreNotBelongToVendor(userName, storeUuid);
         return pendingOrderRepository.getPendingOrderByStore(storeUuid)
                 .stream()
                 .map(po -> toResponseModel(po)).collect(Collectors.toList());
