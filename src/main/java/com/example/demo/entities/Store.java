@@ -35,10 +35,6 @@ public class Store implements Serializable, MyEntity {
     @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
     Set<PendingOrder> pendingOrders;
 
-//    @OnDelete(action =OnDeleteAction.CASCADE)
-//    @OneToMany(mappedBy = "store", cascade = CascadeType.PERSIST, orphanRemoval = true)
-//    Set<InventoryProduct> inventoryProducts;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vendor_id")
     private Vendor vendor;
@@ -47,8 +43,6 @@ public class Store implements Serializable, MyEntity {
     private String address;
     @Column
     private String description;
-
-
 
     public Store() {
     }
@@ -105,12 +99,5 @@ public class Store implements Serializable, MyEntity {
     public void setPendingOrders(Set<PendingOrder> pendingOrders) {
         this.pendingOrders = pendingOrders;
     }
-//
-//    public Set<InventoryProduct> getInventoryProducts() {
-//        return inventoryProducts;
-//    }
-//
-//    public void setInventoryProducts(Set<InventoryProduct> inventoryProducts) {
-//        this.inventoryProducts = inventoryProducts;
-//    }
+
 }

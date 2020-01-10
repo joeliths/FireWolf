@@ -4,13 +4,9 @@ import com.example.demo.models.user.UserLoginModel;
 import com.example.demo.models.user.UserRegisterModel;
 import com.example.demo.models.user.UserResponseModel;
 import com.example.demo.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.constraints.NotNull;
 
 import static org.springframework.http.HttpStatus.CREATED;
 

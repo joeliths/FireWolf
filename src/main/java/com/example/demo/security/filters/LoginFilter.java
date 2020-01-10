@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 
 public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
-
     public LoginFilter(RequestMatcher requiresAuthenticationRequestMatcher, AuthenticationManager authenticationManager,
                        AuthenticationSuccessHandler handler) {
         super(requiresAuthenticationRequestMatcher);

@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class JwtGenerator {
 
-    private final static String secretKey = "Secret"; //TODO: Store somewhere else lol
+    private final static String secretKey = "Secret";
     private final static int dateAdditionInMillis = 1000 * 60 * 60 * 24;
 
     public static String createToken(String username){

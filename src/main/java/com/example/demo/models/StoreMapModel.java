@@ -22,8 +22,6 @@ public class StoreMapModel implements Serializable {
         return serialVersionUID;
     }
 
-
-
     public String getUuid() {
         return uuid;
     }

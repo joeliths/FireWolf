@@ -1,6 +1,5 @@
 package com.example.demo.security.securityConfig;
 
-
 import com.example.demo.exceptions.GlobalSecurityFilterExceptionHandler;
 import com.example.demo.security.JPAUserDetailsService;
 import com.example.demo.security.authenticationEventHandlers.SuccessHandler;

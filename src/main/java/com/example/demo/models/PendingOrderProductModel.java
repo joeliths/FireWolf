@@ -1,7 +1,5 @@
 package com.example.demo.models;
 
-import com.example.demo.entities.InventoryProduct;
-
 import java.io.Serializable;
 
 public class PendingOrderProductModel implements Serializable {

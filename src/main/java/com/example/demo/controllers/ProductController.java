@@ -1,9 +1,6 @@
 package com.example.demo.controllers;
 
-
-import com.example.demo.entities.Product;
 import com.example.demo.models.ProductModel;
-import com.example.demo.repositories.ProductRepository;
 import com.example.demo.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,17 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
-import java.util.List;
 import java.util.Set;
 
 @Controller
 @RequestMapping("/products")
 public class ProductController {
+
     @Autowired
     ProductService productService;
-
 
     @PostMapping(
             consumes = "application/json",
@@ -57,6 +52,5 @@ public class ProductController {
         productService.updateProduct(uuid,productModel);
         return new ResponseEntity(HttpStatus.OK);
     }
-
 
 }

@@ -25,6 +25,5 @@ public interface PendingOrderProductRepository extends JpaRepository<PendingOrde
 
     @Query(nativeQuery = true, value = "SELECT * FROM pending_order_product_view WHERE pending_order_uuid = :uuid")
     Set<PendingOrderProductView> getPendingOrderProductsByPendingOrderUuid(@QueryParam("uuid") String uuid);
-//
-//    @Query(nativeQuery = true, value = "DELETE FROM pending_order WHERE ")
+
 }

@@ -1,6 +1,5 @@
 package com.example.demo.security.filters.exceptions;
 
-import io.jsonwebtoken.JwtException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 

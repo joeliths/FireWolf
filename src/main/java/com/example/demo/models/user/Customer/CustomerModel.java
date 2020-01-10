@@ -8,7 +8,6 @@ public class CustomerModel implements Serializable {
 
     private String uuid;
 
-
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

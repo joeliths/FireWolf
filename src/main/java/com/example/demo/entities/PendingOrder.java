@@ -60,7 +60,6 @@ public class PendingOrder implements Serializable, MyEntity{
         this.expirationDateTime = expirationDateTime;
     }
 
-
     public Long getId() {
         return id;
     }
@@ -109,16 +108,4 @@ public class PendingOrder implements Serializable, MyEntity{
         this.pendingOrderProducts = pendingOrderProducts;
     }
 
-//    @Override
-//    public String toString() {
-//        return "PendingOrder{" +
-//                "uuid=" + uuid +
-//                ", id=" + id +
-//                ", store=" + store +
-//                ", customer=" + customer.getUser().getUserName() +
-//                ", pendingOrderProducts=" + pendingOrderProducts +
-//                ", placemenDateTime=" + placementDateTime +
-//                ", expirationDateTime=" + expirationDateTime +
-//                '}';
-//    }
 }

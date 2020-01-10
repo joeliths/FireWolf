@@ -42,7 +42,6 @@ public class Position implements Serializable, MyEntity {
         this.lng = lng;
     }
 
-
     public Long getId() {
         return id;
     }

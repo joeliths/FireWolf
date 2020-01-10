@@ -1,6 +1,5 @@
 package com.example.demo.models;
 
-import javax.mail.search.SearchTerm;
 import java.io.Serializable;
 import java.util.Set;
 

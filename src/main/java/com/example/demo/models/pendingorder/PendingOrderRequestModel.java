@@ -2,7 +2,6 @@ package com.example.demo.models.pendingorder;
 
 import com.example.demo.models.pendingorder.nestedobjects.PendingOrderProductRequestModel;
 
-import java.util.List;
 import java.util.Set;
 
 public class PendingOrderRequestModel {
@@ -33,6 +32,5 @@ public class PendingOrderRequestModel {
     public void setPendingOrderProducts(Set<PendingOrderProductRequestModel> pendingOrderProducts) {
         this.pendingOrderProducts = pendingOrderProducts;
     }
-
 
 }

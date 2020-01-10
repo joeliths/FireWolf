@@ -3,17 +3,13 @@ package com.example.demo.services;
 import com.example.demo.Mapper.Convert;
 import com.example.demo.entities.Product;
 import com.example.demo.models.ProductModel;
-import com.example.demo.models.view.PendingOrderProductView;
 import com.example.demo.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import javax.resource.spi.EISSystemException;
-import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
 import javax.ws.rs.BadRequestException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 @Transactional
@@ -85,7 +81,6 @@ public class ProductService {
         if(dbResult.isEmpty()){
             throw new EntityNotFoundException("Product with uuid "+uuid+" not found");
         }else{
-//            Product newData = convert.lowAccessConverter(inputModel, Product.class);
             Product retrievedFromDb = (Product)dbResult.get();
             if(inputModel.getName() !=  null){
                 retrievedFromDb.setName(inputModel.getName());
@@ -95,6 +90,5 @@ public class ProductService {
             }
             productRepository.updateProduct(retrievedFromDb);
         }
-
     }
 }

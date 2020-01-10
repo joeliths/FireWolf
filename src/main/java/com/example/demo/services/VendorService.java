@@ -11,9 +11,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import javax.ws.rs.BadRequestException;
-import javax.ws.rs.ForbiddenException;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -149,8 +146,5 @@ public class VendorService {
         boolean isStockLowerThanZero = product.getStock() != null && product.getStock() < 0;
         return isPriceLowerThanZero || isStockLowerThanZero;
     }
-
-
-
 
 }
