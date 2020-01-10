@@ -2,6 +2,8 @@ package com.example.demo.entities;
 
 import com.example.demo.entities.helperclasses.MyUUID;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -37,6 +39,7 @@ public class InventoryProduct implements Serializable, MyEntity{
     @JoinColumn(name = "product_id", nullable = false)
     private Product product = new Product();
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store = new Store();
