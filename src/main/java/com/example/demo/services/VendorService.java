@@ -14,6 +14,7 @@ import javax.ws.rs.ForbiddenException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Service
@@ -81,7 +82,7 @@ public class VendorService {
         if(areInventoryProductFieldsInvalid(inventoryProduct)) {
             throw new ValidationException("Invalid fields for product");
         }
-        if(doesStoreNotBelongToVendor(userName)) {
+        if(doesStoreNotBelongToVendor(userName, storeUuid)) {
             throw new ValidationException();
         }
 
@@ -96,7 +97,7 @@ public class VendorService {
     public void updateProductInStore(String userName, String storeUuid, String inventoryProductUuid,
                                      InventoryProductRequestModel updatedProduct) {
 
-        if(doesStoreNotBelongToVendor(userName) ||
+        if(doesStoreNotBelongToVendor(userName, storeUuid) ||
                 doesInventoryProductNotExistInStore(storeUuid, inventoryProductUuid)) {
             throw new ForbiddenException();
         }
@@ -120,18 +121,17 @@ public class VendorService {
 
     public void removeProductFromStore(String userName, String storeUuid, String inventoryProductUuid) {
 
-        if(doesStoreNotBelongToVendor(userName) ||
+        if(doesStoreNotBelongToVendor(userName, storeUuid) ||
                 doesInventoryProductNotExistInStore(storeUuid, inventoryProductUuid)) {
             throw new ValidationException();
         }
 
         inventoryProductRepository.deleteByUuid(inventoryProductUuid);
     }
-
     
-
-    public boolean doesStoreNotBelongToVendor(String userName) {
-        return storeRepository.findByVendorUserName(userName).isEmpty();
+    public boolean doesStoreNotBelongToVendor(String userName, String storeUuid) {
+        Optional<Store> store = storeRepository.findByUuid(storeUuid);
+        return store.map(value -> !value.getVendor().getUser().getUserName().equals(userName)).orElse(true);
     }
 
     public boolean doesInventoryProductNotExistInStore(String storeUuid, String inventoryProductUuid) {
