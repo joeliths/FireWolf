@@ -15,7 +15,11 @@ INSERT INTO fire_wolf.position(lat, lng) VALUES(23.4, 4);
 
 INSERT INTO fire_wolf.position(lat, lng) VALUES(23.6, 70);
 
-INSERT INTO store(address, description, uuid, vendor_id, position_id) VALUES ("Mellangärdet 23", "Cool store", "09558eca-87e1-436e-8ae8-96fe5e19a7eb", 1, 1), ("Storgatan 43A", "Cool store", "22cc18b2-2d18-442d-8269-dc5f1e03b734", 1, 2);
+INSERT INTO store(address, description, uuid, vendor_id) VALUES ("Mellangärdet 23", "Cool store", "09558eca-87e1-436e-8ae8-96fe5e19a7eb", 1), ("Storgatan 43A", "Cool store", "22cc18b2-2d18-442d-8269-dc5f1e03b734", 1);
+
+INSERT INTO fire_wolf.position(lat, lng, store_id) VALUES(23.4, 4, 1);
+
+INSERT INTO fire_wolf.position(lat, lng, store_id) VALUES(23.6, 70, 2);
 
 INSERT INTO inventory_product(price, stock, uuid, product_id, store_id) VALUES (23, 2, "ec17c771-22e5-4b1a-a906-73401f4f271b", 1, 1 ), (45, 6, "c9801a81-b0b3-42e8-a752-a9089d2aec6a", 2, 1);
 
@@ -23,11 +27,11 @@ INSERT INTO pending_order(expiration_date_time, placement_date_time, uuid, custo
 
 INSERT INTO pending_order_product(quantity, uuid, inventory_product_id, pending_order_id) VALUES (1, "533818dd-4925-45d4-8d2d-387edc01336c", 1, 1);
 
-insert into pending_order(id, expiration_date_time, placement_date_time, uuid, customer_id, store_id)
-values(1,'2011-12-18 13:17:17','2011-12-18 13:47:17',"388abc70-1c34-4236-87d0-b9eb231dfbb2",2,1);
+insert into pending_order(expiration_date_time, placement_date_time, uuid, customer_id, store_id)
+values('2011-12-18 13:17:17','2011-12-18 13:47:17',"388abc70-1c34-4236-87d0-b9eb231dfbb2",2,1);
 
-insert into pending_order_product(id, quantity, uuid, inventory_product_id, pending_order_id)
-values (1, 2,
+insert into pending_order_product(quantity, uuid, inventory_product_id, pending_order_id)
+values (1,
 "338abc70-1c34-4236-87d0-b9eb211dfbb7", 1,1);
 
 
