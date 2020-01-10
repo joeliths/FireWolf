@@ -64,4 +64,7 @@ public interface InventoryProductRepository extends JpaRepository<InventoryProdu
     @Query(nativeQuery = true, value = "DELETE FROM inventory_product WHERE uuid = :uuid")
     void deleteByUuid(String uuid);
 
+    @Query(nativeQuery = true, value = "SELECT stock FROM inventory_product WHERE uuid = :uuid")
+    int getInventoryProductByStock(@Param("uuid")String uuid);
+
 }

@@ -16,7 +16,7 @@ public class JWTExceptionCatcher extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         try{
             filterChain.doFilter(httpServletRequest, httpServletResponse);
-        }catch(JwtException e){
+        }catch(Exception e){
             httpServletResponse.sendError(401, e.getMessage());
         }
     }

@@ -4,10 +4,10 @@ import com.example.demo.Mapper.Convert;
 import com.example.demo.entities.Customer;
 import com.example.demo.entities.User;
 import com.example.demo.entities.UserRole;
+import com.example.demo.entities.Vendor;
 import com.example.demo.models.user.UserRegisterModel;
-import com.example.demo.repositories.CustomerRepository;
-import com.example.demo.repositories.UserRepository;
-import com.example.demo.repositories.UserRoleRepository;
+import com.example.demo.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,17 +26,26 @@ public class UserService {
     private final UserRepository userRepository;
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
+    private final StoreRepository storeRepository;
     private final Convert modelConverter;
     private final UserRoleRepository userRoleRepository;
+    private final VendorRepository vendorRepository;
+    private final PendingOrderRepository pendingOrderRepository;
+    @Autowired
+    PendingOrderService pendingOrderService;
 
     public UserService(UserRepository userRepository, CustomerRepository customerRepository,
                        PasswordEncoder passwordEncoder, Convert modelConverter,
-                       UserRoleRepository userRoleRepository) {
+                       UserRoleRepository userRoleRepository, StoreRepository storeRepository,
+                       VendorRepository vendorRepository, PendingOrderRepository pendingOrderRepository) {
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
         this.modelConverter = modelConverter;
         this.userRoleRepository = userRoleRepository;
+        this.storeRepository = storeRepository;
+        this.vendorRepository = vendorRepository;
+        this.pendingOrderRepository = pendingOrderRepository;
     }
 
     public void registerUserAndCustomer(UserRegisterModel user){
@@ -60,6 +69,34 @@ public class UserService {
     }
 
     public void deleteUser(String userName) {
+//        User user = userRepository.getByUserName(userName);
+//        System.out.println(user.getUuid().toString());
+//        System.out.println(userName);
+//        for(UserRole role : user.getRoles()){
+//            if(role.getRole().equals("ROLE_VENDOR")){
+//               Vendor vendor = vendorRepository.getByUserName(userName);
+//                vendor.getStores().forEach(s -> {
+//                    pendingOrderRepository.getPendingOrderByStore(s.getUuid().toString())
+//                            .forEach(po -> {
+//                                po.getPendingOrderProducts().forEach(pop -> {
+//                                    pop.setPendingOrder(null);
+//                                });
+//                                po.getPendingOrderProducts().clear();
+//                            });
+//                    //pendingOrderService.deletePendingOrder(s.getUuid().toString(), userName);
+//                });
+//
+//                //pendingOrderRepository.deletePendingOrdersByStoreByVendor(user.getUuid().toString());
+//                storeRepository.removeInventoryProductsByVendor(user.getUuid().toString());
+//
+//                vendor.getStores().clear();
+//
+//                //storeRepository.removeStoreByVendor(user.getUuid().toString());
+//                vendorRepository.delete(vendor);
+//            }
+//        }
+//
+//        System.out.println("wow");
         userRepository.deleteByUserName(userName);
     }
 

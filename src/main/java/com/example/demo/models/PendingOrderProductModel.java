@@ -1,5 +1,7 @@
 package com.example.demo.models;
 
+import com.example.demo.entities.InventoryProduct;
+
 import java.io.Serializable;
 
 public class PendingOrderProductModel implements Serializable {
@@ -25,8 +27,9 @@ public class PendingOrderProductModel implements Serializable {
     public PendingOrderProductModel() {
     }
 
-    public PendingOrderProductModel(int quantity) {
+    public PendingOrderProductModel(int quantity, InventoryProductModel inventoryProduct) {
         this.quantity = quantity;
+        this.inventoryProduct = inventoryProduct;
     }
 
     public int getQuantity() {
