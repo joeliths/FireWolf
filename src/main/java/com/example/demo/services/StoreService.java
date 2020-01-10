@@ -56,6 +56,9 @@ public class StoreService {
     }
 
     public List<StoreCustomerView> getStoreDetailsByUuid(String uuid){
+        if(storeRepository.findByUuid(uuid).isEmpty())
+            throw new EntityNotFoundException("Store with uuid "+uuid+" does not exist");
+
         return storeRepository.getStoreDetailsByUuid(uuid);
     }
 
