@@ -7,7 +7,7 @@ INSERT INTO vendor(uuid, user_id) VALUES ("118cba8d-ac42-457d-ab9c-d9c26e95cac1"
 
 INSERT INTO customer(uuid, user_id) VALUES ("27e8f226-151b-4706-a2b5-fff6642d4361", 1), ("78f41966-dada-47dd-98ae-431a6931c041", 2);
 
-INSERT INTO user_role_roles(user_id, role_id) VALUES (1, 1), (1, 2), (1, 3), (1, 4), (2, 3), (2, 4);
+INSERT INTO user_role_roles(user_id, role_id) VALUES (1, 1), (1, 2), (1, 3), (1, 4), (2, 2), (2, 4);
 
 INSERT INTO product(description, name, uuid) VALUES ("Tasty!", "Chips", "9f3edcd7-7b0d-41f5-90de-335f3b15ffb9"), ("Not so good", "Beef", "a6f6166d-5d94-4441-9114-75d30da21f73");
 
@@ -33,8 +33,6 @@ values('2011-12-18 13:17:17','2011-12-18 13:47:17',"388abc70-1c34-4236-87d0-b9eb
 insert into pending_order_product(quantity, uuid, inventory_product_id, pending_order_id)
 values (1,
 "338abc70-1c34-4236-87d0-b9eb211dfbb7", 1,1);
-
-
 
 CREATE OR REPLACE VIEW inventory_product_view AS
 select
