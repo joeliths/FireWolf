@@ -128,7 +128,7 @@ public class VendorService {
 
         inventoryProductRepository.deleteByUuid(inventoryProductUuid);
     }
-    
+
     public boolean doesStoreNotBelongToVendor(String userName, String storeUuid) {
         Optional<Store> store = storeRepository.findByUuid(storeUuid);
         return store.map(value -> !value.getVendor().getUser().getUserName().equals(userName)).orElse(true);
