@@ -39,7 +39,7 @@ public class StoreController {
     @GetMapping("/details/{uuid}")
     @ResponseBody
     public ResponseEntity<List<StoreCustomerView>> getStoreDetailsByUuid(@PathVariable String uuid){
-        return  new ResponseEntity<>(storeService.getStoreDetailsByUuid(uuid),HttpStatus.OK);
+        return ResponseEntity.ok(storeService.getStoreDetailsByUuid(uuid));
     }
 
     @DeleteMapping("{uuid}")
