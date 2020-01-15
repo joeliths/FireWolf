@@ -76,8 +76,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PATCH, "/products/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().logout().disable()
-                .exceptionHandling().authenticationEntryPoint(globalSecurityFilterExceptionHandler);
-//                .and().cors()
+                .exceptionHandling().authenticationEntryPoint(globalSecurityFilterExceptionHandler)
+                .and().cors();
 //                .and().oauth2Login()
 //                .permitAll()
 //                .userInfoEndpoint().oidcUserService(customOidcUserService);
