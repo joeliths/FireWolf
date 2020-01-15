@@ -2,8 +2,10 @@ package com.example.demo.controllers;
 
 import com.example.demo.models.user.UserRegisterModel;
 import com.example.demo.models.user.UserResponseModel;
+import com.example.demo.models.user.UserWithRolesResponseModel;
 import com.example.demo.services.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -31,6 +33,11 @@ public class UserController {
     public ResponseEntity<Integer> deleteUser(Principal userMakingTheRequest) {
         userService.deleteUser(userMakingTheRequest.getName());
         return ResponseEntity.status(OK).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<UserWithRolesResponseModel> getUser(Principal userMakingTheRequest){
+        return ResponseEntity.ok(userService.getUserByUserWithRolesByUserName(userMakingTheRequest.getName()));
     }
 
 }

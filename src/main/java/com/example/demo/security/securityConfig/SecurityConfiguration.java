@@ -7,7 +7,9 @@ import com.example.demo.security.filters.CheckJwtFilter;
 
 import com.example.demo.security.filters.LoginFilter;
 import com.example.demo.security.filters.exceptions.JWTExceptionCatcher;
+//import com.example.demo.security.filters.oauth2.CustomOidcUserService;
 import com.example.demo.security.providers.UserNamePasswordProvider;
+import com.google.common.collect.ImmutableList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +26,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.ExceptionTranslationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 
 @Configuration
 @EnableWebSecurity
@@ -39,6 +45,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private GlobalSecurityFilterExceptionHandler globalSecurityFilterExceptionHandler;
     @Autowired
     private JWTExceptionCatcher jwtExceptionCatcher;
+//    @Autowired
+//    CustomOidcUserService customOidcUserService;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -55,24 +63,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable().formLogin().disable().httpBasic().disable()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
                 .antMatchers(HttpMethod.POST, "/login", "/register").permitAll()
                 .antMatchers(HttpMethod.GET, "/store", "/store/details/**").permitAll()
-
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PATCH, "/products/**").hasRole("ADMIN")
+                .antMatchers("/vendor", "/user", "/logout").hasRole("USER")
+                .antMatchers("/customer", "customer/**", "/pending-orders", "/pending-orders/**").hasRole("CUSTOMER")
+                .antMatchers(HttpMethod.GET, "/products/**").hasRole("VENDOR")
                 .antMatchers("/vendor/**", "/store/**").hasRole("VENDOR")
                 .antMatchers(HttpMethod.GET, "/products/**").hasRole("VENDOR")
                 .antMatchers(HttpMethod.POST, "/products").hasAnyRole("VENDOR","ADMIN")
-
-                .antMatchers("/vendor", "/user", "/logout").hasRole("USER")
-                .antMatchers("/customer", "customer/**", "/pending-orders", "/pending-orders/**").hasRole("CUSTOMER")
-                .antMatchers("/vendor/**", "/store/**").hasRole("VENDOR")
-                .antMatchers(HttpMethod.GET, "/products/**").hasRole("VENDOR")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/products/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().logout().disable()
-                .exceptionHandling().authenticationEntryPoint(globalSecurityFilterExceptionHandler);
+                .exceptionHandling().authenticationEntryPoint(globalSecurityFilterExceptionHandler)
+                .and().cors();
+//                .and().oauth2Login()
+//                .permitAll()
+//                .userInfoEndpoint().oidcUserService(customOidcUserService);
     }
 
 
@@ -106,4 +114,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 "/swagger-ui.html",
                 "/webjars/**");
     }
+
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(ImmutableList.of("*"));
+        configuration.setAllowedMethods(ImmutableList.of("*"));
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(ImmutableList.of("*"));
+        configuration.setExposedHeaders(ImmutableList.of("Access-Control-Allow-Origin", "Access-Control-Allow-Methods", "Access-Control-Allow-Headers", "Access-Control-Max-Age", "Authorization",
+                "Access-Control-Request-Headers", "Access-Control-Request-Method"));
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
 }

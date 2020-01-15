@@ -31,10 +31,10 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
         String requestData = getRequestBody(request.getReader());
+        System.out.println(requestData);
         UserRegisterModel user = getPOJOFromJson(requestData, UserRegisterModel.class);
         UsernamePasswordAuthenticationToken token;
         if(checkIfNull(user)) {
-            System.out.println("wow");
             throw new BadCredentialsException("Missing request body with user name and password.");
         }
 

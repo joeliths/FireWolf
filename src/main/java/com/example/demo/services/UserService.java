@@ -4,9 +4,11 @@ import com.example.demo.Mapper.Convert;
 import com.example.demo.entities.Customer;
 import com.example.demo.entities.User;
 import com.example.demo.entities.UserRole;
+import com.example.demo.models.user.RoleModel;
 import com.example.demo.models.user.UserRegisterModel;
+import com.example.demo.models.user.UserResponseModel;
+import com.example.demo.models.user.UserWithRolesResponseModel;
 import com.example.demo.repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -90,6 +94,17 @@ public class UserService {
                 .orElseThrow(EntityNotFoundException::new);
         long id = foundUser.getId();
         return id == entityUserId;
+    }
+
+    public UserResponseModel getUserByUserName(String userName){
+        User user = userRepository.findByUserName(userName).get();
+        return modelConverter.lowAccessConverter(user, UserResponseModel.class);
+    }
+
+    public UserWithRolesResponseModel getUserByUserWithRolesByUserName(String userName){
+        User user = userRepository.findByUserName(userName).get();
+        Set<RoleModel> userRoles = user.getRoles().stream().map(r -> new RoleModel(r.getRole())).collect(Collectors.toSet());
+        return new UserWithRolesResponseModel(user.getFullName(), user.getUserName(), user.getUuid().toString(), userRoles);
     }
 
 }
