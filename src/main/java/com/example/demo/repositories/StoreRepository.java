@@ -2,6 +2,7 @@ package com.example.demo.repositories;
 
 import com.example.demo.entities.Store;
 
+import com.example.demo.models.view.StoreCustomerView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -30,7 +31,7 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     Optional<Store> findByVendorUserName(@Param("userName") String userName);
 
     @Query(nativeQuery = true, value = "SELECT * FROM inventory_product_view WHERE store_uuid = :uuid")
-    List getStoreDetailsByUuid(@QueryParam("uuid") String uuid);
+    List<StoreCustomerView> getStoreDetailsByUuid(@QueryParam("uuid") String uuid);
 
     @Transactional
     @Modifying
